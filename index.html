@@ -192,7 +192,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.1s;
-            box-shadow: 0 2px 8px rgba(233, 30, 99, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 73, 144, 0.3);
         }
 
         .form-button:active {
@@ -209,36 +209,32 @@
             color: #f44336;
         }
 
-        /* Patient Info Box */
-        .patient-info-box {
-            background-color: #f5f5f5;
-            border-radius: 8px;
+        /* Info Box */
+        .info-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #1976d2;
+            border-radius: 6px;
             padding: 15px;
-            margin-top: 20px;
+            margin-top: 15px;
             margin-bottom: 20px;
         }
 
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            color: #666;
+        .info-box-title {
             font-size: 14px;
-        }
-
-        .info-value {
-            color: #1a1a1a;
             font-weight: 600;
-            font-size: 14px;
-            text-align: right;
+            color: #1976d2;
+            margin-bottom: 8px;
+        }
+
+        .info-box-text {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .info-highlight {
+            font-weight: 700;
+            color: #004990;
         }
 
         /* Type Selection Cards */
@@ -263,12 +259,29 @@
 
         .type-card:hover {
             border-color: #004990;
-            background-color: #fff5f8;
+            background-color: #f0f7ff;
         }
 
         .type-card.selected {
             border-color: #004990;
-            background-color: #fff5f8;
+            background-color: #f0f7ff;
+        }
+
+        /* Special styling for Alat type */
+        .type-card.type-alat {
+            border-color: #ff9800;
+            background: linear-gradient(135deg, #fff8f0 0%, #ffe8d0 100%);
+        }
+
+        .type-card.type-alat:hover {
+            border-color: #ff6f00;
+            background: linear-gradient(135deg, #fff0e0 0%, #ffd8b0 100%);
+        }
+
+        .type-card.type-alat.selected {
+            border-color: #ff6f00;
+            background: linear-gradient(135deg, #ffe8d0 0%, #ffc89f 100%);
+            box-shadow: 0 2px 8px rgba(255, 111, 0, 0.3);
         }
 
         .type-radio {
@@ -286,6 +299,20 @@
             font-weight: 600;
             color: #1a1a1a;
             margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .type-badge {
+            display: inline-block;
+            background: #ff9800;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            letter-spacing: 0.5px;
         }
 
         .type-desc {
@@ -340,7 +367,7 @@
             border: 1px solid #ddd;
             border-top: none;
             border-radius: 0 0 6px 6px;
-            max-height: 200px;
+            max-height: 300px;
             overflow-y: auto;
             z-index: 10;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -351,12 +378,25 @@
             display: block;
         }
 
+        .multi-select-category {
+            background-color: #f0f0f0;
+            padding: 8px 15px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #004990;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
         .multi-select-option {
-            padding: 12px 15px;
+            padding: 12px 15px 12px 30px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 10px;
+            border-bottom: 1px solid #f5f5f5;
         }
 
         .multi-select-option:hover {
@@ -410,6 +450,11 @@
             border-bottom: none;
         }
 
+        .material-item.stock-warning {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+        }
+
         .material-name {
             font-size: 14px;
             color: #1a1a1a;
@@ -417,74 +462,80 @@
             line-height: 1.4;
         }
 
+        .material-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .material-unit {
+            font-size: 12px;
+            color: #666;
+            background-color: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .material-test-info {
+            font-size: 11px;
+            color: #004990;
+            background-color: #e3f2fd;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .material-stock-info {
+            font-size: 11px;
+            color: #2e7d32;
+            background-color: #e8f5e9;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .material-stock-info.low-stock {
+            color: #f57c00;
+            background-color: #fff3e0;
+        }
+
+        .material-stock-info.no-stock {
+            color: #f44336;
+            background-color: #ffebee;
+        }
+
+        .stock-warning-text {
+            font-size: 12px;
+            color: #d32f2f;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
         .material-details {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 15px;
+            margin-top: 5px;
         }
 
-        .material-unit {
-            font-size: 13px;
+        .material-calc-info {
+            flex: 1;
+            font-size: 11px;
             color: #666;
-            background-color: #f5f5f5;
-            padding: 4px 10px;
-            border-radius: 4px;
+            line-height: 1.4;
         }
 
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .quantity-label {
-            font-size: 13px;
-            color: #666;
-            white-space: nowrap;
-        }
-
-        .quantity-input-group {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .qty-btn {
-            background-color: #f5f5f5;
-            border: none;
-            padding: 8px 12px;
-            font-size: 18px;
+        .quantity-display {
+            font-size: 14px;
+            font-weight: 700;
             color: #004990;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .qty-btn:active {
-            background-color: #e0e0e0;
-        }
-
-        .quantity-input {
-            width: 60px;
-            padding: 8px;
-            border: none;
+            background-color: #e3f2fd;
+            padding: 8px 15px;
+            border-radius: 6px;
             text-align: center;
-            font-size: 15px;
-            font-weight: 600;
-            -moz-appearance: textfield;
-        }
-
-        .quantity-input::-webkit-outer-spin-button,
-        .quantity-input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .quantity-input:focus {
-            outline: none;
-            background-color: #fff5f8;
+            min-width: 100px;
         }
 
         .delete-material-btn {
@@ -541,7 +592,7 @@
         .step-item.active .step-number {
             background: linear-gradient(135deg, #004990 0%, #0059b3 100%);
             color: white;
-            box-shadow: 0 2px 8px rgba(233, 30, 99, 0.4);
+            box-shadow: 0 2px 8px rgba(0, 73, 144, 0.4);
         }
 
         .step-item.completed .step-number {
@@ -599,7 +650,7 @@
         }
 
         .add-material-btn:hover {
-            background-color: #fff5f8;
+            background-color: #f0f7ff;
             border-color: #004990;
             color: #004990;
         }
@@ -701,7 +752,7 @@
         .modal-btn-confirm {
             background: linear-gradient(135deg, #004990 0%, #0059b3 100%);
             color: white;
-            box-shadow: 0 2px 8px rgba(233, 30, 99, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 73, 144, 0.3);
         }
 
         .modal-btn-confirm:active {
@@ -759,7 +810,7 @@
 
         /* History Page Styles */
         .history-container {
-            padding: 20px;
+            padding: 0;
         }
 
         .search-filter-section {
@@ -864,8 +915,8 @@
         }
 
         .badge-alat {
-            background: #f3e5f5;
-            color: #7b1fa2;
+            background: #ffe8d0;
+            color: #ff6f00;
         }
 
         .card-datetime {
@@ -1007,37 +1058,6 @@
             margin-right: 8px;
         }
 
-        .material-collapse-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            padding: 10px 0;
-        }
-
-        .material-collapse-header:hover {
-            color: #004990;
-        }
-
-        .collapse-arrow {
-            transition: transform 0.3s;
-            font-size: 12px;
-        }
-
-        .collapse-arrow.collapsed {
-            transform: rotate(-90deg);
-        }
-
-        .material-collapse-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-
-        .material-collapse-content.expanded {
-            max-height: 1000px;
-        }
-
         .badge-type-large {
             display: inline-block;
             padding: 6px 16px;
@@ -1045,6 +1065,15 @@
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 10px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
         }
     </style>
 </head>
@@ -1097,7 +1126,7 @@
                     </div>
                     <div class="step-item">
                         <div class="step-number">2</div>
-                        <div class="step-label">Pemeriksaan</div>
+                        <div class="step-label">Parameter & Metode</div>
                         <div class="step-line"></div>
                     </div>
                     <div class="step-item">
@@ -1112,22 +1141,25 @@
                         <div class="type-card" onclick="selectType('sampel')">
                             <input type="radio" name="tipeOutput" value="sampel" class="type-radio" id="typeSampel">
                             <div class="type-info">
-                                <div class="type-title">Sampel</div>
-                                <div class="type-desc">Pemeriksaan dengan data pasien (NIK required)</div>
+                                <div class="type-title">📋 Sampel</div>
+                                <div class="type-desc">Pengeluaran untuk pemeriksaan sampel (batch processing)</div>
                             </div>
                         </div>
                         <div class="type-card" onclick="selectType('control')">
                             <input type="radio" name="tipeOutput" value="control" class="type-radio" id="typeControl">
                             <div class="type-info">
-                                <div class="type-title">Control</div>
-                                <div class="type-desc">Kontrol kualitas tanpa data pasien</div>
+                                <div class="type-title">🔧 Control</div>
+                                <div class="type-desc">Kontrol kualitas sebagai ambang batas pembanding sampel</div>
                             </div>
                         </div>
-                        <div class="type-card" onclick="selectType('alat')">
+                        <div class="type-card type-alat" onclick="selectType('alat')">
                             <input type="radio" name="tipeOutput" value="alat" class="type-radio" id="typeAlat">
                             <div class="type-info">
-                                <div class="type-title">Alat</div>
-                                <div class="type-desc">Pengeluaran alat laboratorium</div>
+                                <div class="type-title">
+                                    ⚙️ Alat 
+                                    <span class="type-badge">KALIBRASI • 1x/TAHUN</span>
+                                </div>
+                                <div class="type-desc">Pengeluaran khusus untuk kalibrasi alat laboratorium tahunan</div>
                             </div>
                         </div>
                     </div>
@@ -1135,7 +1167,7 @@
                 <button type="button" class="form-button" onclick="goToStep1()">Lanjutkan</button>
             </div>
 
-            <!-- Step 1: NIK & Data Pasien (Only for Sampel) -->
+            <!-- Step 1: Jumlah Sampel & Tes (Only for Sampel) -->
             <div id="step1Section" style="display: none;">
                 <!-- Step Indicator -->
                 <div class="step-indicator">
@@ -1146,12 +1178,12 @@
                     </div>
                     <div class="step-item active">
                         <div class="step-number">2</div>
-                        <div class="step-label">Data Pasien</div>
+                        <div class="step-label">Jumlah</div>
                         <div class="step-line"></div>
                     </div>
                     <div class="step-item">
                         <div class="step-number">3</div>
-                        <div class="step-label">Pemeriksaan</div>
+                        <div class="step-label">Parameter & Metode</div>
                         <div class="step-line"></div>
                     </div>
                     <div class="step-item">
@@ -1161,87 +1193,35 @@
                 </div>
 
                 <form id="step1Form">
-                    <div class="form-group">
-                        <label class="form-label">NIK <span class="required">*</span></label>
-                        <input type="text" id="nikInput" class="form-input" placeholder="Masukkan NIK (16 digit)" maxlength="16" pattern="[0-9]{16}" required>
-                        <div id="nikError" style="color: #f44336; font-size: 13px; margin-top: 5px; display: none;">
-                            NIK tidak valid atau tidak ditemukan dalam database wilayah
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Jumlah Sampel <span class="required">*</span></label>
+                            <input type="number" id="jumlahSampelInput" class="form-input" placeholder="0" min="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Jumlah Tes <span class="required">*</span></label>
+                            <input type="number" id="jumlahTesInput" class="form-input" placeholder="0" min="1" required>
                         </div>
                     </div>
 
-                    <!-- Auto-filled Patient Info -->
-                    <div id="patientInfoBox" style="display: none;">
-                        <div class="patient-info-box">
-                            <div class="info-row">
-                                <span class="info-label">Jenis Kelamin</span>
-                                <span class="info-value" id="patientGender">-</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Tanggal Lahir</span>
-                                <span class="info-value" id="patientBirthDate">-</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Usia</span>
-                                <span class="info-value" id="patientAge">-</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Provinsi</span>
-                                <span class="info-value" id="patientProvince">-</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Kab/Kota</span>
-                                <span class="info-value" id="patientCity">-</span>
-                            </div>
+                    <div class="info-box">
+                        <div class="info-box-title">ℹ️ Informasi</div>
+                        <div class="info-box-text">
+                            Masukkan jumlah total sampel dan jumlah total tes yang akan dilakukan. Material akan otomatis dihitung berdasarkan jumlah tes.
                         </div>
-
-                        <!-- Nama field -->
-                        <div class="form-group">
-                            <label class="form-label">Nama Lengkap <span class="required">*</span></label>
-                            <input type="text" class="form-input" id="namaInput" placeholder="Masukkan nama lengkap pasien" required>
-                        </div>
-
-                        <!-- Additional form fields -->
-                        <div class="form-group">
-                            <label class="form-label">Kecamatan <span class="required">*</span></label>
-                            <select class="form-select" id="kecamatanSelect" required>
-                                <option value="">Pilih Kecamatan</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Alamat Lengkap <span class="required">*</span></label>
-                            <textarea class="form-textarea" id="alamatInput" placeholder="Nama jalan, RT/RW, kelurahan/desa" required></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">No. Telepon <span class="required">*</span></label>
-                            <input type="tel" class="form-input" id="teleponInput" placeholder="08xxxxxxxxxx" pattern="[0-9]{10,13}" required>
-                        </div>
-
-                        <button type="button" class="form-button" onclick="goToStep2()">Lanjutkan</button>
                     </div>
+
+                    <button type="button" class="form-button" onclick="goToStep2()">Lanjutkan</button>
                 </form>
             </div>
 
-            <!-- Step 2: Lab Examination Selection -->
+            <!-- Step 2: Parameter & Metode Selection -->
             <div id="step2Section" style="display: none;">
                 <!-- Step Indicator (will be updated dynamically) -->
                 <div class="step-indicator" id="step2Indicator"></div>
 
                 <form id="step2Form">
-                    <div class="form-group">
-                        <label class="form-label">Pemeriksaan <span class="required">*</span></label>
-                        <select class="form-select" id="pemeriksaanSelect" required onchange="updateParameterOptions()">
-                            <option value="">Pilih jenis pemeriksaan</option>
-                            <option value="Hematologi">Hematologi</option>
-                            <option value="Kimia Darah">Kimia Darah</option>
-                            <option value="Urinalisis">Urinalisis</option>
-                            <option value="Mikrobiologi">Mikrobiologi</option>
-                            <option value="Serologi">Serologi</option>
-                            <option value="Imunologi">Imunologi</option>
-                        </select>
-                    </div>
-
                     <div class="form-group">
                         <label class="form-label">Parameter <span class="required">*</span></label>
                         <div class="multi-select-wrapper">
@@ -1258,16 +1238,20 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Sampel <span class="required">*</span></label>
-                        <select class="form-select" id="sampelSelect" required>
-                            <option value="">Pilih jenis sampel</option>
-                            <option value="Darah Kapiler">Darah Kapiler</option>
-                            <option value="Darah Vena">Darah Vena</option>
-                            <option value="Urine">Urine</option>
-                            <option value="Feses">Feses</option>
-                            <option value="Dahak">Dahak</option>
-                            <option value="Swab">Swab</option>
-                            <option value="Cairan Tubuh">Cairan Tubuh</option>
+                        <label class="form-label">Metode <span class="required">*</span></label>
+                        <select class="form-select" id="metodeSelect" required>
+                            <option value="">Pilih metode pemeriksaan</option>
+                            <option value="Lateral Flow">Lateral Flow</option>
+                            <option value="Flow Cytometry">Flow Cytometry</option>
+                            <option value="Enzimatik">Enzimatik</option>
+                            <option value="Pembuatan sediaan">Pembuatan sediaan</option>
+                            <option value="Mikroskopis">Mikroskopis</option>
+                            <option value="Reflactance photometri">Reflactance photometri</option>
+                            <option value="Aglutinasi">Aglutinasi</option>
+                            <option value="Flokulasi">Flokulasi</option>
+                            <option value="Organoleptik">Organoleptik</option>
+                            <option value="Molekuler">Molekuler</option>
+                            <option value="Konvensional (kimia)">Konvensional (kimia)</option>
                         </select>
                     </div>
 
@@ -1299,7 +1283,7 @@
                 <div class="search-filter-section">
                     <div class="search-box">
                         <span class="search-icon">🔍</span>
-                        <input type="text" class="search-input" id="searchInput" placeholder="Cari NIK atau Nama pasien..." onkeyup="filterHistory()">
+                        <input type="text" class="search-input" id="searchInput" placeholder="Cari..." onkeyup="filterHistory()">
                     </div>
                     <div class="filter-row">
                         <select class="filter-select" id="filterType" onchange="filterHistory()">
@@ -1352,8 +1336,8 @@
                     <label class="input-label">Kategori <span class="required">*</span></label>
                     <select class="modal-input" id="newMaterialCategory" onchange="updateMaterialOptions()">
                         <option value="">Pilih Kategori</option>
-                        <option value="BMHP">BMHP</option>
                         <option value="Reagen">Reagen</option>
+                        <option value="Alat Habis Pakai">Alat Habis Pakai</option>
                     </select>
                 </div>
                 <div class="input-group">
@@ -1367,8 +1351,8 @@
                     <input type="text" class="modal-input" id="newMaterialUnit" placeholder="Otomatis terisi" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
                 </div>
                 <div class="input-group">
-                    <label class="input-label">Jumlah <span class="required">*</span></label>
-                    <input type="number" class="modal-input" id="newMaterialQty" placeholder="0" min="0" step="0.01">
+                    <label class="input-label">Test/Package <span class="required">*</span></label>
+                    <input type="text" class="modal-input" id="newMaterialTestPkg" placeholder="Otomatis terisi" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
                 </div>
             </div>
             <div class="modal-footer">
@@ -1395,133 +1379,74 @@
     </div>
 
     <script>
-        // Master Material Database (dari Admin)
+        // Master Material Database dengan inventory simulation
         const masterMaterialDatabase = {
-            'BMHP': [
-                { nama: 'Alcohol swab 70%', satuan: 'pcs' },
-                { nama: 'Disposable lancet 28G', satuan: 'pcs' },
-                { nama: 'Disposable lancet 21G', satuan: 'pcs' },
-                { nama: 'Kapas steril', satuan: 'pcs' },
-                { nama: 'Kapas alkohol', satuan: 'pcs' },
-                { nama: 'Kasa steril', satuan: 'pcs' },
-                { nama: 'Object glass', satuan: 'pcs' },
-                { nama: 'Cover glass', satuan: 'pcs' },
-                { nama: 'Spuit 1cc', satuan: 'pcs' },
-                { nama: 'Spuit 3cc', satuan: 'pcs' },
-                { nama: 'Spuit 5cc', satuan: 'pcs' },
-                { nama: 'Spuit 10cc', satuan: 'pcs' },
-                { nama: 'Vacutainer EDTA 3ml', satuan: 'pcs' },
-                { nama: 'Vacutainer clot activator 3ml', satuan: 'pcs' },
-                { nama: 'Vacutainer heparin 3ml', satuan: 'pcs' },
-                { nama: 'Pot urine steril 50ml', satuan: 'pcs' },
-                { nama: 'Pot dahak steril 50ml', satuan: 'pcs' },
-                { nama: 'Pot feses steril 50ml', satuan: 'pcs' },
-                { nama: 'Tabung centrifuge 10ml', satuan: 'pcs' },
-                { nama: 'Tabung centrifuge 15ml', satuan: 'pcs' },
-                { nama: 'Pipet tetes', satuan: 'pcs' },
-                { nama: 'Pipet mikro', satuan: 'pcs' },
-                { nama: 'Tips pipet kuning', satuan: 'pcs' },
-                { nama: 'Tips pipet biru', satuan: 'pcs' },
-                { nama: 'Cawan petri steril', satuan: 'pcs' },
-                { nama: 'Swab steril', satuan: 'pcs' },
-                { nama: 'Media transport Stuart', satuan: 'pcs' },
-                { nama: 'Media transport Amies', satuan: 'pcs' },
-                { nama: 'Ose bulat steril', satuan: 'pcs' },
-                { nama: 'Ose lurus steril', satuan: 'pcs' },
-                { nama: 'Ose kalibrasi 0.001ml', satuan: 'pcs' },
-                { nama: 'Plester hypoallergenic', satuan: 'pcs' },
-                { nama: 'Plester kertas', satuan: 'pcs' },
-                { nama: 'Tourniquet', satuan: 'pcs' },
-                { nama: 'Sarung tangan pemeriksaan M', satuan: 'pasang' },
-                { nama: 'Sarung tangan pemeriksaan L', satuan: 'pasang' },
-                { nama: 'Sarung tangan steril no. 6.5', satuan: 'pasang' },
-                { nama: 'Sarung tangan steril no. 7', satuan: 'pasang' },
-                { nama: 'Sarung tangan steril no. 7.5', satuan: 'pasang' },
-                { nama: 'Masker 3 ply', satuan: 'pcs' },
-                { nama: 'Masker N95', satuan: 'pcs' },
-                { nama: 'Label spesimen', satuan: 'pcs' },
-                { nama: 'Botol kultur darah aerob', satuan: 'pcs' },
-                { nama: 'Botol kultur darah anaerob', satuan: 'pcs' },
-                { nama: 'Kuvet fotometer', satuan: 'pcs' },
-                { nama: 'Tabung reaksi', satuan: 'pcs' },
-                { nama: 'Rak tabung', satuan: 'pcs' },
-                { nama: 'Beaker glass 50ml', satuan: 'pcs' },
-                { nama: 'Beaker glass 100ml', satuan: 'pcs' },
-                { nama: 'Beaker glass 250ml', satuan: 'pcs' }
-            ],
             'Reagen': [
-                { nama: 'Larutan Giemsa', satuan: 'ml' },
-                { nama: 'Methanol', satuan: 'ml' },
-                { nama: 'Buffer pH 7.2', satuan: 'ml' },
-                { nama: 'Aquadest steril', satuan: 'ml' },
-                { nama: 'NaCl 0.9%', satuan: 'ml' },
-                { nama: 'Hematology Control', satuan: 'ml' },
-                { nama: 'Hematology Lyse', satuan: 'ml' },
-                { nama: 'Hematology Clean', satuan: 'ml' },
-                { nama: 'Hematology Diluent', satuan: 'ml' },
-                { nama: 'Reagen glukosa GOD-PAP', satuan: 'ml' },
-                { nama: 'Reagen kolesterol CHOD-PAP', satuan: 'ml' },
-                { nama: 'Reagen trigliserida GPO-PAP', satuan: 'ml' },
-                { nama: 'Reagen HDL cholesterol', satuan: 'ml' },
-                { nama: 'Reagen LDL cholesterol', satuan: 'ml' },
-                { nama: 'Reagen asam urat', satuan: 'ml' },
-                { nama: 'Reagen ureum', satuan: 'ml' },
-                { nama: 'Reagen kreatinin', satuan: 'ml' },
-                { nama: 'Reagen SGOT/AST', satuan: 'ml' },
-                { nama: 'Reagen SGPT/ALT', satuan: 'ml' },
-                { nama: 'Reagen bilirubin total', satuan: 'ml' },
-                { nama: 'Reagen bilirubin direk', satuan: 'ml' },
-                { nama: 'Reagen protein total', satuan: 'ml' },
-                { nama: 'Reagen albumin', satuan: 'ml' },
-                { nama: 'Strip glukosa', satuan: 'pcs' },
-                { nama: 'Strip asam urat', satuan: 'pcs' },
-                { nama: 'Strip kolesterol', satuan: 'pcs' },
-                { nama: 'Urine strip 10 parameter', satuan: 'pcs' },
-                { nama: 'Larutan SSA 20%', satuan: 'ml' },
-                { nama: 'Asam asetat 3%', satuan: 'ml' },
-                { nama: 'Asam sulfosalisilat', satuan: 'ml' },
-                { nama: 'Blood agar plate', satuan: 'pcs' },
-                { nama: 'Mac Conkey agar', satuan: 'pcs' },
-                { nama: 'CLED agar', satuan: 'pcs' },
-                { nama: 'Chocolate agar', satuan: 'pcs' },
-                { nama: 'Lowenstein-Jensen medium', satuan: 'pcs' },
-                { nama: 'Mueller Hinton agar', satuan: 'pcs' },
-                { nama: 'Crystal violet (pewarna gram)', satuan: 'ml' },
-                { nama: 'Lugol (pewarna gram)', satuan: 'ml' },
-                { nama: 'Alkohol 95% (pewarna gram)', satuan: 'ml' },
-                { nama: 'Safranin (pewarna gram)', satuan: 'ml' },
-                { nama: 'Ziehl-Neelsen carbol fuchsin', satuan: 'ml' },
-                { nama: 'Asam alkohol 3%', satuan: 'ml' },
-                { nama: 'Methylen blue', satuan: 'ml' },
-                { nama: 'Disk antibiotik Ampicillin', satuan: 'pcs' },
-                { nama: 'Disk antibiotik Amoxicillin', satuan: 'pcs' },
-                { nama: 'Disk antibiotik Ciprofloxacin', satuan: 'pcs' },
-                { nama: 'Disk antibiotik Ceftriaxone', satuan: 'pcs' },
-                { nama: 'Disk antibiotik Gentamicin', satuan: 'pcs' },
-                { nama: 'Disk antibiotik (set lengkap)', satuan: 'set' },
-                { nama: 'Rapid test HIV', satuan: 'pcs' },
-                { nama: 'Rapid test HBsAg', satuan: 'pcs' },
-                { nama: 'Rapid test Anti HBs', satuan: 'pcs' },
-                { nama: 'Rapid test Anti HCV', satuan: 'pcs' },
-                { nama: 'Rapid test Dengue NS1', satuan: 'pcs' },
-                { nama: 'Rapid test Dengue IgG/IgM', satuan: 'pcs' },
-                { nama: 'Rapid test Malaria', satuan: 'pcs' },
-                { nama: 'Rapid test Typhoid', satuan: 'pcs' },
-                { nama: 'Rapid test Syphilis', satuan: 'pcs' },
-                { nama: 'VDRL antigen', satuan: 'test' },
-                { nama: 'TPHA antigen', satuan: 'test' },
-                { nama: 'Widal antigen O', satuan: 'test' },
-                { nama: 'Widal antigen H', satuan: 'test' },
-                { nama: 'IgE test kit', satuan: 'test' },
-                { nama: 'ANA test kit', satuan: 'test' },
-                { nama: 'RF test kit', satuan: 'test' },
-                { nama: 'CRP test kit', satuan: 'test' },
-                { nama: 'Complement C3/C4 kit', satuan: 'test' },
-                { nama: 'Buffer/diluent universal', satuan: 'ml' },
-                { nama: 'Media kultur otomatis', satuan: 'ml' },
-                { nama: 'H2O2 (Hidrogen Peroksida) 3%', satuan: 'ml' },
-                { nama: 'Alkohol 70%', satuan: 'ml' },
-                { nama: 'Formalin 10%', satuan: 'ml' }
+                // Hematologi
+                { nama: 'Onemed, Prufen', satuan: 'pcs', testPerPackage: 25, consumptionPerTest: 1, currentStock: 150 },
+                { nama: 'Onetech Diluent', satuan: 'ml', quantityPerPackage: 10000, testPerPackage: 200, consumptionPerTest: 50, currentStock: 1500 },
+                { nama: 'Onetech Lyse', satuan: 'ml', quantityPerPackage: 500, testPerPackage: 200, consumptionPerTest: 2.5, currentStock: 380 },
+                { nama: 'Onetech Detergent', satuan: 'ml', quantityPerPackage: 5000, testPerPackage: 200, consumptionPerTest: 25, currentStock: 450 },
+                
+                // Kimia Klinik
+                { nama: 'Codefree (Strip Glukosa)', satuan: 'pcs', quantityPerPackage: 50, testPerPackage: 50, consumptionPerTest: 1, currentStock: 85 },
+                { nama: 'Proline GOD PAP', satuan: 'ml', quantityPerPackage: 120, testPerPackage: 120, consumptionPerTest: 0.5, currentStock: 220 },
+                { nama: 'Proline Glucose Standard FS', satuan: 'ml', quantityPerPackage: 6, testPerPackage: 60, consumptionPerTest: 0.02, currentStock: 115 },
+                { nama: 'Proline ASAT (GOT) FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1, currentStock: 180 },
+                { nama: 'Proline ASAT (GOT) FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25, currentStock: 180 },
+                { nama: 'Proline ALAT (GPT) FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1, currentStock: 175 },
+                { nama: 'Proline ALAT (GPT) FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25, currentStock: 175 },
+                { nama: 'Accugence (Strip Asam Urat)', satuan: 'pcs', testPerPackage: 25, consumptionPerTest: 1, currentStock: 45 },
+                { nama: 'Proline Uric Acid Standard FS', satuan: 'ml', quantityPerPackage: 6, testPerPackage: 60, consumptionPerTest: 0.02, currentStock: 110 },
+                { nama: 'Proline Uric Acid FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1, currentStock: 165 },
+                { nama: 'Proline Uric Acid FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25, currentStock: 165 },
+                { nama: 'Proline Urea FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1, currentStock: 155 },
+                { nama: 'Proline Urea FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25, currentStock: 155 },
+                { nama: 'Labiosis Creatinine R1', satuan: 'ml', quantityPerPackage: 50, testPerPackage: 100, consumptionPerTest: 0.5, currentStock: 145 },
+                { nama: 'Labiosis Creatinine R2', satuan: 'ml', quantityPerPackage: 50, testPerPackage: 100, consumptionPerTest: 0.5, currentStock: 145 },
+                { nama: 'Mission (Strip Kolesterol)', satuan: 'pcs', testPerPackage: 25, consumptionPerTest: 1, currentStock: 52 },
+                { nama: 'Proline Cholesterol FS', satuan: 'ml', quantityPerPackage: 150, testPerPackage: 150, consumptionPerTest: 1, currentStock: 280 },
+                { nama: 'Proline Cholesterol Standard FS', satuan: 'ml', quantityPerPackage: 6, testPerPackage: 60, consumptionPerTest: 0.02, currentStock: 105 },
+                { nama: 'Proline Triglyseride FS 10\'', satuan: 'ml', quantityPerPackage: 120, testPerPackage: 120, consumptionPerTest: 1, currentStock: 210 },
+                { nama: 'Proline HDL-c direct FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1, currentStock: 185 },
+                { nama: 'Proline HDL-c direct FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25, currentStock: 185 },
+                
+                // Urinalisis
+                { nama: 'FOKUS Urine Test Strip URS-10', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 195 },
+                
+                // Mikrobiologi
+                { nama: 'Indec ZN (Ziehl Neelsen)', satuan: 'ml', quantityPerPackage: 500, testPerPackage: 20, consumptionPerTest: 30, currentStock: 340 },
+                { nama: 'Methylen Blue', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 20, consumptionPerTest: 6, currentStock: 285 },
+                { nama: 'Onecare Reagen Widal Salmonella typhi O', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15, currentStock: 92 },
+                { nama: 'Onecare Reagen Widal Salmonella typhi OH', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15, currentStock: 92 },
+                { nama: 'Onecare Reagen Widal Salmonella typhi A', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15, currentStock: 92 },
+                { nama: 'Onecare Reagen Widal Salmonella typhi B', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15, currentStock: 92 },
+                { nama: 'Indec HIV Sifilis Combo', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1, currentStock: 48 },
+                { nama: 'Focus RPR', satuan: 'kit', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 0.05, currentStock: 175 },
+                { nama: 'Fastclear (HBsAg)', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1, currentStock: 55 },
+                { nama: 'Deteksi Anti HCV', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1, currentStock: 43 },
+                { nama: 'Virocheck HIV', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1, currentStock: 51 },
+                { nama: 'Onecare Reagen Anti A', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15, currentStock: 128 },
+                { nama: 'Onecare Reagen Anti B', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15, currentStock: 128 },
+                { nama: 'Onecare Reagen Anti O', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15, currentStock: 128 },
+                { nama: 'Onecare Reagen Anti D', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15, currentStock: 128 },
+                { nama: 'Onemed (Tes Kehamilan)', satuan: 'pcs', quantityPerPackage: 50, testPerPackage: 50, consumptionPerTest: 1, currentStock: 98 },
+                
+                // Feses
+                { nama: 'Emtech Fecal Occult Blood', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1, currentStock: 62 }
+            ],
+            'Alat Habis Pakai': [
+                { nama: 'Pot urin steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 245 },
+                { nama: 'Urine tube', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 238 },
+                { nama: 'Object glass', satuan: 'pcs', testPerPackage: 72, consumptionPerTest: 1, currentStock: 168 },
+                { nama: 'Deck glass (Cover glass)', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 225 },
+                { nama: 'Pot tinja steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 188 },
+                { nama: 'Tabung reaksi', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 275 },
+                { nama: 'Lancet steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 315 },
+                { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2, currentStock: 425 },
+                { nama: 'Vacutainer EDTA', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 198 },
+                { nama: 'Spuit 3cc steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 265 },
+                { nama: 'Pipet pasteur', satuan: 'pcs', testPerPackage: 500, consumptionPerTest: 1, currentStock: 1250 }
             ]
         };
 
@@ -1549,299 +1474,285 @@
             }
         };
 
-        // Parameter database berdasarkan jenis pemeriksaan
+        // Parameter database dengan kategori (dari spreadsheet)
         const parameterDatabase = {
             'Hematologi': [
-                'Hemoglobin (Hb)',
-                'Hematokrit (Ht)',
-                'Eritrosit',
-                'Leukosit',
-                'Trombosit',
-                'Hitung Jenis Leukosit',
-                'LED (Laju Endap Darah)',
-                'Retikulosit',
-                'Masa Perdarahan',
-                'Masa Pembekuan'
+                'Hemoglobin, penetapan kadar',
+                'Hematokrit, penetapan nilai',
+                'Eritrosit, hitung jumlah',
+                'Indeks Eritrosit (MCV, MCH, CHC), penetapan nilai',
+                'Trombosit, hitung jumlah',
+                'Leukosit, hitung jumlah',
+                'Laju Endap Darah, pengukuran',
+                'Pembuatan Apus Darah Tepi untuk rujukan'
             ],
-            'Kimia Darah': [
-                'Glukosa Puasa',
-                'Glukosa Sewaktu',
-                'Glukosa 2 Jam PP',
-                'HbA1c',
-                'Kolesterol Total',
-                'Kolesterol HDL',
+            'Kimia Klinik': [
+                'Glukosa, penetapan kadar',
+                'SGOT, penetapan kadar',
+                'SGPT, penetapan kadar',
+                'Asam urat, penetapan kadar',
+                'Ureum/ BUN, penetapan kadar',
+                'Kreatinin, penetapan kadar',
+                'Kolesterol total, penetapan kadar',
+                'Trigliserida, penetapan kadar',
+                'Kolesterol HDL, penetapan kadar',
                 'Kolesterol LDL',
-                'Trigliserida',
-                'Asam Urat',
-                'Ureum',
-                'Kreatinin',
-                'SGOT (AST)',
-                'SGPT (ALT)',
-                'Bilirubin Total',
-                'Bilirubin Direk'
+                'HbA1c'
             ],
             'Urinalisis': [
-                'Warna',
-                'Kejernihan',
-                'pH',
-                'Berat Jenis',
-                'Protein',
-                'Glukosa',
-                'Keton',
-                'Bilirubin',
-                'Urobilinogen',
-                'Darah Samar',
-                'Nitrit',
-                'Leukosit Esterase',
-                'Sedimen Urine'
+                'Analisis Urine: Warna, Bau, Kejernihan, Volume',
+                'pH, kuantitatif',
+                'Berat Jenis, kuantitatif',
+                'Protein, semi kuantitatif',
+                'Glukosa, semi kuantitatif',
+                'Bilirubin, semi kuantitatif',
+                'Urobilinogen, kuantitatif',
+                'Keton, semi kuantitatif',
+                'Nitrit, semi kuantitatif',
+                'Darah samar, semi kuantitatif',
+                'Leukosit, kuantitatif',
+                'Eritrosit, kuantitatif',
+                'Epitel, kuantitatif',
+                'Kristal, kualitatif',
+                'Silinder, semikuantitatif',
+                'Bakteri, penetapan semikuantitatif',
+                'Trichomonas sp., kualitatif',
+                'Jamur, kualitatif',
+                'Sperma, kualitatif'
             ],
-            'Mikrobiologi': [
-                'Kultur Darah',
-                'Kultur Urine',
-                'Kultur Feses',
-                'Kultur Sputum',
-                'Kultur Swab',
-                'Pewarnaan Gram',
-                'Tes Kepekaan Antibiotik',
-                'BTA (Basil Tahan Asam)',
-                'Pewarnaan Ziehl-Neelsen'
+            'Mikrobiologi Klinik': [
+                'BTA Mycobacterium Tuberculosis (semi kuantitatif)',
+                'BTA untuk Mycobacterium Leprae (semi kuantitatif)',
+                'Diplococcus gram negatif intra dan extra seluler, kualitatif',
+                'Trichomoniasis, kualitatif',
+                'Candidiasis vaginalis, kualitatif',
+                'Bacterial vaginosis, kualitatif',
+                'Jamur permukaan, kualitatif',
+                'Malaria, kualitatif',
+                'Malaria, kuantitatif',
+                'Telur Cacing',
+                'Mikrofilaria, kualitatif'
             ],
-            'Serologi': [
-                'HIV',
-                'HBsAg',
-                'Anti HBs',
-                'Anti HCV',
-                'VDRL/RPR',
-                'TPHA',
-                'Widal',
-                'Dengue NS1',
-                'Dengue IgG/IgM',
-                'Toxoplasma IgG/IgM',
-                'Rubella IgG/IgM'
+            'Serologi & Imunologi': [
+                'Anti-Salmonella typhi IgG IgM, kualitatif',
+                'Anti-Salmonella typhi, kualitatif',
+                'Treponema Pallidum Hemagglutination Assay (TPHA) kualitatif',
+                'VDRL/RPR, semikuantitatif',
+                'HBsAg, kualitatif',
+                'Anti HCV, kualitatif',
+                'Anti HIV, kualitatif',
+                'Anti HIV dan Sifilis, kualitatif',
+                'Antibodi Dengue IgG/IgM, kualitatif',
+                'Antigen Dengue (NS1) kualitatif',
+                'Antibodi Leptospira IgG/IgM',
+                'Antigen SARS-CoV-2, kualitatif',
+                'Antigen Rotavirus',
+                'Golongan darah ABO dan Rhesus, kualitatif',
+                'Tes Kehamilan, kualitatif'
             ],
-            'Imunologi': [
-                'IgE Total',
-                'IgG',
-                'IgM',
-                'IgA',
-                'Komplemen C3',
-                'Komplemen C4',
-                'ANA Test',
-                'RF (Rheumatoid Factor)',
-                'CRP (C-Reactive Protein)'
+            'Feses (Tinja)': [
+                'Konsistensi, Warna, Bau, Lendir, Darah',
+                'Darah samar',
+                'Telur cacing, kualitatif',
+                'Amuba, kualitatif',
+                'Eritrosit, kuantitatif',
+                'Leukosit, kuantitatif',
+                'Sisa makanan, kualitatif'
             ]
         };
 
-        // Material database berdasarkan kombinasi pemeriksaan dan sampel
+        // Material database berdasarkan kombinasi kategori parameter dan metode
         const materialDatabase = {
-            'Hematologi': {
-                'Darah Kapiler': {
-                    'BMHP': [
-                        { nama: 'Alcohol swab 70%', satuan: 'pcs', default: 2 },
-                        { nama: 'Disposable lancet 28G', satuan: 'pcs', default: 1 },
-                        { nama: 'Kapas steril', satuan: 'pcs', default: 2 },
-                        { nama: 'Object glass', satuan: 'pcs', default: 2 },
-                        { nama: 'Cover glass', satuan: 'pcs', default: 2 },
-                        { nama: 'Sarung tangan pemeriksaan', satuan: 'pasang', default: 1 }
-                    ],
-                    'Reagen': [
-                        { nama: 'Larutan Giemsa', satuan: 'ml', default: 2 },
-                        { nama: 'Methanol', satuan: 'ml', default: 3 },
-                        { nama: 'Buffer pH 7.2', satuan: 'ml', default: 5 }
-                    ]
-                },
-                'Darah Vena': {
-                    'BMHP': [
-                        { nama: 'Alcohol swab 70%', satuan: 'pcs', default: 2 },
-                        { nama: 'Spuit 3cc/5cc', satuan: 'pcs', default: 1 },
-                        { nama: 'Vacutainer EDTA 3ml', satuan: 'pcs', default: 1 },
-                        { nama: 'Plester hypoallergenic', satuan: 'pcs', default: 1 },
-                        { nama: 'Kapas steril', satuan: 'pcs', default: 2 },
-                        { nama: 'Tourniquet', satuan: 'pcs', default: 1 },
-                        { nama: 'Sarung tangan pemeriksaan', satuan: 'pasang', default: 1 }
-                    ],
-                    'Reagen': [
-                        { nama: 'Hematology Control', satuan: 'ml', default: 0.05 },
-                        { nama: 'Hematology Lyse', satuan: 'ml', default: 0.5 },
-                        { nama: 'Hematology Clean', satuan: 'ml', default: 0.05 },
-                        { nama: 'Hematology Diluent', satuan: 'ml', default: 36 }
-                    ]
-                }
+            'Hematologi-Lateral Flow': {
+                'Reagen': [
+                    { nama: 'Onemed, Prufen', satuan: 'pcs', testPerPackage: 25, consumptionPerTest: 1 }
+                ],
+                'Alat Habis Pakai': [
+                    { nama: 'Lancet steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2 }
+                ]
             },
-            'Kimia Darah': {
-                'Darah Kapiler': {
-                    'BMHP': [
-                        { nama: 'Alcohol swab 70%', satuan: 'pcs', default: 2 },
-                        { nama: 'Disposable lancet 28G', satuan: 'pcs', default: 1 },
-                        { nama: 'Kapas steril', satuan: 'pcs', default: 2 },
-                        { nama: 'Sarung tangan pemeriksaan', satuan: 'pasang', default: 1 }
-                    ],
-                    'Reagen': [
-                        { nama: 'Strip glukosa', satuan: 'pcs', default: 1 },
-                        { nama: 'Strip asam urat', satuan: 'pcs', default: 1 },
-                        { nama: 'Strip kolesterol', satuan: 'pcs', default: 1 }
-                    ]
-                },
-                'Darah Vena': {
-                    'BMHP': [
-                        { nama: 'Alcohol swab 70%', satuan: 'pcs', default: 2 },
-                        { nama: 'Spuit 3cc/5cc', satuan: 'pcs', default: 1 },
-                        { nama: 'Vacutainer clot activator 3ml', satuan: 'pcs', default: 1 },
-                        { nama: 'Plester hypoallergenic', satuan: 'pcs', default: 1 },
-                        { nama: 'Kapas steril', satuan: 'pcs', default: 2 },
-                        { nama: 'Tourniquet', satuan: 'pcs', default: 1 },
-                        { nama: 'Sarung tangan pemeriksaan', satuan: 'pasang', default: 1 }
-                    ],
-                    'Reagen': [
-                        { nama: 'Reagen glukosa GOD-PAP', satuan: 'ml', default: 1 },
-                        { nama: 'Reagen kolesterol CHOD-PAP', satuan: 'ml', default: 1 },
-                        { nama: 'Reagen trigliserida GPO-PAP', satuan: 'ml', default: 1 },
-                        { nama: 'Reagen asam urat', satuan: 'ml', default: 1 },
-                        { nama: 'Reagen ureum', satuan: 'ml', default: 1 },
-                        { nama: 'Reagen kreatinin', satuan: 'ml', default: 1 },
-                        { nama: 'Reagen SGOT/SGPT', satuan: 'ml', default: 1 }
-                    ]
-                }
+            'Hematologi-Flow Cytometry': {
+                'Reagen': [
+                    { nama: 'Onetech Diluent', satuan: 'ml', quantityPerPackage: 10000, testPerPackage: 200, consumptionPerTest: 50 },
+                    { nama: 'Onetech Lyse', satuan: 'ml', quantityPerPackage: 500, testPerPackage: 200, consumptionPerTest: 2.5 },
+                    { nama: 'Onetech Detergent', satuan: 'ml', quantityPerPackage: 5000, testPerPackage: 200, consumptionPerTest: 25 }
+                ],
+                'Alat Habis Pakai': [
+                    { nama: 'Vacutainer EDTA', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Spuit 3cc steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2 }
+                ]
             },
-            'Urinalisis': {
-                'Urine': {
-                    'BMHP': [
-                        { nama: 'Pot urine steril 50ml', satuan: 'pcs', default: 1 },
-                        { nama: 'Label spesimen', satuan: 'pcs', default: 1 },
-                        { nama: 'Tabung centrifuge 10ml', satuan: 'pcs', default: 1 },
-                        { nama: 'Pipet tetes', satuan: 'pcs', default: 1 },
-                        { nama: 'Object glass', satuan: 'pcs', default: 1 },
-                        { nama: 'Cover glass', satuan: 'pcs', default: 1 },
-                        { nama: 'Sarung tangan pemeriksaan', satuan: 'pasang', default: 1 }
-                    ],
-                    'Reagen': [
-                        { nama: 'Urine strip 10 parameter', satuan: 'pcs', default: 1 },
-                        { nama: 'Larutan SSA 20%', satuan: 'ml', default: 2 },
-                        { nama: 'Asam asetat 3%', satuan: 'ml', default: 2 }
-                    ]
-                }
+            'Kimia Klinik-Lateral Flow': {
+                'Reagen': [
+                    { nama: 'Codefree (Strip Glukosa)', satuan: 'pcs', quantityPerPackage: 50, testPerPackage: 50, consumptionPerTest: 1 },
+                    { nama: 'Accugence (Strip Asam Urat)', satuan: 'pcs', testPerPackage: 25, consumptionPerTest: 1 },
+                    { nama: 'Mission (Strip Kolesterol)', satuan: 'pcs', testPerPackage: 25, consumptionPerTest: 1 }
+                ],
+                'Alat Habis Pakai': [
+                    { nama: 'Lancet steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2 }
+                ]
             },
-            'Mikrobiologi': {
-                'Swab': {
-                    'BMHP': [
-                        { nama: 'Swab steril', satuan: 'pcs', default: 1 },
-                        { nama: 'Media transport Stuart/Amies', satuan: 'pcs', default: 1 },
-                        { nama: 'Label spesimen', satuan: 'pcs', default: 1 },
-                        { nama: 'Cawan petri steril', satuan: 'pcs', default: 2 },
-                        { nama: 'Ose bulat steril', satuan: 'pcs', default: 1 },
-                        { nama: 'Object glass', satuan: 'pcs', default: 2 },
-                        { nama: 'Sarung tangan steril', satuan: 'pasang', default: 1 }
-                    ],
-                    'Reagen': [
-                        { nama: 'Blood agar plate', satuan: 'pcs', default: 1 },
-                        { nama: 'Mac Conkey agar', satuan: 'pcs', default: 1 },
-                        { nama: 'Crystal violet (pewarna gram)', satuan: 'ml', default: 0.5 },
-                        { nama: 'Lugol (pewarna gram)', satuan: 'ml', default: 0.5 },
-                        { nama: 'Alkohol 95% (pewarna gram)', satuan: 'ml', default: 0.5 },
-                        { nama: 'Safranin (pewarna gram)', satuan: 'ml', default: 0.5 },
-                        { nama: 'Disk antibiotik (set)', satuan: 'set', default: 1 }
-                    ]
-                },
-                'Dahak': {
-                    'BMHP': [
-                        { nama: 'Pot dahak steril 50ml', satuan: 'pcs', default: 1 },
-                        { nama: 'Label spesimen', satuan: 'pcs', default: 1 },
-                        { nama: 'Object glass', satuan: 'pcs', default: 3 },
-                        { nama: 'Ose steril', satuan: 'pcs', default: 1 },
-                        { nama: 'Sarung tangan pemeriksaan', satuan: 'pasang', default: 1 },
-                        { nama: 'Masker N95', satuan: 'pcs', default: 1 }
-                    ],
-                    'Reagen': [
-                        { nama: 'Ziehl-Neelsen carbol fuchsin', satuan: 'ml', default: 3 },
-                        { nama: 'Asam alkohol 3%', satuan: 'ml', default: 2 },
-                        { nama: 'Methylen blue', satuan: 'ml', default: 1 },
-                        { nama: 'Lowenstein-Jensen medium', satuan: 'pcs', default: 2 }
-                    ]
-                },
-                'Urine': {
-                    'BMHP': [
-                        { nama: 'Pot urine steril 50ml', satuan: 'pcs', default: 1 },
-                        { nama: 'Label spesimen', satuan: 'pcs', default: 1 },
-                        { nama: 'Cawan petri steril', satuan: 'pcs', default: 2 },
-                        { nama: 'Ose kalibrasi 0.001ml', satuan: 'pcs', default: 1 },
-                        { nama: 'Sarung tangan steril', satuan: 'pasang', default: 1 }
-                    ],
-                    'Reagen': [
-                        { nama: 'CLED agar', satuan: 'pcs', default: 1 },
-                        { nama: 'Mac Conkey agar', satuan: 'pcs', default: 1 },
-                        { nama: 'Disk antibiotik (set)', satuan: 'set', default: 1 }
-                    ]
-                },
-                'Darah Vena': {
-                    'BMHP': [
-                        { nama: 'Alcohol swab 70%', satuan: 'pcs', default: 3 },
-                        { nama: 'Spuit 10cc steril', satuan: 'pcs', default: 1 },
-                        { nama: 'Botol kultur darah aerob', satuan: 'pcs', default: 1 },
-                        { nama: 'Botol kultur darah anaerob', satuan: 'pcs', default: 1 },
-                        { nama: 'Plester hypoallergenic', satuan: 'pcs', default: 1 },
-                        { nama: 'Kapas steril', satuan: 'pcs', default: 2 },
-                        { nama: 'Tourniquet', satuan: 'pcs', default: 1 },
-                        { nama: 'Sarung tangan steril', satuan: 'pasang', default: 1 }
-                    ],
-                    'Reagen': [
-                        { nama: 'Media kultur otomatis', satuan: 'ml', default: 40 },
-                        { nama: 'Blood agar plate', satuan: 'pcs', default: 1 },
-                        { nama: 'Chocolate agar', satuan: 'pcs', default: 1 },
-                        { nama: 'Disk antibiotik (set)', satuan: 'set', default: 1 }
-                    ]
-                }
+            'Kimia Klinik-Enzimatik': {
+                'Reagen': [
+                    { nama: 'Proline GOD PAP', satuan: 'ml', quantityPerPackage: 120, testPerPackage: 120, consumptionPerTest: 0.5 },
+                    { nama: 'Proline Glucose Standard FS', satuan: 'ml', quantityPerPackage: 6, testPerPackage: 60, consumptionPerTest: 0.02 },
+                    { nama: 'Proline ASAT (GOT) FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Proline ASAT (GOT) FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25 },
+                    { nama: 'Proline ALAT (GPT) FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Proline ALAT (GPT) FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25 },
+                    { nama: 'Proline Uric Acid Standard FS', satuan: 'ml', quantityPerPackage: 6, testPerPackage: 60, consumptionPerTest: 0.02 },
+                    { nama: 'Proline Uric Acid FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Proline Uric Acid FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25 },
+                    { nama: 'Proline Urea FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Proline Urea FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25 },
+                    { nama: 'Labiosis Creatinine R1', satuan: 'ml', quantityPerPackage: 50, testPerPackage: 100, consumptionPerTest: 0.5 },
+                    { nama: 'Labiosis Creatinine R2', satuan: 'ml', quantityPerPackage: 50, testPerPackage: 100, consumptionPerTest: 0.5 },
+                    { nama: 'Proline Cholesterol FS', satuan: 'ml', quantityPerPackage: 150, testPerPackage: 150, consumptionPerTest: 1 },
+                    { nama: 'Proline Cholesterol Standard FS', satuan: 'ml', quantityPerPackage: 6, testPerPackage: 60, consumptionPerTest: 0.02 },
+                    { nama: 'Proline Triglyseride FS 10\'', satuan: 'ml', quantityPerPackage: 120, testPerPackage: 120, consumptionPerTest: 1 },
+                    { nama: 'Proline HDL-c direct FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Proline HDL-c direct FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25 }
+                ],
+                'Alat Habis Pakai': [
+                    { nama: 'Vacutainer EDTA', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Spuit 3cc steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2 }
+                ]
             },
-            'Serologi': {
-                'Darah Vena': {
-                    'BMHP': [
-                        { nama: 'Alcohol swab 70%', satuan: 'pcs', default: 2 },
-                        { nama: 'Spuit 3cc/5cc', satuan: 'pcs', default: 1 },
-                        { nama: 'Vacutainer clot activator 3ml', satuan: 'pcs', default: 1 },
-                        { nama: 'Plester hypoallergenic', satuan: 'pcs', default: 1 },
-                        { nama: 'Kapas steril', satuan: 'pcs', default: 2 },
-                        { nama: 'Tourniquet', satuan: 'pcs', default: 1 },
-                        { nama: 'Sarung tangan pemeriksaan', satuan: 'pasang', default: 1 }
-                    ],
-                    'Reagen': [
-                        { nama: 'Rapid test HIV', satuan: 'pcs', default: 1 },
-                        { nama: 'Rapid test HBsAg', satuan: 'pcs', default: 1 },
-                        { nama: 'Rapid test Anti HCV', satuan: 'pcs', default: 1 },
-                        { nama: 'Rapid test dengue NS1/IgG/IgM', satuan: 'pcs', default: 1 },
-                        { nama: 'VDRL antigen', satuan: 'test', default: 1 },
-                        { nama: 'Buffer/diluent', satuan: 'ml', default: 2 }
-                    ]
-                }
+            'Urinalisis-Reflactance photometri': {
+                'Reagen': [
+                    { nama: 'FOKUS Urine Test Strip URS-10', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
+                ],
+                'Alat Habis Pakai': [
+                    { nama: 'Pot urin steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Urine tube', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
+                ]
             },
-            'Imunologi': {
-                'Darah Vena': {
-                    'BMHP': [
-                        { nama: 'Alcohol swab 70%', satuan: 'pcs', default: 2 },
-                        { nama: 'Spuit 3cc/5cc', satuan: 'pcs', default: 1 },
-                        { nama: 'Vacutainer clot activator 3ml', satuan: 'pcs', default: 1 },
-                        { nama: 'Plester hypoallergenic', satuan: 'pcs', default: 1 },
-                        { nama: 'Kapas steril', satuan: 'pcs', default: 2 },
-                        { nama: 'Tourniquet', satuan: 'pcs', default: 1 },
-                        { nama: 'Sarung tangan pemeriksaan', satuan: 'pasang', default: 1 }
-                    ],
-                    'Reagen': [
-                        { nama: 'IgE test kit', satuan: 'test', default: 1 },
-                        { nama: 'Complement C3/C4 kit', satuan: 'test', default: 1 },
-                        { nama: 'ANA test kit', satuan: 'test', default: 1 },
-                        { nama: 'Buffer/diluent', satuan: 'ml', default: 2 }
-                    ]
-                }
+            'Urinalisis-Mikroskopis': {
+                'Alat Habis Pakai': [
+                    { nama: 'Pot urin steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Urine tube', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Object glass', satuan: 'pcs', testPerPackage: 72, consumptionPerTest: 1 },
+                    { nama: 'Deck glass (Cover glass)', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
+                ]
+            },
+            'Urinalisis-Organoleptik': {
+                'Alat Habis Pakai': [
+                    { nama: 'Pot urin steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
+                ]
+            },
+            'Mikrobiologi Klinik-Mikroskopis': {
+                'Reagen': [
+                    { nama: 'Indec ZN (Ziehl Neelsen)', satuan: 'ml', quantityPerPackage: 500, testPerPackage: 20, consumptionPerTest: 30 },
+                    { nama: 'Methylen Blue', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 20, consumptionPerTest: 6 }
+                ],
+                'Alat Habis Pakai': [
+                    { nama: 'Object glass', satuan: 'pcs', testPerPackage: 72, consumptionPerTest: 1 },
+                    { nama: 'Deck glass (Cover glass)', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Pipet pasteur', satuan: 'pcs', testPerPackage: 500, consumptionPerTest: 1 }
+                ]
+            },
+            'Serologi & Imunologi-Lateral Flow': {
+                'Reagen': [
+                    { nama: 'Indec HIV Sifilis Combo', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1 },
+                    { nama: 'Fastclear (HBsAg)', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1 },
+                    { nama: 'Deteksi Anti HCV', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1 },
+                    { nama: 'Virocheck HIV', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1 },
+                    { nama: 'Onemed (Tes Kehamilan)', satuan: 'pcs', quantityPerPackage: 50, testPerPackage: 50, consumptionPerTest: 1 }
+                ],
+                'Alat Habis Pakai': [
+                    { nama: 'Vacutainer EDTA', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Spuit 3cc steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2 }
+                ]
+            },
+            'Serologi & Imunologi-Aglutinasi': {
+                'Reagen': [
+                    { nama: 'Onecare Reagen Widal Salmonella typhi O', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15 },
+                    { nama: 'Onecare Reagen Widal Salmonella typhi OH', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15 },
+                    { nama: 'Onecare Reagen Widal Salmonella typhi A', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15 },
+                    { nama: 'Onecare Reagen Widal Salmonella typhi B', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15 },
+                    { nama: 'Onecare Reagen Anti A', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15 },
+                    { nama: 'Onecare Reagen Anti B', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15 },
+                    { nama: 'Onecare Reagen Anti O', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15 },
+                    { nama: 'Onecare Reagen Anti D', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15 }
+                ],
+                'Alat Habis Pakai': [
+                    { nama: 'Object glass', satuan: 'pcs', testPerPackage: 72, consumptionPerTest: 1 },
+                    { nama: 'Lancet steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
+                ]
+            },
+            'Serologi & Imunologi-Flokulasi': {
+                'Reagen': [
+                    { nama: 'Focus RPR', satuan: 'kit', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 0.05 }
+                ],
+                'Alat Habis Pakai': [
+                    { nama: 'Vacutainer EDTA', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Spuit 3cc steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2 }
+                ]
+            },
+            'Feses (Tinja)-Organoleptik': {
+                'Alat Habis Pakai': [
+                    { nama: 'Pot tinja steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
+                ]
+            },
+            'Feses (Tinja)-Konvensional (kimia)': {
+                'Reagen': [
+                    { nama: 'Emtech Fecal Occult Blood', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1 }
+                ],
+                'Alat Habis Pakai': [
+                    { nama: 'Pot tinja steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Tabung reaksi', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
+                ]
+            },
+            'Feses (Tinja)-Mikroskopis': {
+                'Alat Habis Pakai': [
+                    { nama: 'Pot tinja steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
+                    { nama: 'Object glass', satuan: 'pcs', testPerPackage: 72, consumptionPerTest: 1 },
+                    { nama: 'Deck glass (Cover glass)', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
+                ]
             }
         };
 
-        let currentNIKData = null;
         let selectedParameters = [];
         let selectedType = null;
-        let customMaterials = { BMHP: [], Reagen: [] };
+        let customMaterials = { Reagen: [], 'Alat Habis Pakai': [] };
         let currentAddCategory = '';
-        let customMaterialCounter = 0;
+        let jumlahSampel = 0;
+        let jumlahTes = 0;
 
         // Storage for pengeluaran data (simulates database)
         let pengeluaranData = [];
+
+        // Initialize parameter dropdown with categories
+        function initializeParameterDropdown() {
+            const dropdown = document.getElementById('parameterDropdown');
+            dropdown.innerHTML = '';
+            
+            Object.keys(parameterDatabase).forEach(category => {
+                // Add category header
+                const categoryHeader = document.createElement('div');
+                categoryHeader.className = 'multi-select-category';
+                categoryHeader.textContent = category;
+                dropdown.appendChild(categoryHeader);
+                
+                // Add parameters under category
+                parameterDatabase[category].forEach((param, index) => {
+                    const option = document.createElement('div');
+                    option.className = 'multi-select-option';
+                    const uniqueId = `param-${category.replace(/[^a-zA-Z0-9]/g, '')}-${index}`;
+                    option.innerHTML = `
+                        <input type="checkbox" class="multi-select-checkbox" value="${param}" data-category="${category}" id="${uniqueId}" onchange="updateParameterDisplay()">
+                        <label for="${uniqueId}" style="flex: 1; cursor: pointer;">${param}</label>
+                    `;
+                    dropdown.appendChild(option);
+                });
+            });
+        }
 
         // Multi-select parameter functions
         function toggleParameterDropdown() {
@@ -1859,39 +1770,16 @@
             }
         });
 
-        // Update parameter options based on pemeriksaan
-        function updateParameterOptions() {
-            const pemeriksaan = document.getElementById('pemeriksaanSelect').value;
-            const dropdown = document.getElementById('parameterDropdown');
-            
-            dropdown.innerHTML = '';
-            
-            if (pemeriksaan && parameterDatabase[pemeriksaan]) {
-                parameterDatabase[pemeriksaan].forEach((param, index) => {
-                    const option = document.createElement('div');
-                    option.className = 'multi-select-option';
-                    option.innerHTML = `
-                        <input type="checkbox" class="multi-select-checkbox" value="${param}" id="param${index}" onchange="updateParameterDisplay()">
-                        <label for="param${index}">${param}</label>
-                    `;
-                    dropdown.appendChild(option);
-                });
-            }
-            
-            // Reset selection
-            selectedParameters = [];
-            document.getElementById('parameterPlaceholder').style.display = 'block';
-            document.getElementById('parameterValues').style.display = 'none';
-            document.getElementById('parameterHidden').value = '';
-        }
-
         function updateParameterDisplay() {
             const checkboxes = document.querySelectorAll('.multi-select-checkbox');
             selectedParameters = [];
             
             checkboxes.forEach(checkbox => {
                 if (checkbox.checked) {
-                    selectedParameters.push(checkbox.value);
+                    selectedParameters.push({
+                        name: checkbox.value,
+                        category: checkbox.getAttribute('data-category')
+                    });
                 }
             });
             
@@ -1902,8 +1790,8 @@
             if (selectedParameters.length > 0) {
                 placeholder.style.display = 'none';
                 values.style.display = 'block';
-                values.textContent = selectedParameters.join(', ');
-                hidden.value = selectedParameters.join('; ');
+                values.textContent = selectedParameters.map(p => p.name).join(', ');
+                hidden.value = selectedParameters.map(p => p.name).join('; ');
             } else {
                 placeholder.style.display = 'block';
                 values.style.display = 'none';
@@ -1925,106 +1813,10 @@
             event.currentTarget.classList.add('selected');
         }
 
-        // Parse NIK berdasarkan aturan Indonesia
-        function parseNIK(nik) {
-            if (nik.length !== 16 || !/^\d+$/.test(nik)) {
-                return null;
-            }
-
-            const provinceCode = nik.substring(0, 2);
-            const cityCode = nik.substring(2, 4);
-            const birthDateCode = nik.substring(6, 12);
-            
-            let day = parseInt(birthDateCode.substring(0, 2));
-            const month = parseInt(birthDateCode.substring(2, 4));
-            const year = parseInt(birthDateCode.substring(4, 6));
-            
-            let gender = 'Laki-laki';
-            if (day > 40) {
-                gender = 'Perempuan';
-                day -= 40;
-            }
-            
-            if (day < 1 || day > 31 || month < 1 || month > 12) {
-                return null;
-            }
-            
-            const fullYear = year <= 24 ? 2000 + year : 1900 + year;
-            const today = new Date();
-            const birthDate = new Date(fullYear, month - 1, day);
-            
-            if (birthDate > today) {
-                return null;
-            }
-            
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const monthDiff = today.getMonth() - birthDate.getMonth();
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-            }
-            
-            const province = wilayahData[provinceCode];
-            if (!province) return null;
-            
-            const city = province.cities[cityCode];
-            if (!city) return null;
-            
-            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-            
-            return {
-                nik: nik,
-                gender: gender,
-                birthDate: `${String(day).padStart(2, '0')} ${monthNames[month - 1]} ${fullYear}`,
-                age: `${age} tahun`,
-                province: province.name,
-                city: city.name,
-                kecamatanList: city.kecamatan
-            };
-        }
-
-        // NIK input listener
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            const nikInput = document.getElementById('nikInput');
-            if (nikInput) {
-                nikInput.addEventListener('input', function() {
-                    const nik = this.value.trim();
-                    const patientInfoBox = document.getElementById('patientInfoBox');
-                    const nikError = document.getElementById('nikError');
-                    
-                    if (nik.length === 16) {
-                        const data = parseNIK(nik);
-                        
-                        if (data) {
-                            currentNIKData = data;
-                            
-                            document.getElementById('patientGender').textContent = data.gender;
-                            document.getElementById('patientBirthDate').textContent = data.birthDate;
-                            document.getElementById('patientAge').textContent = data.age;
-                            document.getElementById('patientProvince').textContent = data.province;
-                            document.getElementById('patientCity').textContent = data.city;
-                            
-                            const kecamatanSelect = document.getElementById('kecamatanSelect');
-                            kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-                            data.kecamatanList.forEach(kec => {
-                                const option = document.createElement('option');
-                                option.value = kec;
-                                option.textContent = kec;
-                                kecamatanSelect.appendChild(option);
-                            });
-                            
-                            patientInfoBox.style.display = 'block';
-                            nikError.style.display = 'none';
-                        } else {
-                            patientInfoBox.style.display = 'none';
-                            nikError.style.display = 'block';
-                            currentNIKData = null;
-                        }
-                    } else {
-                        patientInfoBox.style.display = 'none';
-                        nikError.style.display = 'none';
-                    }
-                });
-            }
+            // Initialize parameter dropdown
+            initializeParameterDropdown();
         });
 
         function goBack() {
@@ -2060,8 +1852,6 @@
         function resetForm() {
             document.getElementById('step1Form').reset();
             document.getElementById('step2Form').reset();
-            document.getElementById('patientInfoBox').style.display = 'none';
-            document.getElementById('nikError').style.display = 'none';
             
             const checkboxes = document.querySelectorAll('.multi-select-checkbox');
             checkboxes.forEach(checkbox => checkbox.checked = false);
@@ -2070,10 +1860,10 @@
             document.getElementById('parameterValues').style.display = 'none';
             document.getElementById('parameterHidden').value = '';
             
-            currentNIKData = null;
             selectedType = null;
-            customMaterials = { BMHP: [], Reagen: [] };
-            customMaterialCounter = 0;
+            customMaterials = { Reagen: [], 'Alat Habis Pakai': [] };
+            jumlahSampel = 0;
+            jumlahTes = 0;
             
             document.querySelectorAll('.type-card').forEach(card => card.classList.remove('selected'));
             document.querySelectorAll('input[name="tipeOutput"]').forEach(radio => radio.checked = false);
@@ -2134,12 +1924,12 @@
                     </div>
                     <div class="step-item completed">
                         <div class="step-number">✓</div>
-                        <div class="step-label">Data Pasien</div>
+                        <div class="step-label">Jumlah</div>
                         <div class="step-line"></div>
                     </div>
                     <div class="step-item active">
                         <div class="step-number">3</div>
-                        <div class="step-label">Pemeriksaan</div>
+                        <div class="step-label">Parameter & Metode</div>
                         <div class="step-line"></div>
                     </div>
                     <div class="step-item">
@@ -2156,7 +1946,7 @@
                     </div>
                     <div class="step-item active">
                         <div class="step-number">2</div>
-                        <div class="step-label">Pemeriksaan</div>
+                        <div class="step-label">Parameter & Metode</div>
                         <div class="step-line"></div>
                     </div>
                     <div class="step-item">
@@ -2178,12 +1968,12 @@
                     </div>
                     <div class="step-item completed">
                         <div class="step-number">✓</div>
-                        <div class="step-label">Data Pasien</div>
+                        <div class="step-label">Jumlah</div>
                         <div class="step-line"></div>
                     </div>
                     <div class="step-item completed">
                         <div class="step-number">✓</div>
-                        <div class="step-label">Pemeriksaan</div>
+                        <div class="step-label">Parameter & Metode</div>
                         <div class="step-line"></div>
                     </div>
                     <div class="step-item active">
@@ -2200,7 +1990,7 @@
                     </div>
                     <div class="step-item completed">
                         <div class="step-number">✓</div>
-                        <div class="step-label">Pemeriksaan</div>
+                        <div class="step-label">Parameter & Metode</div>
                         <div class="step-line"></div>
                     </div>
                     <div class="step-item active">
@@ -2212,40 +2002,21 @@
         }
 
         function goToStep2() {
-            if (!currentNIKData) {
-                alert('Data NIK tidak valid');
+            const sampel = parseInt(document.getElementById('jumlahSampelInput').value);
+            const tes = parseInt(document.getElementById('jumlahTesInput').value);
+            
+            if (!sampel || sampel < 1) {
+                alert('Silakan isi jumlah sampel (minimal 1)');
                 return;
             }
             
-            const nama = document.getElementById('namaInput').value.trim();
-            const kecamatan = document.getElementById('kecamatanSelect').value;
-            const alamat = document.getElementById('alamatInput').value.trim();
-            const telepon = document.getElementById('teleponInput').value.trim();
-            
-            if (!nama) {
-                alert('Silakan isi nama lengkap');
+            if (!tes || tes < 1) {
+                alert('Silakan isi jumlah tes (minimal 1)');
                 return;
             }
-            
-            if (!kecamatan) {
-                alert('Silakan pilih kecamatan');
-                return;
-            }
-            
-            if (!alamat) {
-                alert('Silakan isi alamat lengkap');
-                return;
-            }
-            
-            if (!telepon) {
-                alert('Silakan isi nomor telepon');
-                return;
-            }
-            
-            if (!/^[0-9]{10,13}$/.test(telepon)) {
-                alert('Nomor telepon harus 10-13 digit angka');
-                return;
-            }
+
+            jumlahSampel = sampel;
+            jumlahTes = tes;
             
             document.getElementById('step1Section').style.display = 'none';
             document.getElementById('step2Section').style.display = 'block';
@@ -2276,16 +2047,15 @@
                 return;
             }
 
-            const pemeriksaan = document.getElementById('pemeriksaanSelect').value;
-            const sampel = document.getElementById('sampelSelect').value;
+            const metode = document.getElementById('metodeSelect').value;
 
-            if (!pemeriksaan || !sampel) {
-                alert('Silakan lengkapi semua field');
+            if (!metode) {
+                alert('Silakan pilih metode pemeriksaan');
                 return;
             }
 
-            // Generate material list
-            generateMaterialList(pemeriksaan, sampel);
+            // Generate material list based on parameter categories and metode
+            generateMaterialList(selectedParameters, metode);
 
             document.getElementById('step2Section').style.display = 'none';
             document.getElementById('step3Section').style.display = 'block';
@@ -2293,47 +2063,51 @@
             window.scrollTo(0, 0);
         }
 
-        function generateMaterialList(pemeriksaan, sampel) {
+        function generateMaterialList(parameters, metode) {
             const container = document.getElementById('materialListContainer');
             container.innerHTML = '';
 
-            // Get materials based on pemeriksaan and sampel
-            const pemeriksaanData = materialDatabase[pemeriksaan];
-            if (!pemeriksaanData) {
-                container.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">Data material tidak tersedia untuk pemeriksaan ini.</p>';
-                return;
+            // Get unique categories from selected parameters
+            const categories = [...new Set(parameters.map(p => p.category))];
+            
+            // Combine materials from all categories with the selected metode
+            let combinedMaterials = { Reagen: [], 'Alat Habis Pakai': [] };
+            
+            categories.forEach(category => {
+                const key = `${category}-${metode}`;
+                const materials = materialDatabase[key];
+                
+                if (materials) {
+                    // Add Reagen materials
+                    if (materials.Reagen) {
+                        materials.Reagen.forEach(item => {
+                            if (!combinedMaterials.Reagen.find(m => m.nama === item.nama)) {
+                                combinedMaterials.Reagen.push(item);
+                            }
+                        });
+                    }
+                    
+                    // Add Alat Habis Pakai materials
+                    if (materials['Alat Habis Pakai']) {
+                        materials['Alat Habis Pakai'].forEach(item => {
+                            if (!combinedMaterials['Alat Habis Pakai'].find(m => m.nama === item.nama)) {
+                                combinedMaterials['Alat Habis Pakai'].push(item);
+                            }
+                        });
+                    }
+                }
+            });
+
+            // If no materials found, show basic default
+            if (combinedMaterials.Reagen.length === 0 && combinedMaterials['Alat Habis Pakai'].length === 0) {
+                container.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">Tidak ada material default untuk kombinasi parameter dan metode ini. Silakan tambah material secara manual.</p>';
             }
 
-            const materials = pemeriksaanData[sampel] || pemeriksaanData[Object.keys(pemeriksaanData)[0]];
-
-            // Generate BMHP category
-            if (materials.BMHP && materials.BMHP.length > 0) {
-                const bmhpCategory = document.createElement('div');
-                bmhpCategory.className = 'material-category';
-                bmhpCategory.innerHTML = `
-                    <div class="category-header">BMHP</div>
-                    <div class="material-items" id="bmhpItems"></div>
-                    <button type="button" class="add-material-btn" onclick="openAddMaterialModal('BMHP')">
-                        + Tambah BMHP Lainnya
-                    </button>
-                `;
-                container.appendChild(bmhpCategory);
-
-                const bmhpContainer = bmhpCategory.querySelector('#bmhpItems');
-                materials.BMHP.forEach((item, index) => {
-                    const itemDiv = createMaterialItem(item, 'bmhp', index, false);
-                    bmhpContainer.appendChild(itemDiv);
-                });
-
-                // Add custom BMHP materials
-                customMaterials.BMHP.forEach((item, index) => {
-                    const itemDiv = createMaterialItem(item, 'bmhp-custom', index, true);
-                    bmhpContainer.appendChild(itemDiv);
-                });
-            }
+            // Use jumlahTes for auto-calculation (for sampel type), otherwise default to 1
+            const tesMultiplier = selectedType === 'sampel' ? jumlahTes : 1;
 
             // Generate Reagen category
-            if (materials.Reagen && materials.Reagen.length > 0) {
+            if (combinedMaterials.Reagen.length > 0) {
                 const reagenCategory = document.createElement('div');
                 reagenCategory.className = 'material-category';
                 reagenCategory.innerHTML = `
@@ -2346,55 +2120,137 @@
                 container.appendChild(reagenCategory);
 
                 const reagenContainer = reagenCategory.querySelector('#reagenItems');
-                materials.Reagen.forEach((item, index) => {
-                    const itemDiv = createMaterialItem(item, 'reagen', index, false);
+                combinedMaterials.Reagen.forEach((item, index) => {
+                    const itemDiv = createMaterialItem(item, 'reagen', index, false, tesMultiplier);
                     reagenContainer.appendChild(itemDiv);
                 });
 
                 // Add custom Reagen materials
                 customMaterials.Reagen.forEach((item, index) => {
-                    const itemDiv = createMaterialItem(item, 'reagen-custom', index, true);
+                    const itemDiv = createMaterialItem(item, 'reagen-custom', index, true, tesMultiplier);
                     reagenContainer.appendChild(itemDiv);
                 });
             }
+
+            // Generate Alat Habis Pakai category
+            if (combinedMaterials['Alat Habis Pakai'].length > 0) {
+                const alatCategory = document.createElement('div');
+                alatCategory.className = 'material-category';
+                alatCategory.innerHTML = `
+                    <div class="category-header">Alat Habis Pakai</div>
+                    <div class="material-items" id="alatItems"></div>
+                    <button type="button" class="add-material-btn" onclick="openAddMaterialModal('Alat Habis Pakai')">
+                        + Tambah Alat Habis Pakai Lainnya
+                    </button>
+                `;
+                container.appendChild(alatCategory);
+
+                const alatContainer = alatCategory.querySelector('#alatItems');
+                combinedMaterials['Alat Habis Pakai'].forEach((item, index) => {
+                    const itemDiv = createMaterialItem(item, 'alat', index, false, tesMultiplier);
+                    alatContainer.appendChild(itemDiv);
+                });
+
+                // Add custom Alat Habis Pakai materials
+                customMaterials['Alat Habis Pakai'].forEach((item, index) => {
+                    const itemDiv = createMaterialItem(item, 'alat-custom', index, true, tesMultiplier);
+                    alatContainer.appendChild(itemDiv);
+                });
+            }
+
+            // Add manual add buttons if no materials
+            if (combinedMaterials.Reagen.length === 0) {
+                const reagenCategory = document.createElement('div');
+                reagenCategory.className = 'material-category';
+                reagenCategory.innerHTML = `
+                    <div class="category-header">Reagen</div>
+                    <div class="material-items" id="reagenItems"></div>
+                    <button type="button" class="add-material-btn" onclick="openAddMaterialModal('Reagen')">
+                        + Tambah Reagen
+                    </button>
+                `;
+                container.appendChild(reagenCategory);
+            }
+
+            if (combinedMaterials['Alat Habis Pakai'].length === 0) {
+                const alatCategory = document.createElement('div');
+                alatCategory.className = 'material-category';
+                alatCategory.innerHTML = `
+                    <div class="category-header">Alat Habis Pakai</div>
+                    <div class="material-items" id="alatItems"></div>
+                    <button type="button" class="add-material-btn" onclick="openAddMaterialModal('Alat Habis Pakai')">
+                        + Tambah Alat Habis Pakai
+                    </button>
+                `;
+                container.appendChild(alatCategory);
+            }
         }
 
-        function createMaterialItem(item, prefix, index, isCustom) {
+        function createMaterialItem(item, prefix, index, isCustom, tesMultiplier) {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'material-item';
             const itemId = `${prefix}-${index}`;
             itemDiv.setAttribute('data-material-id', itemId);
             
+            // Get current stock from master database
+            const masterItem = masterMaterialDatabase['Reagen'].find(m => m.nama === item.nama) || 
+                             masterMaterialDatabase['Alat Habis Pakai'].find(m => m.nama === item.nama);
+            const currentStock = masterItem ? masterItem.currentStock : 0;
+            
+            // Calculate required quantity
+            const requiredQty = item.consumptionPerTest * tesMultiplier;
+            
+            // Calculate remaining stock
+            const remainingStock = currentStock - requiredQty;
+            
+            // Determine stock status
+            let stockClass = 'material-stock-info';
+            let stockWarning = '';
+            let itemClass = 'material-item';
+            
+            if (remainingStock < 0) {
+                stockClass += ' no-stock';
+                stockWarning = `⚠️ Stock tidak cukup! Kekurangan ${Math.abs(remainingStock)} tes`;
+                itemClass += ' stock-warning';
+            } else if (remainingStock < item.testPerPackage * 0.2) { // Low stock if < 20% of package
+                stockClass += ' low-stock';
+            }
+            
+            // Format test info
+            let testInfo = '';
+            if (item.testPerPackage) {
+                testInfo = `${item.testPerPackage} test/pkg`;
+            }
+            
+            // Format calculation info
+            let calcInfo = '';
+            if (tesMultiplier > 1) {
+                calcInfo = `${tesMultiplier} tes × ${item.consumptionPerTest} ${item.satuan}/tes`;
+            } else {
+                calcInfo = `${item.consumptionPerTest} ${item.satuan}/tes`;
+            }
+            
+            itemDiv.className = itemClass;
             itemDiv.innerHTML = `
                 ${isCustom ? `<button type="button" class="delete-material-btn" onclick="deleteCustomMaterial('${prefix}', ${index})">×</button>` : ''}
                 <div class="material-name">${item.nama}</div>
-                <div class="material-details">
+                <div class="material-meta">
                     <span class="material-unit">${item.satuan}</span>
-                    <div class="quantity-control">
-                        <span class="quantity-label">Jumlah:</span>
-                        <div class="quantity-input-group">
-                            <button type="button" class="qty-btn" onclick="decrementQty('${itemId}')">−</button>
-                            <input type="number" class="quantity-input" id="${itemId}" value="${item.default || 0}" min="0" step="0.01">
-                            <button type="button" class="qty-btn" onclick="incrementQty('${itemId}')">+</button>
-                        </div>
+                    ${testInfo ? `<span class="material-test-info">📦 ${testInfo}</span>` : ''}
+                    <span class="${stockClass}">💊 Sisa: ${remainingStock} tes</span>
+                </div>
+                ${stockWarning ? `<div class="stock-warning-text">${stockWarning}</div>` : ''}
+                <div class="material-details">
+                    <div class="material-calc-info">
+                        ${calcInfo}
+                    </div>
+                    <div class="quantity-display">
+                        ${requiredQty} ${item.satuan}
                     </div>
                 </div>
             `;
             
             return itemDiv;
-        }
-
-        function incrementQty(id) {
-            const input = document.getElementById(id);
-            const step = parseFloat(input.step) || 1;
-            input.value = (parseFloat(input.value) || 0) + step;
-        }
-
-        function decrementQty(id) {
-            const input = document.getElementById(id);
-            const step = parseFloat(input.step) || 1;
-            const newValue = (parseFloat(input.value) || 0) - step;
-            input.value = Math.max(0, newValue);
         }
 
         // Modal functions
@@ -2405,7 +2261,7 @@
             document.getElementById('newMaterialName').value = '';
             document.getElementById('newMaterialName').disabled = false;
             document.getElementById('newMaterialUnit').value = '';
-            document.getElementById('newMaterialQty').value = '';
+            document.getElementById('newMaterialTestPkg').value = '';
             
             // Populate material dropdown based on category
             updateMaterialOptions();
@@ -2415,26 +2271,25 @@
             const category = document.getElementById('newMaterialCategory').value;
             const materialSelect = document.getElementById('newMaterialName');
             const unitInput = document.getElementById('newMaterialUnit');
+            const testPkgInput = document.getElementById('newMaterialTestPkg');
             
             // Reset
             materialSelect.innerHTML = '<option value="">Pilih nama material</option>';
             unitInput.value = '';
+            testPkgInput.value = '';
             
             if (category && masterMaterialDatabase[category]) {
                 materialSelect.disabled = false;
                 
                 // Get existing materials in the list to filter them out
                 const existingMaterials = new Set();
-                const pemeriksaan = document.getElementById('pemeriksaanSelect').value;
-                const sampel = document.getElementById('sampelSelect').value;
-                const pemeriksaanData = materialDatabase[pemeriksaan];
                 
-                if (pemeriksaanData) {
-                    const materials = pemeriksaanData[sampel] || pemeriksaanData[Object.keys(pemeriksaanData)[0]];
-                    if (materials && materials[category]) {
-                        materials[category].forEach(item => existingMaterials.add(item.nama));
-                    }
-                }
+                // Get materials from current display
+                const materialItems = document.querySelectorAll('.material-item');
+                materialItems.forEach(item => {
+                    const name = item.querySelector('.material-name').textContent;
+                    existingMaterials.add(name);
+                });
                 
                 // Also add custom materials to the set
                 customMaterials[category].forEach(item => existingMaterials.add(item.nama));
@@ -2447,6 +2302,8 @@
                         option.value = material.nama;
                         option.textContent = material.nama;
                         option.setAttribute('data-unit', material.satuan);
+                        option.setAttribute('data-test-pkg', material.testPerPackage || '');
+                        option.setAttribute('data-consumption', material.consumptionPerTest || '');
                         materialSelect.appendChild(option);
                         availableCount++;
                     }
@@ -2466,13 +2323,17 @@
         function updateMaterialUnit() {
             const materialSelect = document.getElementById('newMaterialName');
             const unitInput = document.getElementById('newMaterialUnit');
+            const testPkgInput = document.getElementById('newMaterialTestPkg');
             
             if (materialSelect.value) {
                 const selectedOption = materialSelect.options[materialSelect.selectedIndex];
                 const unit = selectedOption.getAttribute('data-unit');
+                const testPkg = selectedOption.getAttribute('data-test-pkg');
                 unitInput.value = unit || '';
+                testPkgInput.value = testPkg ? `${testPkg} test` : '';
             } else {
                 unitInput.value = '';
+                testPkgInput.value = '';
             }
         }
 
@@ -2483,9 +2344,8 @@
 
         function addNewMaterial() {
             const category = document.getElementById('newMaterialCategory').value;
-            const nama = document.getElementById('newMaterialName').value;
-            const satuan = document.getElementById('newMaterialUnit').value;
-            const qty = parseFloat(document.getElementById('newMaterialQty').value);
+            const materialSelect = document.getElementById('newMaterialName');
+            const nama = materialSelect.value;
 
             if (!category) {
                 alert('Silakan pilih kategori');
@@ -2497,40 +2357,36 @@
                 return;
             }
 
-            if (!satuan) {
-                alert('Satuan tidak tersedia');
-                return;
-            }
-
-            if (isNaN(qty) || qty <= 0) {
-                alert('Silakan isi jumlah dengan benar (harus lebih dari 0)');
+            // Get full material info from master database
+            const masterItem = masterMaterialDatabase[category].find(m => m.nama === nama);
+            if (!masterItem) {
+                alert('Material tidak ditemukan');
                 return;
             }
 
             const newMaterial = {
-                nama: nama,
-                satuan: satuan,
-                default: qty
+                nama: masterItem.nama,
+                satuan: masterItem.satuan,
+                testPerPackage: masterItem.testPerPackage,
+                consumptionPerTest: masterItem.consumptionPerTest
             };
 
             customMaterials[category].push(newMaterial);
             closeAddMaterialModal();
 
             // Refresh material list
-            const pemeriksaan = document.getElementById('pemeriksaanSelect').value;
-            const sampel = document.getElementById('sampelSelect').value;
-            generateMaterialList(pemeriksaan, sampel);
+            const metode = document.getElementById('metodeSelect').value;
+            generateMaterialList(selectedParameters, metode);
         }
 
         function deleteCustomMaterial(prefix, index) {
             if (confirm('Hapus material ini?')) {
-                const category = prefix.includes('bmhp') ? 'BMHP' : 'Reagen';
+                const category = prefix.includes('reagen') ? 'Reagen' : 'Alat Habis Pakai';
                 customMaterials[category].splice(index, 1);
                 
                 // Refresh material list
-                const pemeriksaan = document.getElementById('pemeriksaanSelect').value;
-                const sampel = document.getElementById('sampelSelect').value;
-                generateMaterialList(pemeriksaan, sampel);
+                const metode = document.getElementById('metodeSelect').value;
+                generateMaterialList(selectedParameters, metode);
             }
         }
 
@@ -2541,37 +2397,41 @@
         function confirmSubmit() {
             closeConfirmModal();
             
-            // Collect materials
+            // Collect materials with actual quantities used
             const materials = collectMaterials();
+
+            // Update stock in master database
+            materials.Reagen.forEach(m => {
+                const masterItem = masterMaterialDatabase['Reagen'].find(item => m.nama === item.nama);
+                if (masterItem) {
+                    masterItem.currentStock -= m.tesUsed;
+                }
+            });
+
+            materials['Alat Habis Pakai'].forEach(m => {
+                const masterItem = masterMaterialDatabase['Alat Habis Pakai'].find(item => m.nama === item.nama);
+                if (masterItem) {
+                    masterItem.currentStock -= m.tesUsed;
+                }
+            });
 
             // Prepare data object
             const dataEntry = {
                 id: Date.now(),
                 timestamp: new Date(),
                 type: selectedType,
-                pemeriksaan: document.getElementById('pemeriksaanSelect').value,
-                parameter: [...selectedParameters],
-                sampel: document.getElementById('sampelSelect').value,
+                parameter: selectedParameters.map(p => p.name),
+                metode: document.getElementById('metodeSelect').value,
                 materials: {
-                    BMHP: [...materials.BMHP],
-                    Reagen: [...materials.Reagen]
+                    Reagen: materials.Reagen.map(m => `${m.nama}: ${m.quantity} ${m.satuan}`),
+                    'Alat Habis Pakai': materials['Alat Habis Pakai'].map(m => `${m.nama}: ${m.quantity} ${m.satuan}`)
                 }
             };
 
-            // Add patient data if type is sampel
-            if (selectedType === 'sampel' && currentNIKData) {
-                dataEntry.pasien = {
-                    nik: currentNIKData.nik,
-                    nama: document.getElementById('namaInput').value,
-                    gender: currentNIKData.gender,
-                    birthDate: currentNIKData.birthDate,
-                    age: currentNIKData.age,
-                    province: currentNIKData.province,
-                    city: currentNIKData.city,
-                    kecamatan: document.getElementById('kecamatanSelect').value,
-                    alamat: document.getElementById('alamatInput').value,
-                    telepon: document.getElementById('teleponInput').value
-                };
+            // Add sampel info if type is sampel
+            if (selectedType === 'sampel') {
+                dataEntry.jumlahSampel = jumlahSampel;
+                dataEntry.jumlahTes = jumlahTes;
             }
 
             // Save to array
@@ -2581,38 +2441,23 @@
             let summary = '✓ DATA PENGELUARAN LAB BERHASIL DISIMPAN!\n\n';
             summary += `=== TIPE PENGELUARAN ===\n${selectedType.toUpperCase()}\n\n`;
 
-            if (selectedType === 'sampel' && currentNIKData) {
-                const nama = document.getElementById('namaInput').value;
-                const kecamatan = document.getElementById('kecamatanSelect').value;
-                const alamat = document.getElementById('alamatInput').value;
-                const telepon = document.getElementById('teleponInput').value;
-
-                summary += `=== DATA PASIEN ===\n`;
-                summary += `NIK: ${currentNIKData.nik}\n`;
-                summary += `Nama: ${nama}\n`;
-                summary += `Jenis Kelamin: ${currentNIKData.gender}\n`;
-                summary += `Tanggal Lahir: ${currentNIKData.birthDate}\n`;
-                summary += `Usia: ${currentNIKData.age}\n`;
-                summary += `Provinsi: ${currentNIKData.province}\n`;
-                summary += `Kab/Kota: ${currentNIKData.city}\n`;
-                summary += `Kecamatan: ${kecamatan}\n`;
-                summary += `Alamat: ${alamat}\n`;
-                summary += `Telepon: ${telepon}\n\n`;
+            if (selectedType === 'sampel') {
+                summary += `=== JUMLAH ===\n`;
+                summary += `Sampel: ${jumlahSampel}\n`;
+                summary += `Tes: ${jumlahTes}\n\n`;
             }
 
-            const pemeriksaan = document.getElementById('pemeriksaanSelect').value;
-            const sampel = document.getElementById('sampelSelect').value;
+            const metode = document.getElementById('metodeSelect').value;
 
             summary += `=== DATA PEMERIKSAAN ===\n`;
-            summary += `Pemeriksaan: ${pemeriksaan}\n`;
-            summary += `Parameter:\n${selectedParameters.map((p, i) => `  ${i + 1}. ${p}`).join('\n')}\n`;
-            summary += `Sampel: ${sampel}\n\n`;
+            summary += `Parameter:\n${selectedParameters.map((p, i) => `  ${i + 1}. ${p.name}`).join('\n')}\n`;
+            summary += `Metode: ${metode}\n\n`;
 
-            summary += `=== MATERIAL BMHP ===\n`;
-            summary += materials.BMHP.length > 0 ? materials.BMHP.map((m, i) => `${i + 1}. ${m}`).join('\n') : 'Tidak ada';
+            summary += `=== MATERIAL REAGEN ===\n`;
+            summary += materials.Reagen.length > 0 ? materials.Reagen.map((m, i) => `${i + 1}. ${m.nama}: ${m.quantity} ${m.satuan}`).join('\n') : 'Tidak ada';
             
-            summary += `\n\n=== MATERIAL REAGEN ===\n`;
-            summary += materials.Reagen.length > 0 ? materials.Reagen.map((m, i) => `${i + 1}. ${m}`).join('\n') : 'Tidak ada';
+            summary += `\n\n=== MATERIAL ALAT HABIS PAKAI ===\n`;
+            summary += materials['Alat Habis Pakai'].length > 0 ? materials['Alat Habis Pakai'].map((m, i) => `${i + 1}. ${m.nama}: ${m.quantity} ${m.satuan}`).join('\n') : 'Tidak ada';
 
             alert(summary);
             
@@ -2629,29 +2474,44 @@
 
         function collectMaterials() {
             const materials = {
-                BMHP: [],
-                Reagen: []
+                Reagen: [],
+                'Alat Habis Pakai': []
             };
             
-            const bmhpInputs = document.querySelectorAll('[id^="bmhp-"]');
-            bmhpInputs.forEach((input) => {
-                const qty = parseFloat(input.value);
-                if (qty > 0) {
-                    const item = input.closest('.material-item');
-                    const nama = item.querySelector('.material-name').textContent;
-                    const satuan = item.querySelector('.material-unit').textContent;
-                    materials.BMHP.push(`${nama}: ${qty} ${satuan}`);
-                }
-            });
+            const tesMultiplier = selectedType === 'sampel' ? jumlahTes : 1;
 
-            const reagenInputs = document.querySelectorAll('[id^="reagen-"]');
-            reagenInputs.forEach((input) => {
-                const qty = parseFloat(input.value);
-                if (qty > 0) {
-                    const item = input.closest('.material-item');
-                    const nama = item.querySelector('.material-name').textContent;
-                    const satuan = item.querySelector('.material-unit').textContent;
-                    materials.Reagen.push(`${nama}: ${qty} ${satuan}`);
+            // Get all material items
+            const materialItems = document.querySelectorAll('.material-item');
+            materialItems.forEach(item => {
+                const nama = item.querySelector('.material-name').textContent;
+                const satuanEl = item.querySelector('.material-unit');
+                const qtyEl = item.querySelector('.quantity-display');
+                
+                if (satuanEl && qtyEl) {
+                    const satuan = satuanEl.textContent;
+                    const quantity = parseFloat(qtyEl.textContent);
+                    
+                    // Determine category based on which container it's in
+                    const reagenContainer = document.getElementById('reagenItems');
+                    const alatContainer = document.getElementById('alatItems');
+                    
+                    if (reagenContainer && reagenContainer.contains(item)) {
+                        const masterItem = masterMaterialDatabase['Reagen'].find(m => m.nama === nama);
+                        materials.Reagen.push({
+                            nama: nama,
+                            quantity: quantity,
+                            satuan: satuan,
+                            tesUsed: masterItem ? tesMultiplier : 0
+                        });
+                    } else if (alatContainer && alatContainer.contains(item)) {
+                        const masterItem = masterMaterialDatabase['Alat Habis Pakai'].find(m => m.nama === nama);
+                        materials['Alat Habis Pakai'].push({
+                            nama: nama,
+                            quantity: quantity,
+                            satuan: satuan,
+                            tesUsed: masterItem ? tesMultiplier : 0
+                        });
+                    }
                 }
             });
 
@@ -2663,45 +2523,51 @@
             const materials = collectMaterials();
 
             // Validate at least one material
-            if (materials.BMHP.length === 0 && materials.Reagen.length === 0) {
-                alert('Silakan isi jumlah minimal 1 material');
+            if (materials.Reagen.length === 0 && materials['Alat Habis Pakai'].length === 0) {
+                alert('Tidak ada material yang digunakan');
                 return;
             }
 
+            // Check for stock warnings
+            const hasStockWarning = document.querySelectorAll('.stock-warning').length > 0;
+            
             // Show confirmation modal
             let modalContent = '<div class="summary-section">';
             modalContent += '<div class="summary-title">TIPE PENGELUARAN</div>';
             modalContent += `<div class="summary-text"><span class="summary-highlight">${selectedType.toUpperCase()}</span></div>`;
             modalContent += '</div>';
 
-            if (selectedType === 'sampel' && currentNIKData) {
-                const nama = document.getElementById('namaInput').value;
+            if (selectedType === 'sampel') {
                 modalContent += '<div class="summary-section">';
-                modalContent += '<div class="summary-title">DATA PASIEN</div>';
+                modalContent += '<div class="summary-title">JUMLAH</div>';
                 modalContent += `<div class="summary-text">`;
-                modalContent += `<span class="summary-highlight">${nama}</span><br>`;
-                modalContent += `NIK: ${currentNIKData.nik}<br>`;
-                modalContent += `${currentNIKData.gender}, ${currentNIKData.age}`;
+                modalContent += `Sampel: <span class="summary-highlight">${jumlahSampel}</span><br>`;
+                modalContent += `Tes: <span class="summary-highlight">${jumlahTes}</span>`;
                 modalContent += `</div></div>`;
             }
 
-            const pemeriksaan = document.getElementById('pemeriksaanSelect').value;
-            const sampel = document.getElementById('sampelSelect').value;
+            const metode = document.getElementById('metodeSelect').value;
 
             modalContent += '<div class="summary-section">';
-            modalContent += '<div class="summary-title">PEMERIKSAAN</div>';
+            modalContent += '<div class="summary-title">PARAMETER & METODE</div>';
             modalContent += `<div class="summary-text">`;
-            modalContent += `<span class="summary-highlight">${pemeriksaan}</span><br>`;
-            modalContent += `Sampel: ${sampel}<br>`;
+            modalContent += `Metode: <span class="summary-highlight">${metode}</span><br>`;
             modalContent += `Parameter: ${selectedParameters.length} item`;
             modalContent += `</div></div>`;
 
             modalContent += '<div class="summary-section">';
             modalContent += '<div class="summary-title">MATERIAL</div>';
             modalContent += `<div class="summary-text">`;
-            modalContent += `BMHP: ${materials.BMHP.length} item<br>`;
-            modalContent += `Reagen: ${materials.Reagen.length} item`;
+            modalContent += `Reagen: ${materials.Reagen.length} item<br>`;
+            modalContent += `Alat Habis Pakai: ${materials['Alat Habis Pakai'].length} item`;
             modalContent += `</div></div>`;
+
+            if (hasStockWarning) {
+                modalContent += '<div style="background-color: #ffebee; border-left: 4px solid #f44336; padding: 12px; border-radius: 4px; margin-top: 15px;">';
+                modalContent += '<div style="color: #d32f2f; font-weight: 600; margin-bottom: 5px;">⚠️ Peringatan Stock</div>';
+                modalContent += '<div style="color: #666; font-size: 13px;">Beberapa material memiliki stock yang tidak mencukupi. Apakah Anda tetap ingin melanjutkan?</div>';
+                modalContent += '</div>';
+            }
 
             modalContent += '<p style="color: #666; font-size: 13px; margin-top: 15px;">Apakah Anda yakin ingin menyimpan data ini?</p>';
 
@@ -2719,16 +2585,10 @@
 
             // Filter data
             let filteredData = pengeluaranData.filter(item => {
-                // Search filter
+                // Search filter - now just search in any field
                 let matchSearch = true;
                 if (searchTerm) {
-                    matchSearch = false;
-                    if (item.pasien) {
-                        if (item.pasien.nik.toLowerCase().includes(searchTerm) ||
-                            item.pasien.nama.toLowerCase().includes(searchTerm)) {
-                            matchSearch = true;
-                        }
-                    }
+                    matchSearch = JSON.stringify(item).toLowerCase().includes(searchTerm);
                 }
 
                 // Type filter
@@ -2821,16 +2681,16 @@
                 <div class="card-divider"></div>
             `;
 
-            // Patient info for sampel
-            if (item.type === 'sampel' && item.pasien) {
+            // Sampel info
+            if (item.type === 'sampel' && item.jumlahSampel) {
                 cardHTML += `
                     <div class="card-info-row">
-                        <span class="card-label">NIK</span>
-                        <span class="card-value">${item.pasien.nik}</span>
+                        <span class="card-label">Jumlah Sampel</span>
+                        <span class="card-value">${item.jumlahSampel}</span>
                     </div>
                     <div class="card-info-row">
-                        <span class="card-label">Nama</span>
-                        <span class="card-value">${item.pasien.nama}</span>
+                        <span class="card-label">Jumlah Tes</span>
+                        <span class="card-value">${item.jumlahTes}</span>
                     </div>
                 `;
             }
@@ -2842,12 +2702,8 @@
 
             cardHTML += `
                 <div class="card-info-row">
-                    <span class="card-label">Pemeriksaan</span>
-                    <span class="card-value">${item.pemeriksaan}</span>
-                </div>
-                <div class="card-info-row">
-                    <span class="card-label">Sampel</span>
-                    <span class="card-value">${item.sampel}</span>
+                    <span class="card-label">Metode</span>
+                    <span class="card-value">${item.metode}</span>
                 </div>
                 <div class="card-info-row">
                     <span class="card-label">Parameter</span>
@@ -2855,7 +2711,7 @@
                 </div>
                 <div class="card-info-row">
                     <span class="card-label">Material</span>
-                    <span class="card-value">${item.materials.BMHP.length + item.materials.Reagen.length} item</span>
+                    <span class="card-value">${item.materials.Reagen.length + item.materials['Alat Habis Pakai'].length} item</span>
                 </div>
                 <div class="card-footer">
                     <button class="view-detail-btn">
@@ -2904,50 +2760,18 @@
                 </div>
             `;
 
-            // Patient data
-            if (item.type === 'sampel' && item.pasien) {
+            // Sampel data
+            if (item.type === 'sampel' && item.jumlahSampel) {
                 detailHTML += `
                     <div class="detail-section">
-                        <div class="detail-section-title">DATA PASIEN</div>
+                        <div class="detail-section-title">JUMLAH</div>
                         <div class="detail-row">
-                            <div class="detail-label">NIK</div>
-                            <div class="detail-value">${item.pasien.nik}</div>
+                            <div class="detail-label">Jumlah Sampel</div>
+                            <div class="detail-value">${item.jumlahSampel}</div>
                         </div>
                         <div class="detail-row">
-                            <div class="detail-label">Nama</div>
-                            <div class="detail-value">${item.pasien.nama}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Jenis Kelamin</div>
-                            <div class="detail-value">${item.pasien.gender}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Tanggal Lahir</div>
-                            <div class="detail-value">${item.pasien.birthDate}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Usia</div>
-                            <div class="detail-value">${item.pasien.age}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Provinsi</div>
-                            <div class="detail-value">${item.pasien.province}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Kab/Kota</div>
-                            <div class="detail-value">${item.pasien.city}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Kecamatan</div>
-                            <div class="detail-value">${item.pasien.kecamatan}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Alamat</div>
-                            <div class="detail-value">${item.pasien.alamat}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Telepon</div>
-                            <div class="detail-value">${item.pasien.telepon}</div>
+                            <div class="detail-label">Jumlah Tes</div>
+                            <div class="detail-value">${item.jumlahTes}</div>
                         </div>
                     </div>
                 `;
@@ -2956,14 +2780,10 @@
             // Lab data
             detailHTML += `
                 <div class="detail-section">
-                    <div class="detail-section-title">DATA PEMERIKSAAN</div>
+                    <div class="detail-section-title">PARAMETER & METODE</div>
                     <div class="detail-row">
-                        <div class="detail-label">Pemeriksaan</div>
-                        <div class="detail-value">${item.pemeriksaan}</div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-label">Sampel</div>
-                        <div class="detail-value">${item.sampel}</div>
+                        <div class="detail-label">Metode</div>
+                        <div class="detail-value">${item.metode}</div>
                     </div>
                     <div class="detail-row">
                         <div class="detail-label">Parameter</div>
@@ -2976,18 +2796,6 @@
                 </div>
             `;
 
-            // Material BMHP
-            if (item.materials.BMHP.length > 0) {
-                detailHTML += `
-                    <div class="detail-section">
-                        <div class="detail-section-title">MATERIAL BMHP (${item.materials.BMHP.length} item)</div>
-                        <ul class="detail-list">
-                            ${item.materials.BMHP.map(m => `<li>${m}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-
             // Material Reagen
             if (item.materials.Reagen.length > 0) {
                 detailHTML += `
@@ -2995,6 +2803,18 @@
                         <div class="detail-section-title">MATERIAL REAGEN (${item.materials.Reagen.length} item)</div>
                         <ul class="detail-list">
                             ${item.materials.Reagen.map(m => `<li>${m}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            // Material Alat Habis Pakai
+            if (item.materials['Alat Habis Pakai'].length > 0) {
+                detailHTML += `
+                    <div class="detail-section">
+                        <div class="detail-section-title">MATERIAL ALAT HABIS PAKAI (${item.materials['Alat Habis Pakai'].length} item)</div>
+                        <ul class="detail-list">
+                            ${item.materials['Alat Habis Pakai'].map(m => `<li>${m}</li>`).join('')}
                         </ul>
                     </div>
                 `;
@@ -3015,60 +2835,24 @@
                     id: Date.now() - 3600000,
                     timestamp: new Date(Date.now() - 3600000),
                     type: 'sampel',
-                    pemeriksaan: 'Hematologi',
-                    parameter: ['Hemoglobin (Hb)', 'Leukosit', 'Trombosit'],
-                    sampel: 'Darah Vena',
+                    jumlahSampel: 5,
+                    jumlahTes: 15,
+                    parameter: ['Hemoglobin, penetapan kadar', 'Leukosit, hitung jumlah', 'Trombosit, hitung jumlah'],
+                    metode: 'Flow Cytometry',
                     materials: {
-                        BMHP: ['Alcohol swab 70%: 2 pcs', 'Spuit 3cc: 1 pcs', 'Vacutainer EDTA: 1 pcs', 'Plester hypoallergenic: 1 pcs', 'Kapas steril: 2 pcs', 'Tourniquet: 1 pcs', 'Sarung tangan pemeriksaan: 1 pasang'],
-                        Reagen: ['Hematology Control: 0.05 ml', 'Hematology Lyse: 0.5 ml', 'Hematology Clean: 0.05 ml', 'Hematology Diluent: 36 ml']
-                    },
-                    pasien: {
-                        nik: '3174014201030001',
-                        nama: 'Siti Aminah',
-                        gender: 'Perempuan',
-                        birthDate: '02 Jan 2003',
-                        age: '21 tahun',
-                        province: 'DKI Jakarta',
-                        city: 'Jakarta Selatan',
-                        kecamatan: 'Kebayoran Baru',
-                        alamat: 'Jl. Merdeka No. 10, RT 01/RW 05, Kelurahan Melawai',
-                        telepon: '08123456789'
+                        Reagen: ['Onetech Diluent: 750 ml', 'Onetech Lyse: 37.5 ml', 'Onetech Detergent: 375 ml'],
+                        'Alat Habis Pakai': ['Vacutainer EDTA: 15 pcs', 'Spuit 3cc steril: 15 pcs', 'Alcohol swab: 30 pcs']
                     }
                 },
                 {
                     id: Date.now() - 86400000,
                     timestamp: new Date(Date.now() - 86400000),
                     type: 'control',
-                    pemeriksaan: 'Kimia Darah',
-                    parameter: ['Glukosa Puasa', 'Kolesterol Total', 'Trigliserida', 'Asam Urat', 'Ureum'],
-                    sampel: 'Darah Vena',
+                    parameter: ['Glukosa, penetapan kadar', 'Kolesterol total, penetapan kadar', 'Trigliserida, penetapan kadar'],
+                    metode: 'Enzimatik',
                     materials: {
-                        BMHP: ['Alcohol swab 70%: 2 pcs', 'Spuit 5cc: 1 pcs', 'Vacutainer clot activator: 1 pcs', 'Plester hypoallergenic: 1 pcs', 'Kapas steril: 2 pcs', 'Tourniquet: 1 pcs', 'Sarung tangan pemeriksaan: 1 pasang'],
-                        Reagen: ['Reagen glukosa GOD-PAP: 1 ml', 'Reagen kolesterol CHOD-PAP: 1 ml', 'Reagen trigliserida GPO-PAP: 1 ml', 'Reagen asam urat: 1 ml', 'Reagen ureum: 1 ml']
-                    }
-                },
-                {
-                    id: Date.now() - 172800000,
-                    timestamp: new Date(Date.now() - 172800000),
-                    type: 'sampel',
-                    pemeriksaan: 'Urinalisis',
-                    parameter: ['pH', 'Berat Jenis', 'Protein', 'Glukosa', 'Keton', 'Darah Samar', 'Sedimen Urine'],
-                    sampel: 'Urine',
-                    materials: {
-                        BMHP: ['Pot urine steril 50ml: 1 pcs', 'Label spesimen: 1 pcs', 'Tabung centrifuge 10ml: 1 pcs', 'Pipet tetes: 1 pcs', 'Object glass: 1 pcs', 'Cover glass: 1 pcs', 'Sarung tangan pemeriksaan: 1 pasang'],
-                        Reagen: ['Urine strip 10 parameter: 1 pcs', 'Larutan SSA 20%: 2 ml', 'Asam asetat 3%: 2 ml']
-                    },
-                    pasien: {
-                        nik: '3275012506950002',
-                        nama: 'Ahmad Wijaya',
-                        gender: 'Laki-laki',
-                        birthDate: '25 Jun 1995',
-                        age: '29 tahun',
-                        province: 'Jawa Barat',
-                        city: 'Bekasi',
-                        kecamatan: 'Bekasi Barat',
-                        alamat: 'Jl. Sudirman No. 45, RT 03/RW 08',
-                        telepon: '08567891234'
+                        Reagen: ['Proline GOD PAP: 0.5 ml', 'Proline Cholesterol FS: 1 ml', 'Proline Triglyseride FS 10\': 1 ml'],
+                        'Alat Habis Pakai': ['Vacutainer EDTA: 1 pcs', 'Spuit 3cc steril: 1 pcs', 'Alcohol swab: 2 pcs']
                     }
                 }
             ];
