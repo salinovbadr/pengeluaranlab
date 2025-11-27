@@ -1,2867 +1,314 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengeluaran Lab - Puskesmas</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Header Styles */
-        .header {
-            background: linear-gradient(135deg, #004990 0%, #0059b3 100%);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .back-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 5px;
-            display: flex;
-            align-items: center;
-        }
-
-        .header-title {
-            font-size: 20px;
-            font-weight: 500;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background-color: white;
-            color: #004990;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        /* Content Styles */
-        .content {
-            padding: 20px;
-        }
-
-        /* Menu Section */
-        .menu-section {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .menu-header {
-            padding: 15px 20px;
-            background-color: #f9f9f9;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-        }
-
-        .menu-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-
-        .menu-list {
-            list-style: none;
-        }
-
-        .menu-item {
-            border-bottom: 1px solid #f0f0f0;
-            transition: background-color 0.2s;
-        }
-
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-
-        .menu-item:active {
-            background-color: #f5f5f5;
-        }
-
-        .menu-link {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 20px;
-            text-decoration: none;
-            color: #1a1a1a;
-            font-size: 16px;
-        }
-
-        .menu-arrow {
-            color: #999;
-            font-size: 18px;
-        }
-
-        /* Form Styles */
-        .form-section {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            color: #555;
-            font-size: 14px;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-input,
-        .form-select,
-        .form-textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 15px;
-            font-family: inherit;
-            transition: border-color 0.2s;
-        }
-
-        .form-input:focus,
-        .form-select:focus,
-        .form-textarea:focus {
-            outline: none;
-            border-color: #004990;
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .form-button {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #004990 0%, #0059b3 100%);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.1s;
-            box-shadow: 0 2px 8px rgba(0, 73, 144, 0.3);
-        }
-
-        .form-button:active {
-            transform: scale(0.98);
-        }
-
-        .form-button.secondary {
-            background: #999;
-            box-shadow: none;
-            margin-top: 10px;
-        }
-
-        .required {
-            color: #f44336;
-        }
-
-        /* Info Box */
-        .info-box {
-            background-color: #e3f2fd;
-            border-left: 4px solid #1976d2;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 15px;
-            margin-bottom: 20px;
-        }
-
-        .info-box-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1976d2;
-            margin-bottom: 8px;
-        }
-
-        .info-box-text {
-            font-size: 13px;
-            color: #555;
-            line-height: 1.5;
-        }
-
-        .info-highlight {
-            font-weight: 700;
-            color: #004990;
-        }
-
-        /* Type Selection Cards */
-        .type-selection {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .type-card {
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .type-card:hover {
-            border-color: #004990;
-            background-color: #f0f7ff;
-        }
-
-        .type-card.selected {
-            border-color: #004990;
-            background-color: #f0f7ff;
-        }
-
-        /* Special styling for Alat type */
-        .type-card.type-alat {
-            border-color: #ff9800;
-            background: linear-gradient(135deg, #fff8f0 0%, #ffe8d0 100%);
-        }
-
-        .type-card.type-alat:hover {
-            border-color: #ff6f00;
-            background: linear-gradient(135deg, #fff0e0 0%, #ffd8b0 100%);
-        }
-
-        .type-card.type-alat.selected {
-            border-color: #ff6f00;
-            background: linear-gradient(135deg, #ffe8d0 0%, #ffc89f 100%);
-            box-shadow: 0 2px 8px rgba(255, 111, 0, 0.3);
-        }
-
-        .type-radio {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .type-info {
-            flex: 1;
-        }
-
-        .type-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .type-badge {
-            display: inline-block;
-            background: #ff9800;
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 10px;
-            letter-spacing: 0.5px;
-        }
-
-        .type-desc {
-            font-size: 13px;
-            color: #666;
-        }
-
-        /* Multi-select styles */
-        .multi-select-wrapper {
-            position: relative;
-        }
-
-        .multi-select-display {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 15px;
-            background-color: white;
-            cursor: pointer;
-            min-height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .multi-select-display:hover {
-            border-color: #004990;
-        }
-
-        .multi-select-placeholder {
-            color: #999;
-        }
-
-        .multi-select-values {
-            color: #1a1a1a;
-            flex: 1;
-            margin-right: 10px;
-        }
-
-        .multi-select-arrow {
-            color: #666;
-            font-size: 12px;
-        }
-
-        .multi-select-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #ddd;
-            border-top: none;
-            border-radius: 0 0 6px 6px;
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 10;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            display: none;
-        }
-
-        .multi-select-dropdown.active {
-            display: block;
-        }
-
-        .multi-select-category {
-            background-color: #f0f0f0;
-            padding: 8px 15px;
-            font-weight: 600;
-            font-size: 13px;
-            color: #004990;
-            border-bottom: 1px solid #ddd;
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
-
-        .multi-select-option {
-            padding: 12px 15px 12px 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid #f5f5f5;
-        }
-
-        .multi-select-option:hover {
-            background-color: #f5f5f5;
-        }
-
-        .multi-select-checkbox {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        /* Material List - Mobile Optimized */
-        .material-section-title {
-            font-size: 17px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 15px;
-        }
-
-        .material-category {
-            margin-bottom: 20px;
-        }
-
-        .category-header {
-            background: linear-gradient(135deg, #004990 0%, #0059b3 100%);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 6px 6px 0 0;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .material-items {
-            background-color: white;
-            border: 1px solid #e0e0e0;
-            border-top: none;
-            border-radius: 0 0 6px 6px;
-        }
-
-        .material-item {
-            padding: 15px;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            position: relative;
-        }
-
-        .material-item:last-child {
-            border-bottom: none;
-        }
-
-        .material-item.stock-warning {
-            background-color: #ffebee;
-            border-left: 4px solid #f44336;
-        }
-
-        .material-name {
-            font-size: 14px;
-            color: #1a1a1a;
-            font-weight: 500;
-            line-height: 1.4;
-        }
-
-        .material-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .material-unit {
-            font-size: 12px;
-            color: #666;
-            background-color: #f5f5f5;
-            padding: 3px 8px;
-            border-radius: 4px;
-        }
-
-        .material-test-info {
-            font-size: 11px;
-            color: #004990;
-            background-color: #e3f2fd;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .material-stock-info {
-            font-size: 11px;
-            color: #2e7d32;
-            background-color: #e8f5e9;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .material-stock-info.low-stock {
-            color: #f57c00;
-            background-color: #fff3e0;
-        }
-
-        .material-stock-info.no-stock {
-            color: #f44336;
-            background-color: #ffebee;
-        }
-
-        .stock-warning-text {
-            font-size: 12px;
-            color: #d32f2f;
-            margin-top: 5px;
-            font-weight: 600;
-        }
-
-        .material-details {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            margin-top: 5px;
-        }
-
-        .material-calc-info {
-            flex: 1;
-            font-size: 11px;
-            color: #666;
-            line-height: 1.4;
-        }
-
-        .quantity-display {
-            font-size: 14px;
-            font-weight: 700;
-            color: #004990;
-            background-color: #e3f2fd;
-            padding: 8px 15px;
-            border-radius: 6px;
-            text-align: center;
-            min-width: 100px;
-        }
-
-        .delete-material-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #f44336;
-            color: white;
-            border: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            font-size: 18px;
-            line-height: 1;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Step Indicator */
-        .step-indicator {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            padding: 0 10px;
-        }
-
-        .step-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-            position: relative;
-        }
-
-        .step-number {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #e0e0e0;
-            color: #999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 8px;
-            transition: all 0.3s;
-            z-index: 2;
-        }
-
-        .step-item.active .step-number {
-            background: linear-gradient(135deg, #004990 0%, #0059b3 100%);
-            color: white;
-            box-shadow: 0 2px 8px rgba(0, 73, 144, 0.4);
-        }
-
-        .step-item.completed .step-number {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .step-label {
-            font-size: 11px;
-            color: #999;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .step-item.active .step-label {
-            color: #004990;
-            font-weight: 600;
-        }
-
-        .step-item.completed .step-label {
-            color: #4CAF50;
-        }
-
-        .step-line {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            width: 100%;
-            height: 2px;
-            background-color: #e0e0e0;
-            z-index: 1;
-        }
-
-        .step-item.completed .step-line {
-            background-color: #4CAF50;
-        }
-
-        .step-item:last-child .step-line {
-            display: none;
-        }
-
-        /* Add Material Button */
-        .add-material-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #f5f5f5;
-            border: 2px dashed #ddd;
-            border-radius: 6px;
-            color: #666;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.2s;
-        }
-
-        .add-material-btn:hover {
-            background-color: #f0f7ff;
-            border-color: #004990;
-            color: #004990;
-        }
-
-        .add-material-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Modal/Popup Styles */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            animation: fadeIn 0.3s;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background-color: white;
-            border-radius: 12px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.3s;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            padding: 20px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .modal-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin: 0;
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .modal-footer {
-            padding: 15px 20px;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            gap: 10px;
-        }
-
-        .modal-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .modal-btn-cancel {
-            background-color: #f5f5f5;
-            color: #666;
-        }
-
-        .modal-btn-cancel:active {
-            background-color: #e0e0e0;
-        }
-
-        .modal-btn-confirm {
-            background: linear-gradient(135deg, #004990 0%, #0059b3 100%);
-            color: white;
-            box-shadow: 0 2px 8px rgba(0, 73, 144, 0.3);
-        }
-
-        .modal-btn-confirm:active {
-            transform: scale(0.98);
-        }
-
-        .summary-section {
-            margin-bottom: 15px;
-        }
-
-        .summary-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #004990;
-            margin-bottom: 8px;
-        }
-
-        .summary-text {
-            font-size: 13px;
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .summary-highlight {
-            color: #1a1a1a;
-            font-weight: 600;
-        }
-
-        /* Input Modal for Add Material */
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-label {
-            display: block;
-            font-size: 13px;
-            color: #555;
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
-
-        .modal-input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: inherit;
-        }
-
-        .modal-input:focus {
-            outline: none;
-            border-color: #004990;
-        }
-
-        /* History Page Styles */
-        .history-container {
-            padding: 0;
-        }
-
-        .search-filter-section {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .search-box {
-            position: relative;
-            margin-bottom: 12px;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-            font-size: 18px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px 15px 12px 45px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 15px;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #004990;
-        }
-
-        .filter-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .filter-select {
-            flex: 1;
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            background: white;
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: #004990;
-        }
-
-        /* History Cards */
-        .history-card {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-        }
-
-        .history-card:active {
-            transform: scale(0.98);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .card-title-section {
-            flex: 1;
-        }
-
-        .card-type-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .badge-sampel {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .badge-control {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-
-        .badge-alat {
-            background: #ffe8d0;
-            color: #ff6f00;
-        }
-
-        .card-datetime {
-            font-size: 12px;
-            color: #999;
-            margin-bottom: 8px;
-        }
-
-        .card-divider {
-            height: 1px;
-            background: #f0f0f0;
-            margin: 10px 0;
-        }
-
-        .card-info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            font-size: 14px;
-        }
-
-        .card-label {
-            color: #666;
-        }
-
-        .card-value {
-            color: #1a1a1a;
-            font-weight: 500;
-            text-align: right;
-        }
-
-        .card-footer {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #f0f0f0;
-        }
-
-        .view-detail-btn {
-            width: 100%;
-            padding: 10px;
-            background: linear-gradient(135deg, #004990 0%, #0059b3 100%);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .view-detail-btn:active {
-            transform: scale(0.98);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
-        }
-
-        .empty-state-icon {
-            font-size: 64px;
-            margin-bottom: 16px;
-            opacity: 0.3;
-        }
-
-        .empty-state-text {
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-
-        .empty-state-subtext {
-            font-size: 14px;
-        }
-
-        /* Detail Modal Styles */
-        .detail-modal-content {
-            max-height: 85vh;
-        }
-
-        .detail-section {
-            margin-bottom: 20px;
-        }
-
-        .detail-section-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #004990;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #004990;
-        }
-
-        .detail-row {
-            display: flex;
-            padding: 8px 0;
-            border-bottom: 1px solid #f5f5f5;
-        }
-
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-
-        .detail-label {
-            width: 120px;
-            flex-shrink: 0;
-            font-size: 13px;
-            color: #666;
-        }
-
-        .detail-value {
-            flex: 1;
-            font-size: 13px;
-            color: #1a1a1a;
-            font-weight: 500;
-        }
-
-        .detail-list {
-            list-style: none;
-            padding: 0;
-            margin: 8px 0 0 0;
-        }
-
-        .detail-list li {
-            padding: 6px 0;
-            font-size: 13px;
-            color: #1a1a1a;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .detail-list li:before {
-            content: "•";
-            color: #004990;
-            font-weight: bold;
-            margin-right: 8px;
-        }
-
-        .badge-type-large {
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 15px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-    </style>
-</head>
-<body>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
     <!-- Header -->
     <div class="header">
-        <div class="header-left">
-            <button class="back-btn" onclick="goBack()">←</button>
-            <div class="header-title" id="pageTitle">Inventaris</div>
-        </div>
-        <div class="header-right">
-            <div class="user-avatar">IM</div>
-        </div>
+      <div class="header-left">
+        <button class="back-btn" onclick="goBack()">←</button>
+        <div class="header-title" id="pageTitle">Inventaris</div>
+      </div>
+      <div class="header-right">
+        <div class="user-avatar">IM</div>
+      </div>
     </div>
-
     <!-- Content -->
     <div class="content">
-        <!-- Inventory Menu -->
-        <div class="menu-section" id="inventoryMenu">
-            <div class="menu-header">
-                <span class="menu-title">Inventaris</span>
-            </div>
-            <ul class="menu-list">
-                <li class="menu-item">
-                    <a href="#" class="menu-link" onclick="showPage('labDistribution'); return false;">
-                        <span>Pengeluaran Lab</span>
-                        <span class="menu-arrow">›</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link" onclick="showPage('riwayatPengeluaran'); return false;">
-                        <span>Riwayat Pengeluaran Lab</span>
-                        <span class="menu-arrow">›</span>
-                    </a>
-                </li>
-            </ul>
+      <!-- Inventory Menu -->
+      <div class="menu-section" id="inventoryMenu">
+        <div class="menu-header">
+          <span class="menu-title">Inventaris</span>
         </div>
-
-        <!-- Lab Distribution Form (Initially Hidden) -->
-        <div class="form-section" id="labDistributionForm" style="display: none;">
-            
-            <!-- Step 0: Pilih Tipe Pengeluaran -->
-            <div id="step0Section">
-                <!-- Step Indicator -->
-                <div class="step-indicator">
-                    <div class="step-item active">
-                        <div class="step-number">1</div>
-                        <div class="step-label">Tipe</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Parameter & Metode</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">3</div>
-                        <div class="step-label">Material</div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Tipe Pengeluaran <span class="required">*</span></label>
-                    <div class="type-selection">
-                        <div class="type-card" onclick="selectType('sampel')">
-                            <input type="radio" name="tipeOutput" value="sampel" class="type-radio" id="typeSampel">
-                            <div class="type-info">
-                                <div class="type-title">📋 Sampel</div>
-                                <div class="type-desc">Pengeluaran untuk pemeriksaan sampel (batch processing)</div>
-                            </div>
-                        </div>
-                        <div class="type-card" onclick="selectType('control')">
-                            <input type="radio" name="tipeOutput" value="control" class="type-radio" id="typeControl">
-                            <div class="type-info">
-                                <div class="type-title">🔧 Control</div>
-                                <div class="type-desc">Kontrol kualitas sebagai ambang batas pembanding sampel</div>
-                            </div>
-                        </div>
-                        <div class="type-card type-alat" onclick="selectType('alat')">
-                            <input type="radio" name="tipeOutput" value="alat" class="type-radio" id="typeAlat">
-                            <div class="type-info">
-                                <div class="type-title">
-                                    ⚙️ Alat 
-                                    <span class="type-badge">KALIBRASI • 1x/TAHUN</span>
-                                </div>
-                                <div class="type-desc">Pengeluaran khusus untuk kalibrasi alat laboratorium tahunan</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="form-button" onclick="goToStep1()">Lanjutkan</button>
+        <ul class="menu-list">
+          <li class="menu-item">
+            <a href="#" class="menu-link" onclick="showPage('labDistribution'); return false;">
+              <span>Pengeluaran Lab</span>
+              <span class="menu-arrow">›</span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="#" class="menu-link" onclick="showPage('riwayatPengeluaran'); return false;">
+              <span>Riwayat Pengeluaran Lab</span>
+              <span class="menu-arrow">›</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- Lab Distribution Form (Initially Hidden) -->
+      <div class="form-section" id="labDistributionForm" style="display: none;">
+        <!-- STEP 0: PILIH TIPE PENGELUARAN (unchanged) -->
+        <div id="step0Section">
+          <!-- Step Indicator -->
+          <div class="step-indicator">
+            <div class="step-item active">
+              <div class="step-number">1</div>
+              <div class="step-label">Tipe</div>
+              <div class="step-line"></div>
             </div>
-
-            <!-- Step 1: Jumlah Sampel & Tes (Only for Sampel) -->
-            <div id="step1Section" style="display: none;">
-                <!-- Step Indicator -->
-                <div class="step-indicator">
-                    <div class="step-item completed">
-                        <div class="step-number">✓</div>
-                        <div class="step-label">Tipe</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item active">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Jumlah</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">3</div>
-                        <div class="step-label">Parameter & Metode</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">4</div>
-                        <div class="step-label">Material</div>
-                    </div>
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div class="step-label">Parameter & Metode</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-label">Jumlah</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div class="step-label">Material</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipe Pengeluaran <span class="required">*</span>
+            </label>
+            <div class="type-selection">
+              <div class="type-card" onclick="selectType('sampel')">
+                <input type="radio" name="tipeOutput" value="sampel" class="type-radio" id="typeSampel">
+                <div class="type-info">
+                  <div class="type-title">📋 Sampel</div>
+                  <div class="type-desc">Pengeluaran untuk pemeriksaan sampel (batch processing)</div>
                 </div>
-
-                <form id="step1Form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Jumlah Sampel <span class="required">*</span></label>
-                            <input type="number" id="jumlahSampelInput" class="form-input" placeholder="0" min="1" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Jumlah Tes <span class="required">*</span></label>
-                            <input type="number" id="jumlahTesInput" class="form-input" placeholder="0" min="1" required>
-                        </div>
-                    </div>
-
-                    <div class="info-box">
-                        <div class="info-box-title">ℹ️ Informasi</div>
-                        <div class="info-box-text">
-                            Masukkan jumlah total sampel dan jumlah total tes yang akan dilakukan. Material akan otomatis dihitung berdasarkan jumlah tes.
-                        </div>
-                    </div>
-
-                    <button type="button" class="form-button" onclick="goToStep2()">Lanjutkan</button>
-                </form>
-            </div>
-
-            <!-- Step 2: Parameter & Metode Selection -->
-            <div id="step2Section" style="display: none;">
-                <!-- Step Indicator (will be updated dynamically) -->
-                <div class="step-indicator" id="step2Indicator"></div>
-
-                <form id="step2Form">
-                    <div class="form-group">
-                        <label class="form-label">Parameter <span class="required">*</span></label>
-                        <div class="multi-select-wrapper">
-                            <div class="multi-select-display" id="parameterDisplay" onclick="toggleParameterDropdown()">
-                                <span class="multi-select-placeholder" id="parameterPlaceholder">Pilih parameter (bisa lebih dari 1)</span>
-                                <span class="multi-select-values" id="parameterValues" style="display: none;"></span>
-                                <span class="multi-select-arrow">▼</span>
-                            </div>
-                            <div class="multi-select-dropdown" id="parameterDropdown">
-                                <!-- Will be populated dynamically -->
-                            </div>
-                            <input type="hidden" id="parameterHidden" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Metode <span class="required">*</span></label>
-                        <select class="form-select" id="metodeSelect" required>
-                            <option value="">Pilih metode pemeriksaan</option>
-                            <option value="Lateral Flow">Lateral Flow</option>
-                            <option value="Flow Cytometry">Flow Cytometry</option>
-                            <option value="Enzimatik">Enzimatik</option>
-                            <option value="Pembuatan sediaan">Pembuatan sediaan</option>
-                            <option value="Mikroskopis">Mikroskopis</option>
-                            <option value="Reflactance photometri">Reflactance photometri</option>
-                            <option value="Aglutinasi">Aglutinasi</option>
-                            <option value="Flokulasi">Flokulasi</option>
-                            <option value="Organoleptik">Organoleptik</option>
-                            <option value="Molekuler">Molekuler</option>
-                            <option value="Konvensional (kimia)">Konvensional (kimia)</option>
-                        </select>
-                    </div>
-
-                    <button type="button" class="form-button" onclick="goToStep3()">Lanjutkan</button>
-                    <button type="button" class="form-button secondary" onclick="backFromStep2()">Kembali</button>
-                </form>
-            </div>
-
-            <!-- Step 3: Material List -->
-            <div id="step3Section" style="display: none;">
-                <!-- Step Indicator (will be updated dynamically) -->
-                <div class="step-indicator" id="step3Indicator"></div>
-
-                <h3 class="material-section-title">Daftar Material</h3>
-                
-                <div id="materialListContainer">
-                    <!-- Will be populated by JavaScript -->
+              </div>
+              <div class="type-card" onclick="selectType('control')">
+                <input type="radio" name="tipeOutput" value="control" class="type-radio" id="typeControl">
+                <div class="type-info">
+                  <div class="type-title">🔧 Control</div>
+                  <div class="type-desc">Kontrol kualitas sebagai ambang batas pembanding sampel</div>
                 </div>
-
-                <button type="button" class="form-button" onclick="handleSubmit()">Simpan Data</button>
-                <button type="button" class="form-button secondary" onclick="backFromStep3()">Kembali</button>
+              </div>
+              <div class="type-card type-alat" onclick="selectType('alat')">
+                <input type="radio" name="tipeOutput" value="alat" class="type-radio" id="typeAlat">
+                <div class="type-info">
+                  <div class="type-title"> ⚙️ Alat <span class="type-badge">KALIBRASI • 1x/TAHUN</span>
+                  </div>
+                  <div class="type-desc">Pengeluaran khusus untuk kalibrasi alat laboratorium tahunan</div>
+                </div>
+              </div>
             </div>
+          </div>
+          <button type="button" class="form-button" onclick="goToStep1()">Lanjutkan</button>
         </div>
-
-        <!-- Riwayat Pengeluaran Lab (Initially Hidden) -->
-        <div id="riwayatPengeluaranSection" style="display: none;">
-            <div class="history-container">
-                <!-- Search & Filter -->
-                <div class="search-filter-section">
-                    <div class="search-box">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" class="search-input" id="searchInput" placeholder="Cari..." onkeyup="filterHistory()">
-                    </div>
-                    <div class="filter-row">
-                        <select class="filter-select" id="filterType" onchange="filterHistory()">
-                            <option value="">Semua Tipe</option>
-                            <option value="sampel">Sampel</option>
-                            <option value="control">Control</option>
-                            <option value="alat">Alat</option>
-                        </select>
-                        <select class="filter-select" id="filterDate" onchange="filterHistory()">
-                            <option value="">Semua Waktu</option>
-                            <option value="today">Hari Ini</option>
-                            <option value="yesterday">Kemarin</option>
-                            <option value="7days">7 Hari Terakhir</option>
-                            <option value="30days">30 Hari Terakhir</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- History Cards Container -->
-                <div id="historyCardsContainer">
-                    <!-- Cards will be generated by JavaScript -->
-                </div>
+        <!-- STEP 1: PARAMETER & METODE SELECTION (moved from step 2) -->
+        <div id="step1Section" style="display: none;">
+          <!-- Step Indicator -->
+          <div class="step-indicator">
+            <div class="step-item completed">
+              <div class="step-number">✓</div>
+              <div class="step-label">Tipe</div>
+              <div class="step-line"></div>
             </div>
+            <div class="step-item active">
+              <div class="step-number">2</div>
+              <div class="step-label">Parameter & Metode</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div class="step-label">Jumlah</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div class="step-label">Material</div>
+            </div>
+          </div>
+          <form id="step1Form">
+            <div class="form-group">
+              <label class="form-label">Parameter <span class="required">*</span>
+              </label>
+              <div class="multi-select-wrapper">
+                <div class="multi-select-display" id="parameterDisplay" onclick="toggleParameterDropdown()">
+                  <span class="multi-select-placeholder" id="parameterPlaceholder">Pilih parameter (bisa lebih dari 1)</span>
+                  <span class="multi-select-values" id="parameterValues" style="display: none;"></span>
+                  <span class="multi-select-arrow">▼</span>
+                </div>
+                <div class="multi-select-dropdown" id="parameterDropdown">
+                  <!-- Will be populated dynamically -->
+                </div>
+                <input type="hidden" id="parameterHidden" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Metode <span class="required">*</span>
+              </label>
+              <select class="form-select" id="metodeSelect" required>
+                <option value="">Pilih metode pemeriksaan</option>
+                <option value="Lateral Flow">Lateral Flow</option>
+                <option value="Flow Cytometry">Flow Cytometry</option>
+                <option value="Enzimatik">Enzimatik</option>
+                <option value="Pembuatan sediaan">Pembuatan sediaan</option>
+                <option value="Mikroskopis">Mikroskopis</option>
+                <option value="Reflactance photometri">Reflactance photometri</option>
+                <option value="Aglutinasi">Aglutinasi</option>
+                <option value="Flokulasi">Flokulasi</option>
+                <option value="Organoleptik">Organoleptik</option>
+                <option value="Molekuler">Molekuler</option>
+                <option value="Konvensional (kimia)">Konvensional (kimia)</option>
+              </select>
+            </div>
+            <button type="button" class="form-button" onclick="goToStep2()">Lanjutkan</button>
+            <button type="button" class="form-button secondary" onclick="backFromStep1()">Kembali</button>
+          </form>
         </div>
+        <!-- STEP 2: JUMLAH SAMPEL & TES + NIK DATA (new combined step) -->
+        <div id="step2Section" style="display: none;">
+          <!-- Step Indicator -->
+          <div class="step-indicator" id="step2Indicator">
+            <!-- Will be populated dynamically based on type -->
+          </div>
+          <form id="step2Form">
+            <!-- Jumlah input (always shown) -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Jumlah Sampel <span class="required">*</span>
+                </label>
+                <input type="number" id="jumlahSampelInput" class="form-input" placeholder="0" min="1" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Jumlah Tes <span class="required">*</span>
+                </label>
+                <input type="number" id="jumlahTesInput" class="form-input" placeholder="0" min="1" required>
+              </div>
+            </div>
+            <div class="info-box">
+              <div class="info-box-title">ℹ️ Informasi</div>
+              <div class="info-box-text">
+                <span id="infoTextSampel">Masukkan jumlah total sampel dan jumlah total tes yang akan dilakukan.</span>
+                <span id="infoTextNIK" style="display: none;"> Setelah itu, Anda akan diminta mengisi data NIK untuk setiap sampel.</span>
+              </div>
+            </div>
+            <!-- NIK Data Container (only shown for sampel type) -->
+            <div id="nikDataContainer" style="display: none;">
+              <h3 class="material-section-title" style="margin-top: 20px;">Data Sampel (NIK)</h3>
+              <!-- Sample Progress Indicator -->
+              <div class="sample-progress" id="sampleProgress"></div>
+              <!-- Sample Cards will be generated here -->
+              <div id="sampleCardsContainer"></div>
+            </div>
+            <button type="button" class="form-button" onclick="goToStep3()" id="step2ContinueBtn">Lanjutkan</button>
+            <button type="button" class="form-button secondary" onclick="backFromStep2()">Kembali</button>
+          </form>
+        </div>
+        <!-- STEP 3: MATERIAL LIST (moved from step 3, now step 4 in new flow) -->
+        <div id="step3Section" style="display: none;">
+          <!-- Step Indicator -->
+          <div class="step-indicator" id="step3Indicator"></div>
+          <h3 class="material-section-title">Daftar Material</h3>
+          <div id="materialListContainer">
+            <!-- Will be populated by JavaScript -->
+          </div>
+          <button type="button" class="form-button" onclick="handleSubmit()">Simpan Data</button>
+          <button type="button" class="form-button secondary" onclick="backFromStep3()">Kembali</button>
+        </div>
+      </div>
+      <!-- Riwayat Pengeluaran Lab (Initially Hidden) -->
+      <div id="riwayatPengeluaranSection" style="display: none;">
+        <div class="history-container">
+          <!-- Search & Filter -->
+          <div class="search-filter-section">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="search-input" id="searchInput" placeholder="Cari..." onkeyup="filterHistory()">
+            </div>
+            <div class="filter-row">
+              <select class="filter-select" id="filterType" onchange="filterHistory()">
+                <option value="">Semua Tipe</option>
+                <option value="sampel">Sampel</option>
+                <option value="control">Control</option>
+                <option value="alat">Alat</option>
+              </select>
+              <select class="filter-select" id="filterDate" onchange="filterHistory()">
+                <option value="">Semua Waktu</option>
+                <option value="today">Hari Ini</option>
+                <option value="yesterday">Kemarin</option>
+                <option value="7days">7 Hari Terakhir</option>
+                <option value="30days">30 Hari Terakhir</option>
+              </select>
+            </div>
+          </div>
+          <!-- History Cards Container -->
+          <div id="historyCardsContainer">
+            <!-- Cards will be generated by JavaScript -->
+          </div>
+        </div>
+      </div>
     </div>
-
     <!-- Modal: Detail Pengeluaran -->
     <div class="modal-overlay" id="detailModal">
-        <div class="modal-content detail-modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Detail Pengeluaran Lab</h3>
-            </div>
-            <div class="modal-body" id="detailModalBody">
-                <!-- Will be populated by JavaScript -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="modal-btn modal-btn-cancel" onclick="closeDetailModal()" style="width: 100%;">Tutup</button>
-            </div>
+      <div class="modal-content detail-modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Detail Pengeluaran Lab</h3>
         </div>
+        <div class="modal-body" id="detailModalBody">
+          <!-- Will be populated by JavaScript -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="modal-btn modal-btn-cancel" onclick="closeDetailModal()" style="width: 100%;">Tutup</button>
+        </div>
+      </div>
     </div>
-
     <!-- Modal: Add Material -->
     <div class="modal-overlay" id="addMaterialModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Tambah Material</h3>
-            </div>
-            <div class="modal-body">
-                <div class="input-group">
-                    <label class="input-label">Kategori <span class="required">*</span></label>
-                    <select class="modal-input" id="newMaterialCategory" onchange="updateMaterialOptions()">
-                        <option value="">Pilih Kategori</option>
-                        <option value="Reagen">Reagen</option>
-                        <option value="Alat Habis Pakai">Alat Habis Pakai</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Nama Material <span class="required">*</span></label>
-                    <select class="modal-input" id="newMaterialName" onchange="updateMaterialUnit()" disabled>
-                        <option value="">Pilih material terlebih dahulu</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Satuan <span class="required">*</span></label>
-                    <input type="text" class="modal-input" id="newMaterialUnit" placeholder="Otomatis terisi" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Test/Package <span class="required">*</span></label>
-                    <input type="text" class="modal-input" id="newMaterialTestPkg" placeholder="Otomatis terisi" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="modal-btn modal-btn-cancel" onclick="closeAddMaterialModal()">Batal</button>
-                <button type="button" class="modal-btn modal-btn-confirm" onclick="addNewMaterial()">Tambahkan</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Tambah Material</h3>
         </div>
+        <div class="modal-body">
+          <div class="input-group">
+            <label class="input-label">Kategori <span class="required">*</span>
+            </label>
+            <select class="modal-input" id="newMaterialCategory" onchange="updateMaterialOptions()">
+              <option value="">Pilih Kategori</option>
+              <option value="Reagen">Reagen</option>
+              <option value="Alat Habis Pakai">Alat Habis Pakai</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Nama Material <span class="required">*</span>
+            </label>
+            <select class="modal-input" id="newMaterialName" onchange="updateMaterialUnit()" disabled>
+              <option value="">Pilih material terlebih dahulu</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Satuan <span class="required">*</span>
+            </label>
+            <input type="text" class="modal-input" id="newMaterialUnit" placeholder="Otomatis terisi" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Test/Package <span class="required">*</span>
+            </label>
+            <input type="text" class="modal-input" id="newMaterialTestPkg" placeholder="Otomatis terisi" readonly style="background-color: #f5f5f5; cursor: not-allowed;">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="modal-btn modal-btn-cancel" onclick="closeAddMaterialModal()">Batal</button>
+          <button type="button" class="modal-btn modal-btn-confirm" onclick="addNewMaterial()">Tambahkan</button>
+        </div>
+      </div>
     </div>
-
     <!-- Modal: Confirmation -->
     <div class="modal-overlay" id="confirmModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Konfirmasi Penyimpanan Data</h3>
-            </div>
-            <div class="modal-body" id="confirmModalBody">
-                <!-- Will be populated by JavaScript -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="modal-btn modal-btn-cancel" onclick="closeConfirmModal()">Batal</button>
-                <button type="button" class="modal-btn modal-btn-confirm" onclick="confirmSubmit()">Ya, Simpan</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Konfirmasi Penyimpanan Data</h3>
         </div>
+        <div class="modal-body" id="confirmModalBody">
+          <!-- Will be populated by JavaScript -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="modal-btn modal-btn-cancel" onclick="closeConfirmModal()">Batal</button>
+          <button type="button" class="modal-btn modal-btn-confirm" onclick="confirmSubmit()">Ya, Simpan</button>
+        </div>
+      </div>
     </div>
-
-    <script>
-        // Master Material Database dengan inventory simulation
-        const masterMaterialDatabase = {
-            'Reagen': [
-                // Hematologi
-                { nama: 'Onemed, Prufen', satuan: 'pcs', testPerPackage: 25, consumptionPerTest: 1, currentStock: 150 },
-                { nama: 'Onetech Diluent', satuan: 'ml', quantityPerPackage: 10000, testPerPackage: 200, consumptionPerTest: 50, currentStock: 1500 },
-                { nama: 'Onetech Lyse', satuan: 'ml', quantityPerPackage: 500, testPerPackage: 200, consumptionPerTest: 2.5, currentStock: 380 },
-                { nama: 'Onetech Detergent', satuan: 'ml', quantityPerPackage: 5000, testPerPackage: 200, consumptionPerTest: 25, currentStock: 450 },
-                
-                // Kimia Klinik
-                { nama: 'Codefree (Strip Glukosa)', satuan: 'pcs', quantityPerPackage: 50, testPerPackage: 50, consumptionPerTest: 1, currentStock: 85 },
-                { nama: 'Proline GOD PAP', satuan: 'ml', quantityPerPackage: 120, testPerPackage: 120, consumptionPerTest: 0.5, currentStock: 220 },
-                { nama: 'Proline Glucose Standard FS', satuan: 'ml', quantityPerPackage: 6, testPerPackage: 60, consumptionPerTest: 0.02, currentStock: 115 },
-                { nama: 'Proline ASAT (GOT) FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1, currentStock: 180 },
-                { nama: 'Proline ASAT (GOT) FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25, currentStock: 180 },
-                { nama: 'Proline ALAT (GPT) FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1, currentStock: 175 },
-                { nama: 'Proline ALAT (GPT) FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25, currentStock: 175 },
-                { nama: 'Accugence (Strip Asam Urat)', satuan: 'pcs', testPerPackage: 25, consumptionPerTest: 1, currentStock: 45 },
-                { nama: 'Proline Uric Acid Standard FS', satuan: 'ml', quantityPerPackage: 6, testPerPackage: 60, consumptionPerTest: 0.02, currentStock: 110 },
-                { nama: 'Proline Uric Acid FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1, currentStock: 165 },
-                { nama: 'Proline Uric Acid FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25, currentStock: 165 },
-                { nama: 'Proline Urea FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1, currentStock: 155 },
-                { nama: 'Proline Urea FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25, currentStock: 155 },
-                { nama: 'Labiosis Creatinine R1', satuan: 'ml', quantityPerPackage: 50, testPerPackage: 100, consumptionPerTest: 0.5, currentStock: 145 },
-                { nama: 'Labiosis Creatinine R2', satuan: 'ml', quantityPerPackage: 50, testPerPackage: 100, consumptionPerTest: 0.5, currentStock: 145 },
-                { nama: 'Mission (Strip Kolesterol)', satuan: 'pcs', testPerPackage: 25, consumptionPerTest: 1, currentStock: 52 },
-                { nama: 'Proline Cholesterol FS', satuan: 'ml', quantityPerPackage: 150, testPerPackage: 150, consumptionPerTest: 1, currentStock: 280 },
-                { nama: 'Proline Cholesterol Standard FS', satuan: 'ml', quantityPerPackage: 6, testPerPackage: 60, consumptionPerTest: 0.02, currentStock: 105 },
-                { nama: 'Proline Triglyseride FS 10\'', satuan: 'ml', quantityPerPackage: 120, testPerPackage: 120, consumptionPerTest: 1, currentStock: 210 },
-                { nama: 'Proline HDL-c direct FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1, currentStock: 185 },
-                { nama: 'Proline HDL-c direct FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25, currentStock: 185 },
-                
-                // Urinalisis
-                { nama: 'FOKUS Urine Test Strip URS-10', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 195 },
-                
-                // Mikrobiologi
-                { nama: 'Indec ZN (Ziehl Neelsen)', satuan: 'ml', quantityPerPackage: 500, testPerPackage: 20, consumptionPerTest: 30, currentStock: 340 },
-                { nama: 'Methylen Blue', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 20, consumptionPerTest: 6, currentStock: 285 },
-                { nama: 'Onecare Reagen Widal Salmonella typhi O', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15, currentStock: 92 },
-                { nama: 'Onecare Reagen Widal Salmonella typhi OH', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15, currentStock: 92 },
-                { nama: 'Onecare Reagen Widal Salmonella typhi A', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15, currentStock: 92 },
-                { nama: 'Onecare Reagen Widal Salmonella typhi B', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15, currentStock: 92 },
-                { nama: 'Indec HIV Sifilis Combo', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1, currentStock: 48 },
-                { nama: 'Focus RPR', satuan: 'kit', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 0.05, currentStock: 175 },
-                { nama: 'Fastclear (HBsAg)', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1, currentStock: 55 },
-                { nama: 'Deteksi Anti HCV', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1, currentStock: 43 },
-                { nama: 'Virocheck HIV', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1, currentStock: 51 },
-                { nama: 'Onecare Reagen Anti A', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15, currentStock: 128 },
-                { nama: 'Onecare Reagen Anti B', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15, currentStock: 128 },
-                { nama: 'Onecare Reagen Anti O', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15, currentStock: 128 },
-                { nama: 'Onecare Reagen Anti D', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15, currentStock: 128 },
-                { nama: 'Onemed (Tes Kehamilan)', satuan: 'pcs', quantityPerPackage: 50, testPerPackage: 50, consumptionPerTest: 1, currentStock: 98 },
-                
-                // Feses
-                { nama: 'Emtech Fecal Occult Blood', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1, currentStock: 62 }
-            ],
-            'Alat Habis Pakai': [
-                { nama: 'Pot urin steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 245 },
-                { nama: 'Urine tube', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 238 },
-                { nama: 'Object glass', satuan: 'pcs', testPerPackage: 72, consumptionPerTest: 1, currentStock: 168 },
-                { nama: 'Deck glass (Cover glass)', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 225 },
-                { nama: 'Pot tinja steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 188 },
-                { nama: 'Tabung reaksi', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 275 },
-                { nama: 'Lancet steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 315 },
-                { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2, currentStock: 425 },
-                { nama: 'Vacutainer EDTA', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 198 },
-                { nama: 'Spuit 3cc steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1, currentStock: 265 },
-                { nama: 'Pipet pasteur', satuan: 'pcs', testPerPackage: 500, consumptionPerTest: 1, currentStock: 1250 }
-            ]
-        };
-
-        // Database wilayah Indonesia (Jakarta dan Jawa Barat)
-        const wilayahData = {
-            '31': { 
-                name: 'DKI Jakarta', 
-                cities: {
-                    '71': { name: 'Jakarta Pusat', kecamatan: ['Gambir', 'Tanah Abang', 'Menteng', 'Senen', 'Cempaka Putih', 'Johar Baru', 'Kemayoran', 'Sawah Besar'] },
-                    '72': { name: 'Jakarta Utara', kecamatan: ['Penjaringan', 'Tanjung Priok', 'Koja', 'Cilincing', 'Pademangan', 'Kelapa Gading'] },
-                    '73': { name: 'Jakarta Barat', kecamatan: ['Cengkareng', 'Grogol Petamburan', 'Taman Sari', 'Tambora', 'Kebon Jeruk', 'Kalideres', 'Palmerah', 'Kembangan'] },
-                    '74': { name: 'Jakarta Selatan', kecamatan: ['Kebayoran Baru', 'Kebayoran Lama', 'Pesanggrahan', 'Cilandak', 'Pasar Minggu', 'Jagakarsa', 'Mampang Prapatan', 'Pancoran', 'Tebet'] },
-                    '75': { name: 'Jakarta Timur', kecamatan: ['Matraman', 'Pulogadung', 'Jatinegara', 'Cakung', 'Duren Sawit', 'Kramat Jati', 'Makasar', 'Pasar Rebo', 'Ciracas', 'Cipayung'] }
-                }
-            },
-            '32': { 
-                name: 'Jawa Barat', 
-                cities: {
-                    '71': { name: 'Bogor', kecamatan: ['Bogor Selatan', 'Bogor Timur', 'Bogor Utara', 'Bogor Tengah', 'Bogor Barat', 'Tanah Sareal'] },
-                    '73': { name: 'Bandung', kecamatan: ['Bandung Wetan', 'Sumur Bandung', 'Cibeunying Kidul', 'Cibeunying Kaler', 'Coblong', 'Sukasari', 'Cicendo', 'Sukajadi', 'Cidadap', 'Andir'] },
-                    '75': { name: 'Bekasi', kecamatan: ['Bekasi Barat', 'Bekasi Selatan', 'Bekasi Timur', 'Bekasi Utara', 'Bantargebang', 'Jatiasih', 'Jatisampurna', 'Medan Satria', 'Mustika Jaya', 'Pondok Gede', 'Pondok Melati', 'Rawalumbu'] },
-                    '76': { name: 'Depok', kecamatan: ['Beji', 'Cimanggis', 'Cinere', 'Cipayung', 'Limo', 'Pancoran Mas', 'Sawangan', 'Sukmajaya', 'Tapos', 'Bojongsari', 'Cilodong'] },
-                    '77': { name: 'Cimahi', kecamatan: ['Cimahi Selatan', 'Cimahi Tengah', 'Cimahi Utara'] }
-                }
-            }
-        };
-
-        // Parameter database dengan kategori (dari spreadsheet)
-        const parameterDatabase = {
-            'Hematologi': [
-                'Hemoglobin, penetapan kadar',
-                'Hematokrit, penetapan nilai',
-                'Eritrosit, hitung jumlah',
-                'Indeks Eritrosit (MCV, MCH, CHC), penetapan nilai',
-                'Trombosit, hitung jumlah',
-                'Leukosit, hitung jumlah',
-                'Laju Endap Darah, pengukuran',
-                'Pembuatan Apus Darah Tepi untuk rujukan'
-            ],
-            'Kimia Klinik': [
-                'Glukosa, penetapan kadar',
-                'SGOT, penetapan kadar',
-                'SGPT, penetapan kadar',
-                'Asam urat, penetapan kadar',
-                'Ureum/ BUN, penetapan kadar',
-                'Kreatinin, penetapan kadar',
-                'Kolesterol total, penetapan kadar',
-                'Trigliserida, penetapan kadar',
-                'Kolesterol HDL, penetapan kadar',
-                'Kolesterol LDL',
-                'HbA1c'
-            ],
-            'Urinalisis': [
-                'Analisis Urine: Warna, Bau, Kejernihan, Volume',
-                'pH, kuantitatif',
-                'Berat Jenis, kuantitatif',
-                'Protein, semi kuantitatif',
-                'Glukosa, semi kuantitatif',
-                'Bilirubin, semi kuantitatif',
-                'Urobilinogen, kuantitatif',
-                'Keton, semi kuantitatif',
-                'Nitrit, semi kuantitatif',
-                'Darah samar, semi kuantitatif',
-                'Leukosit, kuantitatif',
-                'Eritrosit, kuantitatif',
-                'Epitel, kuantitatif',
-                'Kristal, kualitatif',
-                'Silinder, semikuantitatif',
-                'Bakteri, penetapan semikuantitatif',
-                'Trichomonas sp., kualitatif',
-                'Jamur, kualitatif',
-                'Sperma, kualitatif'
-            ],
-            'Mikrobiologi Klinik': [
-                'BTA Mycobacterium Tuberculosis (semi kuantitatif)',
-                'BTA untuk Mycobacterium Leprae (semi kuantitatif)',
-                'Diplococcus gram negatif intra dan extra seluler, kualitatif',
-                'Trichomoniasis, kualitatif',
-                'Candidiasis vaginalis, kualitatif',
-                'Bacterial vaginosis, kualitatif',
-                'Jamur permukaan, kualitatif',
-                'Malaria, kualitatif',
-                'Malaria, kuantitatif',
-                'Telur Cacing',
-                'Mikrofilaria, kualitatif'
-            ],
-            'Serologi & Imunologi': [
-                'Anti-Salmonella typhi IgG IgM, kualitatif',
-                'Anti-Salmonella typhi, kualitatif',
-                'Treponema Pallidum Hemagglutination Assay (TPHA) kualitatif',
-                'VDRL/RPR, semikuantitatif',
-                'HBsAg, kualitatif',
-                'Anti HCV, kualitatif',
-                'Anti HIV, kualitatif',
-                'Anti HIV dan Sifilis, kualitatif',
-                'Antibodi Dengue IgG/IgM, kualitatif',
-                'Antigen Dengue (NS1) kualitatif',
-                'Antibodi Leptospira IgG/IgM',
-                'Antigen SARS-CoV-2, kualitatif',
-                'Antigen Rotavirus',
-                'Golongan darah ABO dan Rhesus, kualitatif',
-                'Tes Kehamilan, kualitatif'
-            ],
-            'Feses (Tinja)': [
-                'Konsistensi, Warna, Bau, Lendir, Darah',
-                'Darah samar',
-                'Telur cacing, kualitatif',
-                'Amuba, kualitatif',
-                'Eritrosit, kuantitatif',
-                'Leukosit, kuantitatif',
-                'Sisa makanan, kualitatif'
-            ]
-        };
-
-        // Material database berdasarkan kombinasi kategori parameter dan metode
-        const materialDatabase = {
-            'Hematologi-Lateral Flow': {
-                'Reagen': [
-                    { nama: 'Onemed, Prufen', satuan: 'pcs', testPerPackage: 25, consumptionPerTest: 1 }
-                ],
-                'Alat Habis Pakai': [
-                    { nama: 'Lancet steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2 }
-                ]
-            },
-            'Hematologi-Flow Cytometry': {
-                'Reagen': [
-                    { nama: 'Onetech Diluent', satuan: 'ml', quantityPerPackage: 10000, testPerPackage: 200, consumptionPerTest: 50 },
-                    { nama: 'Onetech Lyse', satuan: 'ml', quantityPerPackage: 500, testPerPackage: 200, consumptionPerTest: 2.5 },
-                    { nama: 'Onetech Detergent', satuan: 'ml', quantityPerPackage: 5000, testPerPackage: 200, consumptionPerTest: 25 }
-                ],
-                'Alat Habis Pakai': [
-                    { nama: 'Vacutainer EDTA', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Spuit 3cc steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2 }
-                ]
-            },
-            'Kimia Klinik-Lateral Flow': {
-                'Reagen': [
-                    { nama: 'Codefree (Strip Glukosa)', satuan: 'pcs', quantityPerPackage: 50, testPerPackage: 50, consumptionPerTest: 1 },
-                    { nama: 'Accugence (Strip Asam Urat)', satuan: 'pcs', testPerPackage: 25, consumptionPerTest: 1 },
-                    { nama: 'Mission (Strip Kolesterol)', satuan: 'pcs', testPerPackage: 25, consumptionPerTest: 1 }
-                ],
-                'Alat Habis Pakai': [
-                    { nama: 'Lancet steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2 }
-                ]
-            },
-            'Kimia Klinik-Enzimatik': {
-                'Reagen': [
-                    { nama: 'Proline GOD PAP', satuan: 'ml', quantityPerPackage: 120, testPerPackage: 120, consumptionPerTest: 0.5 },
-                    { nama: 'Proline Glucose Standard FS', satuan: 'ml', quantityPerPackage: 6, testPerPackage: 60, consumptionPerTest: 0.02 },
-                    { nama: 'Proline ASAT (GOT) FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Proline ASAT (GOT) FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25 },
-                    { nama: 'Proline ALAT (GPT) FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Proline ALAT (GPT) FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25 },
-                    { nama: 'Proline Uric Acid Standard FS', satuan: 'ml', quantityPerPackage: 6, testPerPackage: 60, consumptionPerTest: 0.02 },
-                    { nama: 'Proline Uric Acid FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Proline Uric Acid FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25 },
-                    { nama: 'Proline Urea FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Proline Urea FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25 },
-                    { nama: 'Labiosis Creatinine R1', satuan: 'ml', quantityPerPackage: 50, testPerPackage: 100, consumptionPerTest: 0.5 },
-                    { nama: 'Labiosis Creatinine R2', satuan: 'ml', quantityPerPackage: 50, testPerPackage: 100, consumptionPerTest: 0.5 },
-                    { nama: 'Proline Cholesterol FS', satuan: 'ml', quantityPerPackage: 150, testPerPackage: 150, consumptionPerTest: 1 },
-                    { nama: 'Proline Cholesterol Standard FS', satuan: 'ml', quantityPerPackage: 6, testPerPackage: 60, consumptionPerTest: 0.02 },
-                    { nama: 'Proline Triglyseride FS 10\'', satuan: 'ml', quantityPerPackage: 120, testPerPackage: 120, consumptionPerTest: 1 },
-                    { nama: 'Proline HDL-c direct FS R1', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Proline HDL-c direct FS R2', satuan: 'ml', quantityPerPackage: 25, testPerPackage: 100, consumptionPerTest: 0.25 }
-                ],
-                'Alat Habis Pakai': [
-                    { nama: 'Vacutainer EDTA', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Spuit 3cc steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2 }
-                ]
-            },
-            'Urinalisis-Reflactance photometri': {
-                'Reagen': [
-                    { nama: 'FOKUS Urine Test Strip URS-10', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
-                ],
-                'Alat Habis Pakai': [
-                    { nama: 'Pot urin steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Urine tube', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
-                ]
-            },
-            'Urinalisis-Mikroskopis': {
-                'Alat Habis Pakai': [
-                    { nama: 'Pot urin steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Urine tube', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Object glass', satuan: 'pcs', testPerPackage: 72, consumptionPerTest: 1 },
-                    { nama: 'Deck glass (Cover glass)', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
-                ]
-            },
-            'Urinalisis-Organoleptik': {
-                'Alat Habis Pakai': [
-                    { nama: 'Pot urin steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
-                ]
-            },
-            'Mikrobiologi Klinik-Mikroskopis': {
-                'Reagen': [
-                    { nama: 'Indec ZN (Ziehl Neelsen)', satuan: 'ml', quantityPerPackage: 500, testPerPackage: 20, consumptionPerTest: 30 },
-                    { nama: 'Methylen Blue', satuan: 'ml', quantityPerPackage: 100, testPerPackage: 20, consumptionPerTest: 6 }
-                ],
-                'Alat Habis Pakai': [
-                    { nama: 'Object glass', satuan: 'pcs', testPerPackage: 72, consumptionPerTest: 1 },
-                    { nama: 'Deck glass (Cover glass)', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Pipet pasteur', satuan: 'pcs', testPerPackage: 500, consumptionPerTest: 1 }
-                ]
-            },
-            'Serologi & Imunologi-Lateral Flow': {
-                'Reagen': [
-                    { nama: 'Indec HIV Sifilis Combo', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1 },
-                    { nama: 'Fastclear (HBsAg)', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1 },
-                    { nama: 'Deteksi Anti HCV', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1 },
-                    { nama: 'Virocheck HIV', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1 },
-                    { nama: 'Onemed (Tes Kehamilan)', satuan: 'pcs', quantityPerPackage: 50, testPerPackage: 50, consumptionPerTest: 1 }
-                ],
-                'Alat Habis Pakai': [
-                    { nama: 'Vacutainer EDTA', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Spuit 3cc steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2 }
-                ]
-            },
-            'Serologi & Imunologi-Aglutinasi': {
-                'Reagen': [
-                    { nama: 'Onecare Reagen Widal Salmonella typhi O', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15 },
-                    { nama: 'Onecare Reagen Widal Salmonella typhi OH', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15 },
-                    { nama: 'Onecare Reagen Widal Salmonella typhi A', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15 },
-                    { nama: 'Onecare Reagen Widal Salmonella typhi B', satuan: 'ml', quantityPerPackage: 5, testPerPackage: 33, consumptionPerTest: 0.15 },
-                    { nama: 'Onecare Reagen Anti A', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15 },
-                    { nama: 'Onecare Reagen Anti B', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15 },
-                    { nama: 'Onecare Reagen Anti O', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15 },
-                    { nama: 'Onecare Reagen Anti D', satuan: 'ml', quantityPerPackage: 10, testPerPackage: 66, consumptionPerTest: 0.15 }
-                ],
-                'Alat Habis Pakai': [
-                    { nama: 'Object glass', satuan: 'pcs', testPerPackage: 72, consumptionPerTest: 1 },
-                    { nama: 'Lancet steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
-                ]
-            },
-            'Serologi & Imunologi-Flokulasi': {
-                'Reagen': [
-                    { nama: 'Focus RPR', satuan: 'kit', quantityPerPackage: 100, testPerPackage: 100, consumptionPerTest: 0.05 }
-                ],
-                'Alat Habis Pakai': [
-                    { nama: 'Vacutainer EDTA', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Spuit 3cc steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Alcohol swab', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 2 }
-                ]
-            },
-            'Feses (Tinja)-Organoleptik': {
-                'Alat Habis Pakai': [
-                    { nama: 'Pot tinja steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
-                ]
-            },
-            'Feses (Tinja)-Konvensional (kimia)': {
-                'Reagen': [
-                    { nama: 'Emtech Fecal Occult Blood', satuan: 'pcs', quantityPerPackage: 25, testPerPackage: 25, consumptionPerTest: 1 }
-                ],
-                'Alat Habis Pakai': [
-                    { nama: 'Pot tinja steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Tabung reaksi', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
-                ]
-            },
-            'Feses (Tinja)-Mikroskopis': {
-                'Alat Habis Pakai': [
-                    { nama: 'Pot tinja steril', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 },
-                    { nama: 'Object glass', satuan: 'pcs', testPerPackage: 72, consumptionPerTest: 1 },
-                    { nama: 'Deck glass (Cover glass)', satuan: 'pcs', testPerPackage: 100, consumptionPerTest: 1 }
-                ]
-            }
-        };
-
-        let selectedParameters = [];
-        let selectedType = null;
-        let customMaterials = { Reagen: [], 'Alat Habis Pakai': [] };
-        let currentAddCategory = '';
-        let jumlahSampel = 0;
-        let jumlahTes = 0;
-
-        // Storage for pengeluaran data (simulates database)
-        let pengeluaranData = [];
-
-        // Initialize parameter dropdown with categories
-        function initializeParameterDropdown() {
-            const dropdown = document.getElementById('parameterDropdown');
-            dropdown.innerHTML = '';
-            
-            Object.keys(parameterDatabase).forEach(category => {
-                // Add category header
-                const categoryHeader = document.createElement('div');
-                categoryHeader.className = 'multi-select-category';
-                categoryHeader.textContent = category;
-                dropdown.appendChild(categoryHeader);
-                
-                // Add parameters under category
-                parameterDatabase[category].forEach((param, index) => {
-                    const option = document.createElement('div');
-                    option.className = 'multi-select-option';
-                    const uniqueId = `param-${category.replace(/[^a-zA-Z0-9]/g, '')}-${index}`;
-                    option.innerHTML = `
-                        <input type="checkbox" class="multi-select-checkbox" value="${param}" data-category="${category}" id="${uniqueId}" onchange="updateParameterDisplay()">
-                        <label for="${uniqueId}" style="flex: 1; cursor: pointer;">${param}</label>
-                    `;
-                    dropdown.appendChild(option);
-                });
-            });
-        }
-
-        // Multi-select parameter functions
-        function toggleParameterDropdown() {
-            const dropdown = document.getElementById('parameterDropdown');
-            dropdown.classList.toggle('active');
-        }
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const multiSelect = document.querySelector('.multi-select-wrapper');
-            const dropdown = document.getElementById('parameterDropdown');
-            
-            if (multiSelect && !multiSelect.contains(event.target)) {
-                dropdown.classList.remove('active');
-            }
-        });
-
-        function updateParameterDisplay() {
-            const checkboxes = document.querySelectorAll('.multi-select-checkbox');
-            selectedParameters = [];
-            
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    selectedParameters.push({
-                        name: checkbox.value,
-                        category: checkbox.getAttribute('data-category')
-                    });
-                }
-            });
-            
-            const placeholder = document.getElementById('parameterPlaceholder');
-            const values = document.getElementById('parameterValues');
-            const hidden = document.getElementById('parameterHidden');
-            
-            if (selectedParameters.length > 0) {
-                placeholder.style.display = 'none';
-                values.style.display = 'block';
-                values.textContent = selectedParameters.map(p => p.name).join(', ');
-                hidden.value = selectedParameters.map(p => p.name).join('; ');
-            } else {
-                placeholder.style.display = 'block';
-                values.style.display = 'none';
-                hidden.value = '';
-            }
-        }
-
-        // Type selection
-        function selectType(type) {
-            selectedType = type;
-            
-            document.getElementById('typeSampel').checked = (type === 'sampel');
-            document.getElementById('typeControl').checked = (type === 'control');
-            document.getElementById('typeAlat').checked = (type === 'alat');
-            
-            document.querySelectorAll('.type-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            event.currentTarget.classList.add('selected');
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize parameter dropdown
-            initializeParameterDropdown();
-        });
-
-        function goBack() {
-            const form = document.getElementById('labDistributionForm');
-            const menu = document.getElementById('inventoryMenu');
-            const riwayat = document.getElementById('riwayatPengeluaranSection');
-            const title = document.getElementById('pageTitle');
-            const step0 = document.getElementById('step0Section');
-            const step1 = document.getElementById('step1Section');
-            const step2 = document.getElementById('step2Section');
-            const step3 = document.getElementById('step3Section');
-            
-            if (step3.style.display === 'block') {
-                backFromStep3();
-            } else if (step2.style.display === 'block') {
-                backFromStep2();
-            } else if (step1.style.display === 'block') {
-                step1.style.display = 'none';
-                step0.style.display = 'block';
-                window.scrollTo(0, 0);
-            } else if (form.style.display === 'block') {
-                form.style.display = 'none';
-                menu.style.display = 'block';
-                title.textContent = 'Inventaris';
-                resetForm();
-            } else if (riwayat.style.display === 'block') {
-                riwayat.style.display = 'none';
-                menu.style.display = 'block';
-                title.textContent = 'Inventaris';
-            }
-        }
-
-        function resetForm() {
-            document.getElementById('step1Form').reset();
-            document.getElementById('step2Form').reset();
-            
-            const checkboxes = document.querySelectorAll('.multi-select-checkbox');
-            checkboxes.forEach(checkbox => checkbox.checked = false);
-            selectedParameters = [];
-            document.getElementById('parameterPlaceholder').style.display = 'block';
-            document.getElementById('parameterValues').style.display = 'none';
-            document.getElementById('parameterHidden').value = '';
-            
-            selectedType = null;
-            customMaterials = { Reagen: [], 'Alat Habis Pakai': [] };
-            jumlahSampel = 0;
-            jumlahTes = 0;
-            
-            document.querySelectorAll('.type-card').forEach(card => card.classList.remove('selected'));
-            document.querySelectorAll('input[name="tipeOutput"]').forEach(radio => radio.checked = false);
-            
-            document.getElementById('step0Section').style.display = 'block';
-            document.getElementById('step1Section').style.display = 'none';
-            document.getElementById('step2Section').style.display = 'none';
-            document.getElementById('step3Section').style.display = 'none';
-        }
-
-        function showPage(page) {
-            const form = document.getElementById('labDistributionForm');
-            const menu = document.getElementById('inventoryMenu');
-            const riwayat = document.getElementById('riwayatPengeluaranSection');
-            const title = document.getElementById('pageTitle');
-
-            // Hide all pages first
-            form.style.display = 'none';
-            menu.style.display = 'none';
-            riwayat.style.display = 'none';
-
-            if (page === 'labDistribution') {
-                form.style.display = 'block';
-                title.textContent = 'Pengeluaran Lab';
-            } else if (page === 'riwayatPengeluaran') {
-                riwayat.style.display = 'block';
-                title.textContent = 'Riwayat Pengeluaran Lab';
-                renderHistory();
-            }
-        }
-
-        function goToStep1() {
-            if (!selectedType) {
-                alert('Silakan pilih tipe pengeluaran');
-                return;
-            }
-
-            if (selectedType === 'sampel') {
-                document.getElementById('step0Section').style.display = 'none';
-                document.getElementById('step1Section').style.display = 'block';
-            } else {
-                // Langsung ke step 2 untuk Control dan Alat
-                document.getElementById('step0Section').style.display = 'none';
-                document.getElementById('step2Section').style.display = 'block';
-                updateStep2Indicator();
-            }
-            window.scrollTo(0, 0);
-        }
-
-        function updateStep2Indicator() {
-            const indicator = document.getElementById('step2Indicator');
-            if (selectedType === 'sampel') {
-                indicator.innerHTML = `
-                    <div class="step-item completed">
-                        <div class="step-number">✓</div>
-                        <div class="step-label">Tipe</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item completed">
-                        <div class="step-number">✓</div>
-                        <div class="step-label">Jumlah</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item active">
-                        <div class="step-number">3</div>
-                        <div class="step-label">Parameter & Metode</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">4</div>
-                        <div class="step-label">Material</div>
-                    </div>
-                `;
-            } else {
-                indicator.innerHTML = `
-                    <div class="step-item completed">
-                        <div class="step-number">✓</div>
-                        <div class="step-label">Tipe</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item active">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Parameter & Metode</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">3</div>
-                        <div class="step-label">Material</div>
-                    </div>
-                `;
-            }
-        }
-
-        function updateStep3Indicator() {
-            const indicator = document.getElementById('step3Indicator');
-            if (selectedType === 'sampel') {
-                indicator.innerHTML = `
-                    <div class="step-item completed">
-                        <div class="step-number">✓</div>
-                        <div class="step-label">Tipe</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item completed">
-                        <div class="step-number">✓</div>
-                        <div class="step-label">Jumlah</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item completed">
-                        <div class="step-number">✓</div>
-                        <div class="step-label">Parameter & Metode</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item active">
-                        <div class="step-number">4</div>
-                        <div class="step-label">Material</div>
-                    </div>
-                `;
-            } else {
-                indicator.innerHTML = `
-                    <div class="step-item completed">
-                        <div class="step-number">✓</div>
-                        <div class="step-label">Tipe</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item completed">
-                        <div class="step-number">✓</div>
-                        <div class="step-label">Parameter & Metode</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item active">
-                        <div class="step-number">3</div>
-                        <div class="step-label">Material</div>
-                    </div>
-                `;
-            }
-        }
-
-        function goToStep2() {
-            const sampel = parseInt(document.getElementById('jumlahSampelInput').value);
-            const tes = parseInt(document.getElementById('jumlahTesInput').value);
-            
-            if (!sampel || sampel < 1) {
-                alert('Silakan isi jumlah sampel (minimal 1)');
-                return;
-            }
-            
-            if (!tes || tes < 1) {
-                alert('Silakan isi jumlah tes (minimal 1)');
-                return;
-            }
-
-            jumlahSampel = sampel;
-            jumlahTes = tes;
-            
-            document.getElementById('step1Section').style.display = 'none';
-            document.getElementById('step2Section').style.display = 'block';
-            updateStep2Indicator();
-            window.scrollTo(0, 0);
-        }
-
-        function backFromStep2() {
-            if (selectedType === 'sampel') {
-                document.getElementById('step2Section').style.display = 'none';
-                document.getElementById('step1Section').style.display = 'block';
-            } else {
-                document.getElementById('step2Section').style.display = 'none';
-                document.getElementById('step0Section').style.display = 'block';
-            }
-            window.scrollTo(0, 0);
-        }
-
-        function backFromStep3() {
-            document.getElementById('step3Section').style.display = 'none';
-            document.getElementById('step2Section').style.display = 'block';
-            window.scrollTo(0, 0);
-        }
-
-        function goToStep3() {
-            if (selectedParameters.length === 0) {
-                alert('Silakan pilih minimal 1 parameter');
-                return;
-            }
-
-            const metode = document.getElementById('metodeSelect').value;
-
-            if (!metode) {
-                alert('Silakan pilih metode pemeriksaan');
-                return;
-            }
-
-            // Generate material list based on parameter categories and metode
-            generateMaterialList(selectedParameters, metode);
-
-            document.getElementById('step2Section').style.display = 'none';
-            document.getElementById('step3Section').style.display = 'block';
-            updateStep3Indicator();
-            window.scrollTo(0, 0);
-        }
-
-        function generateMaterialList(parameters, metode) {
-            const container = document.getElementById('materialListContainer');
-            container.innerHTML = '';
-
-            // Get unique categories from selected parameters
-            const categories = [...new Set(parameters.map(p => p.category))];
-            
-            // Combine materials from all categories with the selected metode
-            let combinedMaterials = { Reagen: [], 'Alat Habis Pakai': [] };
-            
-            categories.forEach(category => {
-                const key = `${category}-${metode}`;
-                const materials = materialDatabase[key];
-                
-                if (materials) {
-                    // Add Reagen materials
-                    if (materials.Reagen) {
-                        materials.Reagen.forEach(item => {
-                            if (!combinedMaterials.Reagen.find(m => m.nama === item.nama)) {
-                                combinedMaterials.Reagen.push(item);
-                            }
-                        });
-                    }
-                    
-                    // Add Alat Habis Pakai materials
-                    if (materials['Alat Habis Pakai']) {
-                        materials['Alat Habis Pakai'].forEach(item => {
-                            if (!combinedMaterials['Alat Habis Pakai'].find(m => m.nama === item.nama)) {
-                                combinedMaterials['Alat Habis Pakai'].push(item);
-                            }
-                        });
-                    }
-                }
-            });
-
-            // If no materials found, show basic default
-            if (combinedMaterials.Reagen.length === 0 && combinedMaterials['Alat Habis Pakai'].length === 0) {
-                container.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">Tidak ada material default untuk kombinasi parameter dan metode ini. Silakan tambah material secara manual.</p>';
-            }
-
-            // Use jumlahTes for auto-calculation (for sampel type), otherwise default to 1
-            const tesMultiplier = selectedType === 'sampel' ? jumlahTes : 1;
-
-            // Generate Reagen category
-            if (combinedMaterials.Reagen.length > 0) {
-                const reagenCategory = document.createElement('div');
-                reagenCategory.className = 'material-category';
-                reagenCategory.innerHTML = `
-                    <div class="category-header">Reagen</div>
-                    <div class="material-items" id="reagenItems"></div>
-                    <button type="button" class="add-material-btn" onclick="openAddMaterialModal('Reagen')">
-                        + Tambah Reagen Lainnya
-                    </button>
-                `;
-                container.appendChild(reagenCategory);
-
-                const reagenContainer = reagenCategory.querySelector('#reagenItems');
-                combinedMaterials.Reagen.forEach((item, index) => {
-                    const itemDiv = createMaterialItem(item, 'reagen', index, false, tesMultiplier);
-                    reagenContainer.appendChild(itemDiv);
-                });
-
-                // Add custom Reagen materials
-                customMaterials.Reagen.forEach((item, index) => {
-                    const itemDiv = createMaterialItem(item, 'reagen-custom', index, true, tesMultiplier);
-                    reagenContainer.appendChild(itemDiv);
-                });
-            }
-
-            // Generate Alat Habis Pakai category
-            if (combinedMaterials['Alat Habis Pakai'].length > 0) {
-                const alatCategory = document.createElement('div');
-                alatCategory.className = 'material-category';
-                alatCategory.innerHTML = `
-                    <div class="category-header">Alat Habis Pakai</div>
-                    <div class="material-items" id="alatItems"></div>
-                    <button type="button" class="add-material-btn" onclick="openAddMaterialModal('Alat Habis Pakai')">
-                        + Tambah Alat Habis Pakai Lainnya
-                    </button>
-                `;
-                container.appendChild(alatCategory);
-
-                const alatContainer = alatCategory.querySelector('#alatItems');
-                combinedMaterials['Alat Habis Pakai'].forEach((item, index) => {
-                    const itemDiv = createMaterialItem(item, 'alat', index, false, tesMultiplier);
-                    alatContainer.appendChild(itemDiv);
-                });
-
-                // Add custom Alat Habis Pakai materials
-                customMaterials['Alat Habis Pakai'].forEach((item, index) => {
-                    const itemDiv = createMaterialItem(item, 'alat-custom', index, true, tesMultiplier);
-                    alatContainer.appendChild(itemDiv);
-                });
-            }
-
-            // Add manual add buttons if no materials
-            if (combinedMaterials.Reagen.length === 0) {
-                const reagenCategory = document.createElement('div');
-                reagenCategory.className = 'material-category';
-                reagenCategory.innerHTML = `
-                    <div class="category-header">Reagen</div>
-                    <div class="material-items" id="reagenItems"></div>
-                    <button type="button" class="add-material-btn" onclick="openAddMaterialModal('Reagen')">
-                        + Tambah Reagen
-                    </button>
-                `;
-                container.appendChild(reagenCategory);
-            }
-
-            if (combinedMaterials['Alat Habis Pakai'].length === 0) {
-                const alatCategory = document.createElement('div');
-                alatCategory.className = 'material-category';
-                alatCategory.innerHTML = `
-                    <div class="category-header">Alat Habis Pakai</div>
-                    <div class="material-items" id="alatItems"></div>
-                    <button type="button" class="add-material-btn" onclick="openAddMaterialModal('Alat Habis Pakai')">
-                        + Tambah Alat Habis Pakai
-                    </button>
-                `;
-                container.appendChild(alatCategory);
-            }
-        }
-
-        function createMaterialItem(item, prefix, index, isCustom, tesMultiplier) {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'material-item';
-            const itemId = `${prefix}-${index}`;
-            itemDiv.setAttribute('data-material-id', itemId);
-            
-            // Get current stock from master database
-            const masterItem = masterMaterialDatabase['Reagen'].find(m => m.nama === item.nama) || 
-                             masterMaterialDatabase['Alat Habis Pakai'].find(m => m.nama === item.nama);
-            const currentStock = masterItem ? masterItem.currentStock : 0;
-            
-            // Calculate required quantity
-            const requiredQty = item.consumptionPerTest * tesMultiplier;
-            
-            // Calculate remaining stock
-            const remainingStock = currentStock - requiredQty;
-            
-            // Determine stock status
-            let stockClass = 'material-stock-info';
-            let stockWarning = '';
-            let itemClass = 'material-item';
-            
-            if (remainingStock < 0) {
-                stockClass += ' no-stock';
-                stockWarning = `⚠️ Stock tidak cukup! Kekurangan ${Math.abs(remainingStock)} tes`;
-                itemClass += ' stock-warning';
-            } else if (remainingStock < item.testPerPackage * 0.2) { // Low stock if < 20% of package
-                stockClass += ' low-stock';
-            }
-            
-            // Format test info
-            let testInfo = '';
-            if (item.testPerPackage) {
-                testInfo = `${item.testPerPackage} test/pkg`;
-            }
-            
-            // Format calculation info
-            let calcInfo = '';
-            if (tesMultiplier > 1) {
-                calcInfo = `${tesMultiplier} tes × ${item.consumptionPerTest} ${item.satuan}/tes`;
-            } else {
-                calcInfo = `${item.consumptionPerTest} ${item.satuan}/tes`;
-            }
-            
-            itemDiv.className = itemClass;
-            itemDiv.innerHTML = `
-                ${isCustom ? `<button type="button" class="delete-material-btn" onclick="deleteCustomMaterial('${prefix}', ${index})">×</button>` : ''}
-                <div class="material-name">${item.nama}</div>
-                <div class="material-meta">
-                    <span class="material-unit">${item.satuan}</span>
-                    ${testInfo ? `<span class="material-test-info">📦 ${testInfo}</span>` : ''}
-                    <span class="${stockClass}">💊 Sisa: ${remainingStock} tes</span>
-                </div>
-                ${stockWarning ? `<div class="stock-warning-text">${stockWarning}</div>` : ''}
-                <div class="material-details">
-                    <div class="material-calc-info">
-                        ${calcInfo}
-                    </div>
-                    <div class="quantity-display">
-                        ${requiredQty} ${item.satuan}
-                    </div>
-                </div>
-            `;
-            
-            return itemDiv;
-        }
-
-        // Modal functions
-        function openAddMaterialModal(category) {
-            currentAddCategory = category;
-            document.getElementById('addMaterialModal').classList.add('active');
-            document.getElementById('newMaterialCategory').value = category;
-            document.getElementById('newMaterialName').value = '';
-            document.getElementById('newMaterialName').disabled = false;
-            document.getElementById('newMaterialUnit').value = '';
-            document.getElementById('newMaterialTestPkg').value = '';
-            
-            // Populate material dropdown based on category
-            updateMaterialOptions();
-        }
-
-        function updateMaterialOptions() {
-            const category = document.getElementById('newMaterialCategory').value;
-            const materialSelect = document.getElementById('newMaterialName');
-            const unitInput = document.getElementById('newMaterialUnit');
-            const testPkgInput = document.getElementById('newMaterialTestPkg');
-            
-            // Reset
-            materialSelect.innerHTML = '<option value="">Pilih nama material</option>';
-            unitInput.value = '';
-            testPkgInput.value = '';
-            
-            if (category && masterMaterialDatabase[category]) {
-                materialSelect.disabled = false;
-                
-                // Get existing materials in the list to filter them out
-                const existingMaterials = new Set();
-                
-                // Get materials from current display
-                const materialItems = document.querySelectorAll('.material-item');
-                materialItems.forEach(item => {
-                    const name = item.querySelector('.material-name').textContent;
-                    existingMaterials.add(name);
-                });
-                
-                // Also add custom materials to the set
-                customMaterials[category].forEach(item => existingMaterials.add(item.nama));
-                
-                // Populate dropdown with materials not yet in the list
-                let availableCount = 0;
-                masterMaterialDatabase[category].forEach(material => {
-                    if (!existingMaterials.has(material.nama)) {
-                        const option = document.createElement('option');
-                        option.value = material.nama;
-                        option.textContent = material.nama;
-                        option.setAttribute('data-unit', material.satuan);
-                        option.setAttribute('data-test-pkg', material.testPerPackage || '');
-                        option.setAttribute('data-consumption', material.consumptionPerTest || '');
-                        materialSelect.appendChild(option);
-                        availableCount++;
-                    }
-                });
-                
-                // If no materials available
-                if (availableCount === 0) {
-                    materialSelect.disabled = true;
-                    materialSelect.innerHTML = '<option value="">Semua material sudah ditambahkan</option>';
-                }
-            } else {
-                materialSelect.disabled = true;
-                materialSelect.innerHTML = '<option value="">Pilih kategori terlebih dahulu</option>';
-            }
-        }
-
-        function updateMaterialUnit() {
-            const materialSelect = document.getElementById('newMaterialName');
-            const unitInput = document.getElementById('newMaterialUnit');
-            const testPkgInput = document.getElementById('newMaterialTestPkg');
-            
-            if (materialSelect.value) {
-                const selectedOption = materialSelect.options[materialSelect.selectedIndex];
-                const unit = selectedOption.getAttribute('data-unit');
-                const testPkg = selectedOption.getAttribute('data-test-pkg');
-                unitInput.value = unit || '';
-                testPkgInput.value = testPkg ? `${testPkg} test` : '';
-            } else {
-                unitInput.value = '';
-                testPkgInput.value = '';
-            }
-        }
-
-        function closeAddMaterialModal() {
-            document.getElementById('addMaterialModal').classList.remove('active');
-            currentAddCategory = '';
-        }
-
-        function addNewMaterial() {
-            const category = document.getElementById('newMaterialCategory').value;
-            const materialSelect = document.getElementById('newMaterialName');
-            const nama = materialSelect.value;
-
-            if (!category) {
-                alert('Silakan pilih kategori');
-                return;
-            }
-
-            if (!nama) {
-                alert('Silakan pilih nama material');
-                return;
-            }
-
-            // Get full material info from master database
-            const masterItem = masterMaterialDatabase[category].find(m => m.nama === nama);
-            if (!masterItem) {
-                alert('Material tidak ditemukan');
-                return;
-            }
-
-            const newMaterial = {
-                nama: masterItem.nama,
-                satuan: masterItem.satuan,
-                testPerPackage: masterItem.testPerPackage,
-                consumptionPerTest: masterItem.consumptionPerTest
-            };
-
-            customMaterials[category].push(newMaterial);
-            closeAddMaterialModal();
-
-            // Refresh material list
-            const metode = document.getElementById('metodeSelect').value;
-            generateMaterialList(selectedParameters, metode);
-        }
-
-        function deleteCustomMaterial(prefix, index) {
-            if (confirm('Hapus material ini?')) {
-                const category = prefix.includes('reagen') ? 'Reagen' : 'Alat Habis Pakai';
-                customMaterials[category].splice(index, 1);
-                
-                // Refresh material list
-                const metode = document.getElementById('metodeSelect').value;
-                generateMaterialList(selectedParameters, metode);
-            }
-        }
-
-        function closeConfirmModal() {
-            document.getElementById('confirmModal').classList.remove('active');
-        }
-
-        function confirmSubmit() {
-            closeConfirmModal();
-            
-            // Collect materials with actual quantities used
-            const materials = collectMaterials();
-
-            // Update stock in master database
-            materials.Reagen.forEach(m => {
-                const masterItem = masterMaterialDatabase['Reagen'].find(item => m.nama === item.nama);
-                if (masterItem) {
-                    masterItem.currentStock -= m.tesUsed;
-                }
-            });
-
-            materials['Alat Habis Pakai'].forEach(m => {
-                const masterItem = masterMaterialDatabase['Alat Habis Pakai'].find(item => m.nama === item.nama);
-                if (masterItem) {
-                    masterItem.currentStock -= m.tesUsed;
-                }
-            });
-
-            // Prepare data object
-            const dataEntry = {
-                id: Date.now(),
-                timestamp: new Date(),
-                type: selectedType,
-                parameter: selectedParameters.map(p => p.name),
-                metode: document.getElementById('metodeSelect').value,
-                materials: {
-                    Reagen: materials.Reagen.map(m => `${m.nama}: ${m.quantity} ${m.satuan}`),
-                    'Alat Habis Pakai': materials['Alat Habis Pakai'].map(m => `${m.nama}: ${m.quantity} ${m.satuan}`)
-                }
-            };
-
-            // Add sampel info if type is sampel
-            if (selectedType === 'sampel') {
-                dataEntry.jumlahSampel = jumlahSampel;
-                dataEntry.jumlahTes = jumlahTes;
-            }
-
-            // Save to array
-            pengeluaranData.unshift(dataEntry); // Add to beginning of array
-            
-            // Create final summary
-            let summary = '✓ DATA PENGELUARAN LAB BERHASIL DISIMPAN!\n\n';
-            summary += `=== TIPE PENGELUARAN ===\n${selectedType.toUpperCase()}\n\n`;
-
-            if (selectedType === 'sampel') {
-                summary += `=== JUMLAH ===\n`;
-                summary += `Sampel: ${jumlahSampel}\n`;
-                summary += `Tes: ${jumlahTes}\n\n`;
-            }
-
-            const metode = document.getElementById('metodeSelect').value;
-
-            summary += `=== DATA PEMERIKSAAN ===\n`;
-            summary += `Parameter:\n${selectedParameters.map((p, i) => `  ${i + 1}. ${p.name}`).join('\n')}\n`;
-            summary += `Metode: ${metode}\n\n`;
-
-            summary += `=== MATERIAL REAGEN ===\n`;
-            summary += materials.Reagen.length > 0 ? materials.Reagen.map((m, i) => `${i + 1}. ${m.nama}: ${m.quantity} ${m.satuan}`).join('\n') : 'Tidak ada';
-            
-            summary += `\n\n=== MATERIAL ALAT HABIS PAKAI ===\n`;
-            summary += materials['Alat Habis Pakai'].length > 0 ? materials['Alat Habis Pakai'].map((m, i) => `${i + 1}. ${m.nama}: ${m.quantity} ${m.satuan}`).join('\n') : 'Tidak ada';
-
-            alert(summary);
-            
-            // Reset to main menu
-            const form = document.getElementById('labDistributionForm');
-            const menu = document.getElementById('inventoryMenu');
-            const title = document.getElementById('pageTitle');
-            
-            form.style.display = 'none';
-            menu.style.display = 'block';
-            title.textContent = 'Inventaris';
-            resetForm();
-        }
-
-        function collectMaterials() {
-            const materials = {
-                Reagen: [],
-                'Alat Habis Pakai': []
-            };
-            
-            const tesMultiplier = selectedType === 'sampel' ? jumlahTes : 1;
-
-            // Get all material items
-            const materialItems = document.querySelectorAll('.material-item');
-            materialItems.forEach(item => {
-                const nama = item.querySelector('.material-name').textContent;
-                const satuanEl = item.querySelector('.material-unit');
-                const qtyEl = item.querySelector('.quantity-display');
-                
-                if (satuanEl && qtyEl) {
-                    const satuan = satuanEl.textContent;
-                    const quantity = parseFloat(qtyEl.textContent);
-                    
-                    // Determine category based on which container it's in
-                    const reagenContainer = document.getElementById('reagenItems');
-                    const alatContainer = document.getElementById('alatItems');
-                    
-                    if (reagenContainer && reagenContainer.contains(item)) {
-                        const masterItem = masterMaterialDatabase['Reagen'].find(m => m.nama === nama);
-                        materials.Reagen.push({
-                            nama: nama,
-                            quantity: quantity,
-                            satuan: satuan,
-                            tesUsed: masterItem ? tesMultiplier : 0
-                        });
-                    } else if (alatContainer && alatContainer.contains(item)) {
-                        const masterItem = masterMaterialDatabase['Alat Habis Pakai'].find(m => m.nama === nama);
-                        materials['Alat Habis Pakai'].push({
-                            nama: nama,
-                            quantity: quantity,
-                            satuan: satuan,
-                            tesUsed: masterItem ? tesMultiplier : 0
-                        });
-                    }
-                }
-            });
-
-            return materials;
-        }
-
-        function handleSubmit() {
-            // Collect materials
-            const materials = collectMaterials();
-
-            // Validate at least one material
-            if (materials.Reagen.length === 0 && materials['Alat Habis Pakai'].length === 0) {
-                alert('Tidak ada material yang digunakan');
-                return;
-            }
-
-            // Check for stock warnings
-            const hasStockWarning = document.querySelectorAll('.stock-warning').length > 0;
-            
-            // Show confirmation modal
-            let modalContent = '<div class="summary-section">';
-            modalContent += '<div class="summary-title">TIPE PENGELUARAN</div>';
-            modalContent += `<div class="summary-text"><span class="summary-highlight">${selectedType.toUpperCase()}</span></div>`;
-            modalContent += '</div>';
-
-            if (selectedType === 'sampel') {
-                modalContent += '<div class="summary-section">';
-                modalContent += '<div class="summary-title">JUMLAH</div>';
-                modalContent += `<div class="summary-text">`;
-                modalContent += `Sampel: <span class="summary-highlight">${jumlahSampel}</span><br>`;
-                modalContent += `Tes: <span class="summary-highlight">${jumlahTes}</span>`;
-                modalContent += `</div></div>`;
-            }
-
-            const metode = document.getElementById('metodeSelect').value;
-
-            modalContent += '<div class="summary-section">';
-            modalContent += '<div class="summary-title">PARAMETER & METODE</div>';
-            modalContent += `<div class="summary-text">`;
-            modalContent += `Metode: <span class="summary-highlight">${metode}</span><br>`;
-            modalContent += `Parameter: ${selectedParameters.length} item`;
-            modalContent += `</div></div>`;
-
-            modalContent += '<div class="summary-section">';
-            modalContent += '<div class="summary-title">MATERIAL</div>';
-            modalContent += `<div class="summary-text">`;
-            modalContent += `Reagen: ${materials.Reagen.length} item<br>`;
-            modalContent += `Alat Habis Pakai: ${materials['Alat Habis Pakai'].length} item`;
-            modalContent += `</div></div>`;
-
-            if (hasStockWarning) {
-                modalContent += '<div style="background-color: #ffebee; border-left: 4px solid #f44336; padding: 12px; border-radius: 4px; margin-top: 15px;">';
-                modalContent += '<div style="color: #d32f2f; font-weight: 600; margin-bottom: 5px;">⚠️ Peringatan Stock</div>';
-                modalContent += '<div style="color: #666; font-size: 13px;">Beberapa material memiliki stock yang tidak mencukupi. Apakah Anda tetap ingin melanjutkan?</div>';
-                modalContent += '</div>';
-            }
-
-            modalContent += '<p style="color: #666; font-size: 13px; margin-top: 15px;">Apakah Anda yakin ingin menyimpan data ini?</p>';
-
-            document.getElementById('confirmModalBody').innerHTML = modalContent;
-            document.getElementById('confirmModal').classList.add('active');
-        }
-
-        // ====== HISTORY PAGE FUNCTIONS ======
-
-        function renderHistory() {
-            const container = document.getElementById('historyCardsContainer');
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const filterType = document.getElementById('filterType').value;
-            const filterDate = document.getElementById('filterDate').value;
-
-            // Filter data
-            let filteredData = pengeluaranData.filter(item => {
-                // Search filter - now just search in any field
-                let matchSearch = true;
-                if (searchTerm) {
-                    matchSearch = JSON.stringify(item).toLowerCase().includes(searchTerm);
-                }
-
-                // Type filter
-                let matchType = true;
-                if (filterType && item.type !== filterType) {
-                    matchType = false;
-                }
-
-                // Date filter
-                let matchDate = true;
-                if (filterDate) {
-                    const itemDate = new Date(item.timestamp);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-
-                    if (filterDate === 'today') {
-                        const todayEnd = new Date(today);
-                        todayEnd.setHours(23, 59, 59, 999);
-                        matchDate = itemDate >= today && itemDate <= todayEnd;
-                    } else if (filterDate === 'yesterday') {
-                        const yesterday = new Date(today);
-                        yesterday.setDate(yesterday.getDate() - 1);
-                        const yesterdayEnd = new Date(yesterday);
-                        yesterdayEnd.setHours(23, 59, 59, 999);
-                        matchDate = itemDate >= yesterday && itemDate <= yesterdayEnd;
-                    } else if (filterDate === '7days') {
-                        const sevenDaysAgo = new Date(today);
-                        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-                        matchDate = itemDate >= sevenDaysAgo;
-                    } else if (filterDate === '30days') {
-                        const thirtyDaysAgo = new Date(today);
-                        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-                        matchDate = itemDate >= thirtyDaysAgo;
-                    }
-                }
-
-                return matchSearch && matchType && matchDate;
-            });
-
-            // Render cards
-            if (filteredData.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📋</div>
-                        <div class="empty-state-text">Tidak ada data pengeluaran</div>
-                        <div class="empty-state-subtext">Data yang Anda cari tidak ditemukan</div>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = '';
-            filteredData.forEach(item => {
-                const card = createHistoryCard(item);
-                container.appendChild(card);
-            });
-        }
-
-        function createHistoryCard(item) {
-            const card = document.createElement('div');
-            card.className = 'history-card';
-            card.onclick = () => showDetail(item.id);
-
-            // Format date
-            const date = new Date(item.timestamp);
-            const dateStr = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-            const timeStr = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-
-            // Badge
-            let badgeClass = 'badge-sampel';
-            let badgeIcon = '📋';
-            if (item.type === 'control') {
-                badgeClass = 'badge-control';
-                badgeIcon = '🔧';
-            } else if (item.type === 'alat') {
-                badgeClass = 'badge-alat';
-                badgeIcon = '⚙️';
-            }
-
-            // Card content
-            let cardHTML = `
-                <div class="card-header">
-                    <div class="card-title-section">
-                        <div class="card-type-badge ${badgeClass}">
-                            ${badgeIcon} ${item.type.toUpperCase()}
-                        </div>
-                        <div class="card-datetime">${dateStr}, ${timeStr}</div>
-                    </div>
-                </div>
-                <div class="card-divider"></div>
-            `;
-
-            // Sampel info
-            if (item.type === 'sampel' && item.jumlahSampel) {
-                cardHTML += `
-                    <div class="card-info-row">
-                        <span class="card-label">Jumlah Sampel</span>
-                        <span class="card-value">${item.jumlahSampel}</span>
-                    </div>
-                    <div class="card-info-row">
-                        <span class="card-label">Jumlah Tes</span>
-                        <span class="card-value">${item.jumlahTes}</span>
-                    </div>
-                `;
-            }
-
-            // Lab info - Show parameter values, not count
-            const parameterDisplay = item.parameter.length > 2 
-                ? item.parameter.slice(0, 2).join(', ') + `, +${item.parameter.length - 2} lainnya`
-                : item.parameter.join(', ');
-
-            cardHTML += `
-                <div class="card-info-row">
-                    <span class="card-label">Metode</span>
-                    <span class="card-value">${item.metode}</span>
-                </div>
-                <div class="card-info-row">
-                    <span class="card-label">Parameter</span>
-                    <span class="card-value">${parameterDisplay}</span>
-                </div>
-                <div class="card-info-row">
-                    <span class="card-label">Material</span>
-                    <span class="card-value">${item.materials.Reagen.length + item.materials['Alat Habis Pakai'].length} item</span>
-                </div>
-                <div class="card-footer">
-                    <button class="view-detail-btn">
-                        Lihat Detail →
-                    </button>
-                </div>
-            `;
-
-            card.innerHTML = cardHTML;
-            return card;
-        }
-
-        function filterHistory() {
-            renderHistory();
-        }
-
-        function showDetail(id) {
-            const item = pengeluaranData.find(d => d.id === id);
-            if (!item) return;
-
-            const modal = document.getElementById('detailModal');
-            const modalBody = document.getElementById('detailModalBody');
-
-            // Format date
-            const date = new Date(item.timestamp);
-            const dateStr = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-            const timeStr = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-
-            // Badge
-            let badgeClass = 'badge-sampel';
-            let badgeIcon = '📋';
-            if (item.type === 'control') {
-                badgeClass = 'badge-control';
-                badgeIcon = '🔧';
-            } else if (item.type === 'alat') {
-                badgeClass = 'badge-alat';
-                badgeIcon = '⚙️';
-            }
-
-            let detailHTML = `
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div class="badge-type-large ${badgeClass}">
-                        ${badgeIcon} ${item.type.toUpperCase()}
-                    </div>
-                    <div style="font-size: 14px; color: #666;">${dateStr}, ${timeStr} WIB</div>
-                </div>
-            `;
-
-            // Sampel data
-            if (item.type === 'sampel' && item.jumlahSampel) {
-                detailHTML += `
-                    <div class="detail-section">
-                        <div class="detail-section-title">JUMLAH</div>
-                        <div class="detail-row">
-                            <div class="detail-label">Jumlah Sampel</div>
-                            <div class="detail-value">${item.jumlahSampel}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Jumlah Tes</div>
-                            <div class="detail-value">${item.jumlahTes}</div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Lab data
-            detailHTML += `
-                <div class="detail-section">
-                    <div class="detail-section-title">PARAMETER & METODE</div>
-                    <div class="detail-row">
-                        <div class="detail-label">Metode</div>
-                        <div class="detail-value">${item.metode}</div>
-                    </div>
-                    <div class="detail-row">
-                        <div class="detail-label">Parameter</div>
-                        <div class="detail-value">
-                            <ul class="detail-list">
-                                ${item.parameter.map(p => `<li>${p}</li>`).join('')}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Material Reagen
-            if (item.materials.Reagen.length > 0) {
-                detailHTML += `
-                    <div class="detail-section">
-                        <div class="detail-section-title">MATERIAL REAGEN (${item.materials.Reagen.length} item)</div>
-                        <ul class="detail-list">
-                            ${item.materials.Reagen.map(m => `<li>${m}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-
-            // Material Alat Habis Pakai
-            if (item.materials['Alat Habis Pakai'].length > 0) {
-                detailHTML += `
-                    <div class="detail-section">
-                        <div class="detail-section-title">MATERIAL ALAT HABIS PAKAI (${item.materials['Alat Habis Pakai'].length} item)</div>
-                        <ul class="detail-list">
-                            ${item.materials['Alat Habis Pakai'].map(m => `<li>${m}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-
-            modalBody.innerHTML = detailHTML;
-            modal.classList.add('active');
-        }
-
-        function closeDetailModal() {
-            document.getElementById('detailModal').classList.remove('active');
-        }
-
-        // Add some sample data for demonstration
-        function addSampleData() {
-            const sampleData = [
-                {
-                    id: Date.now() - 3600000,
-                    timestamp: new Date(Date.now() - 3600000),
-                    type: 'sampel',
-                    jumlahSampel: 5,
-                    jumlahTes: 15,
-                    parameter: ['Hemoglobin, penetapan kadar', 'Leukosit, hitung jumlah', 'Trombosit, hitung jumlah'],
-                    metode: 'Flow Cytometry',
-                    materials: {
-                        Reagen: ['Onetech Diluent: 750 ml', 'Onetech Lyse: 37.5 ml', 'Onetech Detergent: 375 ml'],
-                        'Alat Habis Pakai': ['Vacutainer EDTA: 15 pcs', 'Spuit 3cc steril: 15 pcs', 'Alcohol swab: 30 pcs']
-                    }
-                },
-                {
-                    id: Date.now() - 86400000,
-                    timestamp: new Date(Date.now() - 86400000),
-                    type: 'control',
-                    parameter: ['Glukosa, penetapan kadar', 'Kolesterol total, penetapan kadar', 'Trigliserida, penetapan kadar'],
-                    metode: 'Enzimatik',
-                    materials: {
-                        Reagen: ['Proline GOD PAP: 0.5 ml', 'Proline Cholesterol FS: 1 ml', 'Proline Triglyseride FS 10\': 1 ml'],
-                        'Alat Habis Pakai': ['Vacutainer EDTA: 1 pcs', 'Spuit 3cc steril: 1 pcs', 'Alcohol swab: 2 pcs']
-                    }
-                }
-            ];
-
-            pengeluaranData.push(...sampleData);
-        }
-
-        // Initialize with sample data
-        addSampleData();
-    </script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
