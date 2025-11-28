@@ -37,11 +37,17 @@
               <span class="menu-arrow">›</span>
             </a>
           </li>
+          <li class="menu-item">
+            <a href="#" class="menu-link" onclick="showPage('stokSection'); return false;">
+              <span>Lihat Stok</span>
+              <span class="menu-arrow">›</span>
+            </a>
+          </li>
         </ul>
       </div>
       <!-- Lab Distribution Form (Initially Hidden) -->
       <div class="form-section" id="labDistributionForm" style="display: none;">
-        <!-- STEP 0: PILIH TIPE PENGELUARAN (unchanged) -->
+        <!-- STEP 0: PILIH TIPE PENGELUARAN -->
         <div id="step0Section">
           <!-- Step Indicator -->
           <div class="step-indicator">
@@ -72,21 +78,21 @@
               <div class="type-card" onclick="selectType('sampel')">
                 <input type="radio" name="tipeOutput" value="sampel" class="type-radio" id="typeSampel">
                 <div class="type-info">
-                  <div class="type-title">📋 Sampel</div>
+                  <div class="type-title">Sampel</div>
                   <div class="type-desc">Pengeluaran untuk pemeriksaan sampel (batch processing)</div>
                 </div>
               </div>
               <div class="type-card" onclick="selectType('control')">
                 <input type="radio" name="tipeOutput" value="control" class="type-radio" id="typeControl">
                 <div class="type-info">
-                  <div class="type-title">🔧 Control</div>
+                  <div class="type-title">Control</div>
                   <div class="type-desc">Kontrol kualitas sebagai ambang batas pembanding sampel</div>
                 </div>
               </div>
               <div class="type-card type-alat" onclick="selectType('alat')">
                 <input type="radio" name="tipeOutput" value="alat" class="type-radio" id="typeAlat">
                 <div class="type-info">
-                  <div class="type-title"> ⚙️ Alat <span class="type-badge">KALIBRASI • 1x/TAHUN</span>
+                  <div class="type-title"> Alat <span class="type-badge">KALIBRASI • 1x/TAHUN</span>
                   </div>
                   <div class="type-desc">Pengeluaran khusus untuk kalibrasi alat laboratorium tahunan</div>
                 </div>
@@ -95,7 +101,7 @@
           </div>
           <button type="button" class="form-button" onclick="goToStep1()">Lanjutkan</button>
         </div>
-        <!-- STEP 1: PARAMETER & METODE SELECTION (moved from step 2) -->
+        <!-- STEP 1: PARAMETER & METODE SELECTION -->
         <div id="step1Section" style="display: none;">
           <!-- Step Indicator -->
           <div class="step-indicator">
@@ -157,14 +163,14 @@
             <button type="button" class="form-button secondary" onclick="backFromStep1()">Kembali</button>
           </form>
         </div>
-        <!-- STEP 2: JUMLAH SAMPEL & TES + NIK DATA (new combined step) -->
+        <!-- STEP 2: JUMLAH SAMPEL & TES + NIK DATA -->
         <div id="step2Section" style="display: none;">
           <!-- Step Indicator -->
           <div class="step-indicator" id="step2Indicator">
             <!-- Will be populated dynamically based on type -->
           </div>
           <form id="step2Form">
-            <!-- Jumlah input (always shown) -->
+            <!-- Jumlah input -->
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">Jumlah Sampel <span class="required">*</span>
@@ -178,13 +184,13 @@
               </div>
             </div>
             <div class="info-box">
-              <div class="info-box-title">ℹ️ Informasi</div>
+              <div class="info-box-title">Informasi</div>
               <div class="info-box-text">
                 <span id="infoTextSampel">Masukkan jumlah total sampel dan jumlah total tes yang akan dilakukan.</span>
                 <span id="infoTextNIK" style="display: none;"> Setelah itu, Anda akan diminta mengisi data NIK untuk setiap sampel.</span>
               </div>
             </div>
-            <!-- NIK Data Container (only shown for sampel type) -->
+            <!-- NIK Data Container -->
             <div id="nikDataContainer" style="display: none;">
               <h3 class="material-section-title" style="margin-top: 20px;">Data Sampel (NIK)</h3>
               <!-- Sample Progress Indicator -->
@@ -196,7 +202,7 @@
             <button type="button" class="form-button secondary" onclick="backFromStep2()">Kembali</button>
           </form>
         </div>
-        <!-- STEP 3: MATERIAL LIST (moved from step 3, now step 4 in new flow) -->
+        <!-- STEP 3: MATERIAL LIST -->
         <div id="step3Section" style="display: none;">
           <!-- Step Indicator -->
           <div class="step-indicator" id="step3Indicator"></div>
@@ -208,13 +214,14 @@
           <button type="button" class="form-button secondary" onclick="backFromStep3()">Kembali</button>
         </div>
       </div>
+      
       <!-- Riwayat Pengeluaran Lab (Initially Hidden) -->
       <div id="riwayatPengeluaranSection" style="display: none;">
         <div class="history-container">
           <!-- Search & Filter -->
           <div class="search-filter-section">
             <div class="search-box">
-              <span class="search-icon">🔍</span>
+              <span class="search-icon"></span>
               <input type="text" class="search-input" id="searchInput" placeholder="Cari..." onkeyup="filterHistory()">
             </div>
             <div class="filter-row">
@@ -239,7 +246,34 @@
           </div>
         </div>
       </div>
+
+      <!-- ==================== STOK SECTION (BARU) ==================== -->
+      <div id="stokSection" style="display: none;">
+        <div class="page-header" style="margin-bottom: 20px;">
+          <h2 class="section-title">Stok Material Laboratorium</h2>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-filter-section">
+          <div class="search-box">
+            <span class="search-icon"></span>
+            <input type="text" 
+                   class="search-input" 
+                   id="stokSearch" 
+                   placeholder="Cari material berdasarkan nama..." 
+                   onkeyup="searchStokMaterial()">
+          </div>
+        </div>
+
+        <!-- Material Cards Container -->
+        <div id="stokCardsContainer" class="stok-cards-container">
+          <!-- Cards akan di-generate oleh JavaScript -->
+        </div>
+      </div>
+      <!-- ==================== AKHIR STOK SECTION ==================== -->
+
     </div>
+    
     <!-- Modal: Detail Pengeluaran -->
     <div class="modal-overlay" id="detailModal">
       <div class="modal-content detail-modal-content">
@@ -254,6 +288,7 @@
         </div>
       </div>
     </div>
+    
     <!-- Modal: Add Material -->
     <div class="modal-overlay" id="addMaterialModal">
       <div class="modal-content">
@@ -294,6 +329,7 @@
         </div>
       </div>
     </div>
+    
     <!-- Modal: Confirmation -->
     <div class="modal-overlay" id="confirmModal">
       <div class="modal-content">
@@ -309,6 +345,23 @@
         </div>
       </div>
     </div>
+
+    <!-- ==================== MODAL: DETAIL STOK (BARU) ==================== -->
+    <div class="modal-overlay" id="stokDetailModal">
+      <div class="modal-content detail-modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="stokDetailTitle">Detail Material</h3>
+        </div>
+        <div class="modal-body" id="stokDetailBody">
+          <!-- Will be populated by JavaScript -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="modal-btn modal-btn-cancel" onclick="closeStokDetailModal()" style="width: 100%;">Tutup</button>
+        </div>
+      </div>
+    </div>
+    <!-- ==================== AKHIR MODAL STOK ==================== -->
+
     <script src="script.js"></script>
   </body>
 </html>

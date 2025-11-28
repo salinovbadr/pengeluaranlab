@@ -98,6 +98,42 @@
         }
     };
 
+    // NEW: Batch database - simulate batch tracking with expiry dates
+    const batchDatabase = {};
+
+    // Generate batches dynamically for all materials
+    function getOrCreateBatches(materialName, testPerPackage, currentStock) {
+        if (batchDatabase[materialName]) {
+            return batchDatabase[materialName];
+        }
+        
+        const batches = [];
+        const today = new Date();
+        let remaining = currentStock;
+        let batchCount = Math.min(3, Math.ceil(currentStock / testPerPackage));
+        
+        for (let i = 0; i < batchCount && remaining > 0; i++) {
+            const batchTests = Math.min(
+                testPerPackage * Math.ceil(remaining / testPerPackage / (batchCount - i)), 
+                remaining
+            );
+            const expiryDate = new Date(today);
+            expiryDate.setMonth(expiryDate.getMonth() + (6 + Math.floor(Math.random() * 18)));
+            
+            batches.push({
+                batchNo: `BATCH-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+                expiry: expiryDate.toISOString().split('T')[0],
+                remainingTests: batchTests,
+                packageSize: testPerPackage
+            });
+            
+            remaining -= batchTests;
+        }
+        
+        batchDatabase[materialName] = batches;
+        return batches;
+    }
+
     // Parameter database dengan kategori (from spreadsheet)
     const parameterDatabase = {
         'Hematologi': [
@@ -549,6 +585,7 @@ function goBack() {
     const form = document.getElementById('labDistributionForm');
     const menu = document.getElementById('inventoryMenu');
     const riwayat = document.getElementById('riwayatPengeluaranSection');
+    const stok = document.getElementById('stokSection');
     const title = document.getElementById('pageTitle');
     const step0 = document.getElementById('step0Section');
     const step1 = document.getElementById('step1Section');
@@ -569,6 +606,10 @@ function goBack() {
         resetForm();
     } else if (riwayat.style.display === 'block') {
         riwayat.style.display = 'none';
+        menu.style.display = 'block';
+        title.textContent = 'Inventaris';
+    } else if (stok.style.display === 'block') {
+        stok.style.display = 'none';
         menu.style.display = 'block';
         title.textContent = 'Inventaris';
     }
@@ -605,25 +646,45 @@ function resetForm() {
     document.getElementById('step3Section').style.display = 'none';
 }
 
-function showPage(page) {
+function showPage(pageName) {
     const form = document.getElementById('labDistributionForm');
     const menu = document.getElementById('inventoryMenu');
-    const riwayat = document.getElementById('riwayatPengeluaranSection');
+    const history = document.getElementById('riwayatPengeluaranSection'); // ✅ Perbaiki ID
+    const stokSection = document.getElementById('stokSection');
     const title = document.getElementById('pageTitle');
-
-    // Hide all pages first
+    
+    // Hide all sections first
     form.style.display = 'none';
     menu.style.display = 'none';
-    riwayat.style.display = 'none';
-
-    if (page === 'labDistribution') {
-        form.style.display = 'block';
-        title.textContent = 'Pengeluaran Lab';
-    } else if (page === 'riwayatPengeluaran') {
-        riwayat.style.display = 'block';
-        title.textContent = 'Riwayat Pengeluaran Lab';
-        renderHistory();
+    history.style.display = 'none';
+    stokSection.style.display = 'none';
+    
+    // Show selected page
+    switch(pageName) {
+        case 'labDistribution':
+            form.style.display = 'block';
+            title.textContent = 'Pengeluaran Lab';
+            break;
+            
+        case 'riwayatPengeluaran':
+            history.style.display = 'block';
+            title.textContent = 'Riwayat Pengeluaran';
+            renderHistory(); // Render history data
+            break;
+            
+        case 'stokSection':
+            stokSection.style.display = 'block';
+            title.textContent = 'Stok Material';
+            document.getElementById('stokSearch').value = '';
+            renderStokMaterial(); // Render stok data
+            break;
+            
+        default:
+            menu.style.display = 'block';
+            title.textContent = 'Inventaris';
     }
+    
+    window.scrollTo(0, 0);
 }
 
 // STEP 0 -> STEP 1: After selecting type, go to Parameter & Metode
@@ -658,21 +719,44 @@ function goToStep2() {
         return;
     }
 
-    // Show step 2
+    // NEW: Check if type is Control or Alat - skip to material directly
+    if (selectedType === 'control' || selectedType === 'alat') {
+        jumlahSampel = 1;
+        jumlahTes = 1;
+        
+        generateMaterialList(selectedParameters, metode);
+        document.getElementById('step1Section').style.display = 'none';
+        document.getElementById('step3Section').style.display = 'block';
+        updateStep3IndicatorForControlAlat();
+        window.scrollTo(0, 0);
+        return;
+    }
+
+    // For Sampel type, proceed to step 2 (Jumlah & NIK)
     document.getElementById('step1Section').style.display = 'none';
     document.getElementById('step2Section').style.display = 'block';
-    
-    // Update step indicator based on type
     updateStep2Indicator();
-    
-    // Show/hide NIK info based on type
-    if (selectedType === 'sampel') {
-        document.getElementById('infoTextNIK').style.display = 'inline';
-    } else {
-        document.getElementById('infoTextNIK').style.display = 'none';
-    }
-    
     window.scrollTo(0, 0);
+}
+
+function updateStep3IndicatorForControlAlat() {
+    const indicator = document.getElementById('step3Indicator');
+    indicator.innerHTML = `
+        <div class="step-item completed">
+            <div class="step-number">✓</div>
+            <div class="step-label">Tipe</div>
+            <div class="step-line"></div>
+        </div>
+        <div class="step-item completed">
+            <div class="step-number">✓</div>
+            <div class="step-label">Parameter & Metode</div>
+            <div class="step-line"></div>
+        </div>
+        <div class="step-item active">
+            <div class="step-number">3</div>
+            <div class="step-label">Material</div>
+        </div>
+    `;
 }
 
 function updateStep2Indicator() {
@@ -1109,7 +1193,13 @@ function updateStep3Indicator() {
 // STEP 3 -> STEP 2: Back to jumlah/NIK
 function backFromStep3() {
     document.getElementById('step3Section').style.display = 'none';
-    document.getElementById('step2Section').style.display = 'block';
+    
+    if (selectedType === 'control' || selectedType === 'alat') {
+        document.getElementById('step1Section').style.display = 'block';
+    } else {
+        document.getElementById('step2Section').style.display = 'block';
+    }
+    
     window.scrollTo(0, 0);
 }
 
@@ -1264,37 +1354,18 @@ function createMaterialItem(item, prefix, index, isCustom, tesMultiplier) {
     const itemId = `${prefix}-${index}`;
     itemDiv.setAttribute('data-material-id', itemId);
     
-    // Get current stock from master database
     const masterItem = masterMaterialDatabase['Reagen'].find(m => m.nama === item.nama) || 
                      masterMaterialDatabase['Alat Habis Pakai'].find(m => m.nama === item.nama);
     const currentStock = masterItem ? masterItem.currentStock : 0;
     
-    // Calculate required quantity
-    const requiredQty = item.consumptionPerTest * tesMultiplier;
+    const defaultQty = item.consumptionPerTest * tesMultiplier;
+    const batches = getOrCreateBatches(item.nama, item.testPerPackage, currentStock);
     
-    // Calculate remaining stock
-    const remainingStock = currentStock - requiredQty;
-    
-    // Determine stock status
-    let stockClass = 'material-stock-info';
-    let stockWarning = '';
-    let itemClass = 'material-item';
-    
-    if (remainingStock < 0) {
-        stockClass += ' no-stock';
-        stockWarning = `⚠️ Stock tidak cukup! Kekurangan ${Math.abs(remainingStock)} tes`;
-        itemClass += ' stock-warning';
-    } else if (remainingStock < item.testPerPackage * 0.2) {
-        stockClass += ' low-stock';
-    }
-    
-    // Format test info
     let testInfo = '';
     if (item.testPerPackage) {
-        testInfo = `${item.testPerPackage} test/pkg`;
+        testInfo = `${item.testPerPackage} tes/pkg`;
     }
     
-    // Format calculation info
     let calcInfo = '';
     if (tesMultiplier > 1) {
         calcInfo = `${tesMultiplier} tes × ${item.consumptionPerTest} ${item.satuan}/tes`;
@@ -1302,23 +1373,54 @@ function createMaterialItem(item, prefix, index, isCustom, tesMultiplier) {
         calcInfo = `${item.consumptionPerTest} ${item.satuan}/tes`;
     }
     
-    itemDiv.className = itemClass;
     itemDiv.innerHTML = `
         ${isCustom ? `<button type="button" class="delete-material-btn" onclick="deleteCustomMaterial('${prefix}', ${index})">×</button>` : ''}
         <div class="material-name">${item.nama}</div>
         <div class="material-meta">
             <span class="material-unit">${item.satuan}</span>
-            ${testInfo ? `<span class="material-test-info">📦 ${testInfo}</span>` : ''}
-            <span class="${stockClass}">💊 Sisa: ${remainingStock} tes</span>
+            ${testInfo ? `<span class="material-test-info">${testInfo}</span>` : ''}
+            <span class="material-stock-info">💊 Total Stock: ${currentStock} tes</span>
         </div>
-        ${stockWarning ? `<div class="stock-warning-text">${stockWarning}</div>` : ''}
+        
+        <div class="form-group" style="margin-top: 10px; margin-bottom: 10px;">
+            <label class="form-label" style="font-size: 12px; margin-bottom: 6px;">Pilih Batch <span class="required">*</span></label>
+            <select class="form-select batch-select" id="batch-${itemId}" onchange="updateMaterialQuantity('${itemId}', ${item.consumptionPerTest})">
+                <option value="">-- Pilih Batch --</option>
+                ${batches.map((batch, idx) => `
+                    <option value="${idx}" 
+                            data-remaining="${batch.remainingTests}" 
+                            data-package="${batch.packageSize}"
+                            data-batch-no="${batch.batchNo}">
+                        ${batch.batchNo} | Sisa: ${batch.remainingTests} tes | Exp: ${batch.expiry}
+                    </option>
+                `).join('')}
+            </select>
+            <div class="batch-info" id="batch-info-${itemId}" style="display: none; color: #2e7d32; font-weight: 600; margin-top: 4px;">
+                ✓ Batch dipilih
+            </div>
+        </div>
+        
         <div class="material-details">
             <div class="material-calc-info">
-                ${calcInfo}
+                ${calcInfo}<br>
+                <span style="font-size: 10px; color: #999;">Default: ${defaultQty} ${item.satuan}</span>
             </div>
-            <div class="quantity-display">
-                ${requiredQty} ${item.satuan}
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <input type="number" 
+                       class="quantity-input" 
+                       id="qty-${itemId}" 
+                       value="${defaultQty}" 
+                       min="0" 
+                       step="0.01"
+                       onchange="validateQuantity('${itemId}')"
+                       oninput="validateQuantity('${itemId}')"
+                       style="width: 90px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; font-weight: 600; text-align: center;">
+                <span style="font-size: 13px; color: #666; font-weight: 500;">${item.satuan}</span>
             </div>
+        </div>
+        
+        <div class="batch-warning" id="warning-${itemId}" style="display: none; margin-top: 8px; padding: 8px; background: #fff3e0; border-left: 3px solid #ff9800; border-radius: 4px;">
+            <span style="font-size: 11px; color: #f57c00; font-weight: 600;">⚠Pilih batch terlebih dahulu</span>
         </div>
     `;
     
@@ -1386,6 +1488,50 @@ function updateMaterialOptions() {
         materialSelect.disabled = true;
         materialSelect.innerHTML = '<option value="">Pilih kategori terlebih dahulu</option>';
     }
+}
+
+function collectMaterialsWithBatch() {
+    const materials = {
+        Reagen: [],
+        'Alat Habis Pakai': []
+    };
+
+    const materialItems = document.querySelectorAll('.material-item');
+    materialItems.forEach(item => {
+        const nama = item.querySelector('.material-name').textContent;
+        const satuanEl = item.querySelector('.material-unit');
+        const itemId = item.getAttribute('data-material-id');
+        const qtyInput = document.getElementById(`qty-${itemId}`);
+        const batchSelect = document.getElementById(`batch-${itemId}`);
+        
+        if (satuanEl && qtyInput && batchSelect && batchSelect.value !== '') {
+            const satuan = satuanEl.textContent;
+            const quantity = parseFloat(qtyInput.value);
+            const batchOption = batchSelect.options[batchSelect.selectedIndex];
+            const batchNo = batchOption.getAttribute('data-batch-no');
+            
+            const reagenContainer = document.getElementById('reagenItems');
+            const alatContainer = document.getElementById('alatItems');
+            
+            if (reagenContainer && reagenContainer.contains(item)) {
+                materials.Reagen.push({
+                    nama: nama,
+                    quantity: quantity,
+                    satuan: satuan,
+                    batch: batchNo
+                });
+            } else if (alatContainer && alatContainer.contains(item)) {
+                materials['Alat Habis Pakai'].push({
+                    nama: nama,
+                    quantity: quantity,
+                    satuan: satuan,
+                    batch: batchNo
+                });
+            }
+        }
+    });
+
+    return materials;
 }
 
 function updateMaterialUnit() {
@@ -1460,85 +1606,52 @@ function closeConfirmModal() {
 }
 
 function confirmSubmit() {
+    const tanggalInput = document.getElementById('tanggalPengeluaran');
+    if (!tanggalInput || !tanggalInput.value) {
+        alert('Silakan isi tanggal aktual pengeluaran!');
+        return;
+    }
+    
+    const tanggalPengeluaran = tanggalInput.value;
     closeConfirmModal();
     
-    // Collect materials with actual quantities used
-    const materials = collectMaterials();
+    const materials = collectMaterialsWithBatch();
 
-    // Update stock in master database
-    materials.Reagen.forEach(m => {
-        const masterItem = masterMaterialDatabase['Reagen'].find(item => m.nama === item.nama);
-        if (masterItem) {
-            masterItem.currentStock -= m.tesUsed;
-        }
-    });
-
-    materials['Alat Habis Pakai'].forEach(m => {
-        const masterItem = masterMaterialDatabase['Alat Habis Pakai'].find(item => m.nama === item.nama);
-        if (masterItem) {
-            masterItem.currentStock -= m.tesUsed;
-        }
-    });
-
-    // Prepare data object
     const dataEntry = {
         id: Date.now(),
         timestamp: new Date(),
+        tanggalAktual: tanggalPengeluaran,
         type: selectedType,
         parameter: selectedParameters.map(p => p.name),
         metode: document.getElementById('metodeSelect').value,
         materials: {
-            Reagen: materials.Reagen.map(m => `${m.nama}: ${m.quantity} ${m.satuan}`),
-            'Alat Habis Pakai': materials['Alat Habis Pakai'].map(m => `${m.nama}: ${m.quantity} ${m.satuan}`)
+            Reagen: materials.Reagen.map(m => `${m.nama}: ${m.quantity} ${m.satuan} (${m.batch})`),
+            'Alat Habis Pakai': materials['Alat Habis Pakai'].map(m => `${m.nama}: ${m.quantity} ${m.satuan} (${m.batch})`)
         }
     };
 
-    // Add sampel info if type is sampel
     if (selectedType === 'sampel') {
         dataEntry.jumlahSampel = jumlahSampel;
         dataEntry.jumlahTes = jumlahTes;
-        // IMPORTANT: Add NIK data to the entry
-        dataEntry.sampleData = JSON.parse(JSON.stringify(sampleDataArray)); // Deep copy
+        dataEntry.sampleData = JSON.parse(JSON.stringify(sampleDataArray));
     }
 
-    // Save to array
     pengeluaranData.unshift(dataEntry);
     
-    // Create final summary
-    let summary = '✓ DATA PENGELUARAN LAB BERHASIL DISIMPAN!\n\n';
-    summary += `=== TIPE PENGELUARAN ===\n${selectedType.toUpperCase()}\n\n`;
+    let summary = '✓ DATA BERHASIL DISIMPAN!\n\n';
+    summary += `Tanggal: ${tanggalPengeluaran}\n`;
+    summary += `Tipe: ${selectedType.toUpperCase()}\n\n`;
 
     if (selectedType === 'sampel') {
-        summary += `=== JUMLAH ===\n`;
-        summary += `Sampel: ${jumlahSampel}\n`;
-        summary += `Tes: ${jumlahTes}\n\n`;
-        
-        summary += `=== DATA SAMPEL ===\n`;
-        sampleDataArray.forEach((sample, i) => {
-            summary += `\nSampel #${i + 1}:\n`;
-            summary += `  NIK: ${sample.nik}\n`;
-            summary += `  Nama: ${sample.namaLengkap}\n`;
-            summary += `  ${sample.jenisKelamin}, ${sample.usia} tahun\n`;
-            summary += `  ${sample.kota}, ${sample.provinsi}\n`;
-        });
-        summary += '\n';
+        summary += `Sampel: ${jumlahSampel} | Tes: ${jumlahTes}\n\n`;
     }
 
-    const metode = document.getElementById('metodeSelect').value;
-
-    summary += `=== DATA PEMERIKSAAN ===\n`;
-    summary += `Parameter:\n${selectedParameters.map((p, i) => `  ${i + 1}. ${p.name}`).join('\n')}\n`;
-    summary += `Metode: ${metode}\n\n`;
-
-    summary += `=== MATERIAL REAGEN ===\n`;
-    summary += materials.Reagen.length > 0 ? materials.Reagen.map((m, i) => `${i + 1}. ${m.nama}: ${m.quantity} ${m.satuan}`).join('\n') : 'Tidak ada';
-    
-    summary += `\n\n=== MATERIAL ALAT HABIS PAKAI ===\n`;
-    summary += materials['Alat Habis Pakai'].length > 0 ? materials['Alat Habis Pakai'].map((m, i) => `${i + 1}. ${m.nama}: ${m.quantity} ${m.satuan}`).join('\n') : 'Tidak ada';
+    summary += `Material:\n`;
+    summary += `- Reagen: ${materials.Reagen.length} item\n`;
+    summary += `- Alat Habis Pakai: ${materials['Alat Habis Pakai'].length} item\n`;
 
     alert(summary);
     
-    // Reset to main menu
     const form = document.getElementById('labDistributionForm');
     const menu = document.getElementById('inventoryMenu');
     const title = document.getElementById('pageTitle');
@@ -1593,17 +1706,14 @@ function collectMaterials() {
     return materials;
 }
 
-function handleSubmit() {
-    const materials = collectMaterials();
-
-    if (materials.Reagen.length === 0 && materials['Alat Habis Pakai'].length === 0) {
-        alert('Tidak ada material yang digunakan');
-        return;
-    }
-
-    const hasStockWarning = document.querySelectorAll('.stock-warning').length > 0;
-    
+function showDateConfirmModal(materials) {
     let modalContent = '<div class="summary-section">';
+    modalContent += '<div class="summary-title">TANGGAL AKTUAL PENGELUARAN</div>';
+    modalContent += `<div class="summary-text">`;
+    modalContent += `<input type="date" id="tanggalPengeluaran" class="form-input" value="${new Date().toISOString().split('T')[0]}" required style="margin-bottom: 15px;">`;
+    modalContent += `</div></div>`;
+    
+    modalContent += '<div class="summary-section">';
     modalContent += '<div class="summary-title">TIPE PENGELUARAN</div>';
     modalContent += `<div class="summary-text"><span class="summary-highlight">${selectedType.toUpperCase()}</span></div>`;
     modalContent += '</div>';
@@ -1639,17 +1749,50 @@ function handleSubmit() {
     modalContent += `Alat Habis Pakai: ${materials['Alat Habis Pakai'].length} item`;
     modalContent += `</div></div>`;
 
-    if (hasStockWarning) {
-        modalContent += '<div style="background-color: #ffebee; border-left: 4px solid #f44336; padding: 12px; border-radius: 4px; margin-top: 15px;">';
-        modalContent += '<div style="color: #d32f2f; font-weight: 600; margin-bottom: 5px;">⚠️ Peringatan Stock</div>';
-        modalContent += '<div style="color: #666; font-size: 13px;">Beberapa material memiliki stock yang tidak mencukupi. Apakah Anda tetap ingin melanjutkan?</div>';
-        modalContent += '</div>';
-    }
-
     modalContent += '<p style="color: #666; font-size: 13px; margin-top: 15px;">Apakah Anda yakin ingin menyimpan data ini?</p>';
 
     document.getElementById('confirmModalBody').innerHTML = modalContent;
     document.getElementById('confirmModal').classList.add('active');
+}
+
+function handleSubmit() {
+    const materials = collectMaterialsWithBatch();
+
+    if (materials.Reagen.length === 0 && materials['Alat Habis Pakai'].length === 0) {
+        alert('Tidak ada material yang digunakan');
+        return;
+    }
+
+    // Validate all materials have batch selected
+    let missingBatch = false;
+    let invalidQuantity = false;
+    
+    document.querySelectorAll('.batch-select').forEach(select => {
+        const itemId = select.id.replace('batch-', '');
+        const qtyInput = document.getElementById(`qty-${itemId}`);
+        
+        if (select.value === '') {
+            missingBatch = true;
+            const warning = document.getElementById(`warning-${itemId}`);
+            if (warning) warning.style.display = 'block';
+        }
+        
+        if (qtyInput && parseFloat(qtyInput.value) <= 0) {
+            invalidQuantity = true;
+        }
+    });
+
+    if (missingBatch) {
+        alert('Silakan pilih batch untuk semua material!');
+        return;
+    }
+    
+    if (invalidQuantity) {
+        alert('Jumlah material harus lebih dari 0!');
+        return;
+    }
+
+    showDateConfirmModal(materials);
 }
 
 // ========================================
@@ -1706,7 +1849,6 @@ function renderHistory() {
     if (filteredData.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
-                <div class="empty-state-icon">📋</div>
                 <div class="empty-state-text">Tidak ada data pengeluaran</div>
                 <div class="empty-state-subtext">Data yang Anda cari tidak ditemukan</div>
             </div>
@@ -1731,13 +1873,13 @@ function createHistoryCard(item) {
     const timeStr = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
 
     let badgeClass = 'badge-sampel';
-    let badgeIcon = '📋';
+    let badgeIcon = '';
     if (item.type === 'control') {
         badgeClass = 'badge-control';
-        badgeIcon = '🔧';
+        badgeIcon = '';
     } else if (item.type === 'alat') {
         badgeClass = 'badge-alat';
-        badgeIcon = '⚙️';
+        badgeIcon = '';
     }
 
     let cardHTML = `
@@ -1809,14 +1951,15 @@ function showDetail(id) {
     const timeStr = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
 
     let badgeClass = 'badge-sampel';
-    let badgeIcon = '📋';
+    let badgeIcon = '';
     if (item.type === 'control') {
         badgeClass = 'badge-control';
-        badgeIcon = '🔧';
+        badgeIcon = '';
     } else if (item.type === 'alat') {
         badgeClass = 'badge-alat';
-        badgeIcon = '⚙️';
+        badgeIcon = '';
     }
+
 
     let detailHTML = `
         <div style="text-align: center; margin-bottom: 20px;">
@@ -1995,6 +2138,382 @@ function addSampleData() {
             }
         }
     ];
+function updateMaterialQuantity(itemId, consumptionPerTest) {
+    const batchSelect = document.getElementById(`batch-${itemId}`);
+    const qtyInput = document.getElementById(`qty-${itemId}`);
+    const warning = document.getElementById(`warning-${itemId}`);
+    const batchInfo = document.getElementById(`batch-info-${itemId}`);
+    
+    if (batchSelect && batchSelect.value !== '') {
+        const selectedOption = batchSelect.options[batchSelect.selectedIndex];
+        const remainingTests = parseInt(selectedOption.getAttribute('data-remaining'));
+        
+        if (warning) warning.style.display = 'none';
+        if (batchInfo) batchInfo.style.display = 'block';
+        
+        // Auto-calculate based on remaining tests
+        const calculatedQty = remainingTests * consumptionPerTest;
+        if (qtyInput) {
+            qtyInput.value = calculatedQty.toFixed(2);
+            qtyInput.max = calculatedQty;
+        }
+        
+        validateQuantity(itemId);
+    } else {
+        if (warning) warning.style.display = 'block';
+        if (batchInfo) batchInfo.style.display = 'none';
+        if (qtyInput) {
+            qtyInput.style.borderColor = '#ddd';
+            qtyInput.style.backgroundColor = 'white';
+        }
+    }
+}
+
+function validateQuantity(itemId) {
+    const qtyInput = document.getElementById(`qty-${itemId}`);
+    const batchSelect = document.getElementById(`batch-${itemId}`);
+    
+    if (!batchSelect || batchSelect.value === '') {
+        return;
+    }
+    
+    const selectedOption = batchSelect.options[batchSelect.selectedIndex];
+    const remainingTests = parseInt(selectedOption.getAttribute('data-remaining'));
+    const currentQty = parseFloat(qtyInput.value);
+    const maxQty = parseFloat(qtyInput.max);
+    
+    if (currentQty > maxQty) {
+        qtyInput.style.borderColor = '#f44336';
+        qtyInput.style.backgroundColor = '#ffebee';
+    } else if (currentQty > 0) {
+        qtyInput.style.borderColor = '#4caf50';
+        qtyInput.style.backgroundColor = '#f0fff4';
+    } else {
+        qtyInput.style.borderColor = '#ddd';
+        qtyInput.style.backgroundColor = 'white';
+    }
+}
 
     pengeluaranData.push(...sampleData);
+}
+
+// ========================================
+// STOK MANAGEMENT FUNCTIONS
+// ========================================
+
+/**
+ * Render All Material Cards
+ * Function ini mengambil data dari masterMaterialDatabase dan menampilkan semua material
+ */
+function renderStokMaterial(searchTerm = '') {
+    const container = document.getElementById('stokCardsContainer');
+    container.innerHTML = '';
+    
+    let allMaterials = [];
+    
+    // Kumpulkan semua material dari masterMaterialDatabase
+    Object.keys(masterMaterialDatabase).forEach(category => {
+        masterMaterialDatabase[category].forEach(material => {
+            allMaterials.push({
+                ...material,
+                category: category
+            });
+        });
+    });
+    
+    // Filter berdasarkan search term
+    if (searchTerm) {
+        allMaterials = allMaterials.filter(m => 
+            m.nama.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }
+    
+    // Tampilkan pesan jika tidak ada hasil
+    if (allMaterials.length === 0) {
+        container.innerHTML = `
+            <div class="stok-empty-state">
+                <div class="stok-empty-text">Tidak ada material ditemukan</div>
+            </div>
+        `;
+        return;
+    }
+    
+    // Urutkan berdasarkan nama
+    allMaterials.sort((a, b) => a.nama.localeCompare(b.nama));
+    
+    // Buat card untuk setiap material
+    allMaterials.forEach(material => {
+        const card = createStokCard(material);
+        container.appendChild(card);
+    });
+}
+
+/**
+ * Create Material Stock Card
+ * Function ini membuat card untuk menampilkan info material
+ */
+function createStokCard(material) {
+    const card = document.createElement('div');
+    card.className = 'stok-card';
+    card.onclick = () => showStokDetail(material.nama, material.category);
+    
+    const categoryClass = material.category === 'Reagen' ? 'reagen' : 'alat';
+    const categoryLabel = material.category === 'Reagen' ? 'Reagen' : 'Alat';
+    
+    // Hitung total test yang tersedia dari semua batch
+    const batches = getOrCreateBatches(material.nama, material.testPerPackage, material.currentStock);
+    const totalTests = batches.reduce((sum, batch) => sum + batch.remainingTests, 0);
+    
+    // Tentukan warna indicator stok
+    const stockLevel = getStockLevel(totalTests, material.testPerPackage * 2);
+    
+    card.innerHTML = `
+        <div class="stok-card-header">
+            <div class="stok-material-name">${material.nama}</div>
+            <div class="stok-category-badge ${categoryClass}">${categoryLabel}</div>
+        </div>
+        
+        <div class="stok-info-row">
+            <span class="stok-info-label">Per Package:</span>
+            <span class="stok-info-value">${material.testPerPackage} test</span>
+        </div>
+        
+        <div class="stok-info-row">
+            <span class="stok-info-label">Per Test:</span>
+            <span class="stok-info-value">${material.consumptionPerTest} ${material.satuan}</span>
+        </div>
+        
+        <div class="stok-stock-indicator">
+            <div class="stok-stock-left">
+                <div class="stok-stock-text">Stok Tersedia</div>
+                <div class="stok-test-count">${totalTests} tes tersedia</div>
+            </div>
+            <div class="stok-stock-value ${stockLevel}">${totalTests}</div>
+        </div>
+    `;
+    
+    return card;
+}
+
+/**
+ * Get Stock Level (low/medium/high)
+ * Function ini menentukan warna indikator berdasarkan jumlah stok
+ */
+function getStockLevel(currentStock, threshold) {
+    if (currentStock === 0) return 'low';
+    if (currentStock < threshold) return 'medium';
+    return 'high';
+}
+
+/**
+ * Search Material
+ * Function ini dipanggil saat user mengetik di search bar
+ */
+function searchStokMaterial() {
+    const searchTerm = document.getElementById('stokSearch').value;
+    renderStokMaterial(searchTerm);
+}
+
+/**
+ * Show Material Detail Modal with Batch Information
+ * Function ini menampilkan modal dengan detail batch material
+ */
+function showStokDetail(materialName, category) {
+    const material = masterMaterialDatabase[category].find(m => m.nama === materialName);
+    if (!material) return;
+    
+    const batches = getOrCreateBatches(material.nama, material.testPerPackage, material.currentStock);
+    const totalTests = batches.reduce((sum, batch) => sum + batch.remainingTests, 0);
+    const totalPackages = Math.ceil(totalTests / material.testPerPackage);
+    
+    let batchesHTML = '';
+    batches.forEach((batch, index) => {
+        const expiryStatus = getExpiryStatus(batch.expiry);
+        const daysLeft = calculateDaysUntilExpiry(batch.expiry);
+        
+        let expiryText = '';
+        if (daysLeft < 0) {
+            expiryText = `Kadaluarsa ${Math.abs(daysLeft)} hari lalu`;
+        } else if (daysLeft === 0) {
+            expiryText = 'Kadaluarsa hari ini';
+        } else {
+            expiryText = `${daysLeft} hari lagi`;
+        }
+        
+        batchesHTML += `
+            <div class="stok-batch-item">
+                <div class="stok-batch-header">
+                    <div class="stok-batch-number">${batch.batchNo}</div>
+                    <div class="stok-expiry-badge ${expiryStatus.class}">${expiryStatus.label}</div>
+                </div>
+                <div class="stok-batch-details">
+                    <div class="stok-batch-detail-item">
+                        <span class="stok-batch-detail-label">Tanggal Kadaluarsa</span>
+                        <div class="stok-batch-detail-value">${batch.expiry}</div>
+                        <div style="font-size: 11px; color: #666; margin-top: 2px;">${expiryText}</div>
+                    </div>
+                    <div class="stok-batch-detail-item">
+                        <span class="stok-batch-detail-label">Sisa Tes</span>
+                        <div class="stok-batch-detail-value">${batch.remainingTests} tes</div>
+                    </div>
+                    <div class="stok-batch-detail-item">
+                        <span class="stok-batch-detail-label">Ukuran Package</span>
+                        <div class="stok-batch-detail-value">${batch.packageSize} tes/pkg</div>
+                    </div>
+                    <div class="stok-batch-detail-item">
+                        <span class="stok-batch-detail-label">Volume Tersisa</span>
+                        <div class="stok-batch-detail-value">${(batch.remainingTests * material.consumptionPerTest).toFixed(2)} ${material.satuan}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    const modalBody = document.getElementById('stokDetailBody');
+    modalBody.innerHTML = `
+        <div class="stok-detail-header">
+            <div class="stok-detail-name">${material.nama}</div>
+            <div class="stok-detail-meta">
+                <div class="stok-detail-meta-item">
+                    <span>${category}</span>
+                </div>
+                <div class="stok-detail-meta-item">
+                    <span>${material.testPerPackage} tes/package</span>
+                </div>
+                <div class="stok-detail-meta-item">
+                    <span>${material.consumptionPerTest} ${material.satuan}/tes</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stok-batch-section-title">Informasi Batch (${batches.length} batch tersedia)</div>
+        <div class="stok-batch-list">
+            ${batchesHTML}
+        </div>
+        
+        <div class="stok-total-summary">
+            <div class="stok-total-title">Total Stok Keseluruhan</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <div>
+                    <div class="stok-total-value">${totalTests} tes</div>
+                    <div style="font-size: 13px; color: #1565c0; margin-top: 4px; font-weight: 600;">
+                        ≈ ${totalPackages} package | ${(totalTests * material.consumptionPerTest).toFixed(2)} ${material.satuan}
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 12px; color: #1565c0; font-weight: 600; margin-bottom: 4px;">RATA-RATA EXPIRY</div>
+                    <div style="font-size: 16px; color: #0d47a1; font-weight: 700;">
+                        ${calculateAverageExpiry(batches)} hari
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('stokDetailModal').classList.add('active');
+}
+
+/**
+ * Get Expiry Status
+ * Function ini menentukan status kadaluarsa berdasarkan tanggal
+ */
+function getExpiryStatus(expiryDate) {
+    const days = calculateDaysUntilExpiry(expiryDate);
+    
+    if (days < 0) {
+        return { class: 'expired', label: 'Kadaluarsa' };
+    } else if (days <= 30) {
+        return { class: 'warning', label: 'Segera Kadaluarsa' };
+    } else {
+        return { class: 'good', label: 'Bagus' };
+    }
+}
+
+/**
+ * Calculate Days Until Expiry
+ * Function ini menghitung sisa hari sampai kadaluarsa
+ */
+function calculateDaysUntilExpiry(expiryDate) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const expiry = new Date(expiryDate);
+    expiry.setHours(0, 0, 0, 0);
+    
+    const diffTime = expiry - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    return diffDays;
+}
+
+/**
+ * Calculate Average Expiry Days
+ * Function ini menghitung rata-rata hari kadaluarsa dari semua batch
+ */
+function calculateAverageExpiry(batches) {
+    if (batches.length === 0) return 0;
+    
+    const totalDays = batches.reduce((sum, batch) => {
+        return sum + calculateDaysUntilExpiry(batch.expiry);
+    }, 0);
+    
+    return Math.round(totalDays / batches.length);
+}
+
+/**
+ * Close Stock Detail Modal
+ * Function ini menutup modal detail stok
+ */
+function closeStokDetailModal() {
+    document.getElementById('stokDetailModal').classList.remove('active');
+}
+
+/**
+ * Update stock after pengeluaran (INTEGRATION)
+ * Function ini mengurangi stok setelah ada pengeluaran
+ */
+function updateStockAfterPengeluaran(materials) {
+    // Update stok untuk Reagen
+    materials.Reagen.forEach(item => {
+        const match = item.match(/^(.+?):\s*([\d.]+)\s*(\w+)\s*\(Batch:\s*(.+?)\)$/);
+        if (match) {
+            const materialName = match[1];
+            const quantity = parseFloat(match[2]);
+            const batchNo = match[4];
+            
+            // Cari material di database
+            const material = masterMaterialDatabase['Reagen'].find(m => m.nama === materialName);
+            if (material && batchDatabase[materialName]) {
+                const batch = batchDatabase[materialName].find(b => b.batchNo === batchNo);
+                if (batch) {
+                    const testsUsed = Math.ceil(quantity / material.consumptionPerTest);
+                    batch.remainingTests = Math.max(0, batch.remainingTests - testsUsed);
+                    
+                    // Update total stock
+                    material.currentStock = batchDatabase[materialName].reduce((sum, b) => sum + b.remainingTests, 0);
+                }
+            }
+        }
+    });
+    
+    // Update stok untuk Alat Habis Pakai
+    materials['Alat Habis Pakai'].forEach(item => {
+        const match = item.match(/^(.+?):\s*([\d.]+)\s*(\w+)\s*\(Batch:\s*(.+?)\)$/);
+        if (match) {
+            const materialName = match[1];
+            const quantity = parseFloat(match[2]);
+            const batchNo = match[4];
+            
+            const material = masterMaterialDatabase['Alat Habis Pakai'].find(m => m.nama === materialName);
+            if (material && batchDatabase[materialName]) {
+                const batch = batchDatabase[materialName].find(b => b.batchNo === batchNo);
+                if (batch) {
+                    const testsUsed = Math.ceil(quantity / material.consumptionPerTest);
+                    batch.remainingTests = Math.max(0, batch.remainingTests - testsUsed);
+                    
+                    material.currentStock = batchDatabase[materialName].reduce((sum, b) => sum + b.remainingTests, 0);
+                }
+            }
+        }
+    });
 }
