@@ -1579,3 +1579,204 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* ========================================
+   DISTRIBUSI AKHIR SECTION STYLING
+======================================== */
+
+.distribusi-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.distribusi-card {
+    background: white;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    transition: all 0.3s;
+}
+
+.distribusi-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 73, 144, 0.15);
+    transform: translateY(-2px);
+}
+
+.distribusi-card-left {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.distribusi-material-info {
+    flex: 1;
+}
+
+.distribusi-material-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+}
+
+.distribusi-batch {
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    font-family: 'Courier New', monospace;
+}
+
+.distribusi-consumption {
+    min-width: 120px;
+    text-align: center;
+}
+
+.distribusi-consumption-title {
+    font-size: 10px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.distribusi-consumption-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #004990;
+}
+
+.distribusi-consumption-sub {
+    font-size: 11px;
+    color: #666;
+    margin-top: 2px;
+}
+
+.distribusi-volume {
+    min-width: 100px;
+    text-align: center;
+}
+
+.distribusi-volume-title {
+    font-size: 10px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.distribusi-volume-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.distribusi-card-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    min-width: 200px;
+}
+
+.distribusi-status {
+    width: 100%;
+}
+
+.distribusi-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    width: 100%;
+    justify-content: center;
+}
+
+.distribusi-status-badge.ready {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    color: #2e7d32;
+    border: 2px solid #4caf50;
+}
+
+.distribusi-status-badge.pending {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    color: #e65100;
+    border: 2px solid #ff9800;
+}
+
+.distribusi-kurang-info {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    margin-top: 4px;
+}
+
+.distribusi-action-btn {
+    width: 100%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.distribusi-action-btn.primary {
+    background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+    color: white;
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
+}
+
+.distribusi-action-btn.primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.distribusi-action-btn.primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.distribusi-action-btn:disabled {
+    background: #e0e0e0;
+    color: #999;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .distribusi-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .distribusi-card-left {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .distribusi-card-right {
+        width: 100%;
+        align-items: stretch;
+    }
+    
+    .distribusi-consumption,
+    .distribusi-volume {
+        text-align: left;
+    }
+}

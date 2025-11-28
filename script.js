@@ -586,6 +586,7 @@ function goBack() {
     const menu = document.getElementById('inventoryMenu');
     const riwayat = document.getElementById('riwayatPengeluaranSection');
     const stok = document.getElementById('stokSection');
+    const distribusi = document.getElementById('distribusiAkhirSection'); // ✅ TAMBAHKAN
     const title = document.getElementById('pageTitle');
     const step0 = document.getElementById('step0Section');
     const step1 = document.getElementById('step1Section');
@@ -610,6 +611,10 @@ function goBack() {
         title.textContent = 'Inventaris';
     } else if (stok.style.display === 'block') {
         stok.style.display = 'none';
+        menu.style.display = 'block';
+        title.textContent = 'Inventaris';
+    } else if (distribusi.style.display === 'block') { // ✅ TAMBAHKAN
+        distribusi.style.display = 'none';
         menu.style.display = 'block';
         title.textContent = 'Inventaris';
     }
@@ -649,8 +654,9 @@ function resetForm() {
 function showPage(pageName) {
     const form = document.getElementById('labDistributionForm');
     const menu = document.getElementById('inventoryMenu');
-    const history = document.getElementById('riwayatPengeluaranSection'); // ✅ Perbaiki ID
+    const history = document.getElementById('riwayatPengeluaranSection');
     const stokSection = document.getElementById('stokSection');
+    const distribusiSection = document.getElementById('distribusiAkhirSection'); // ✅ TAMBAHKAN
     const title = document.getElementById('pageTitle');
     
     // Hide all sections first
@@ -658,6 +664,7 @@ function showPage(pageName) {
     menu.style.display = 'none';
     history.style.display = 'none';
     stokSection.style.display = 'none';
+    distribusiSection.style.display = 'none'; // ✅ TAMBAHKAN
     
     // Show selected page
     switch(pageName) {
@@ -669,14 +676,20 @@ function showPage(pageName) {
         case 'riwayatPengeluaran':
             history.style.display = 'block';
             title.textContent = 'Riwayat Pengeluaran';
-            renderHistory(); // Render history data
+            renderHistory();
             break;
             
         case 'stokSection':
             stokSection.style.display = 'block';
             title.textContent = 'Stok Material';
             document.getElementById('stokSearch').value = '';
-            renderStokMaterial(); // Render stok data
+            renderStokMaterial();
+            break;
+            
+        case 'distribusiAkhir': // ✅ TAMBAHKAN CASE INI
+            distribusiSection.style.display = 'block';
+            title.textContent = 'Distribusi Akhir';
+            renderDistribusiAkhir();
             break;
             
         default:
@@ -1379,7 +1392,7 @@ function createMaterialItem(item, prefix, index, isCustom, tesMultiplier) {
         <div class="material-meta">
             <span class="material-unit">${item.satuan}</span>
             ${testInfo ? `<span class="material-test-info">${testInfo}</span>` : ''}
-            <span class="material-stock-info">💊 Total Stock: ${currentStock} tes</span>
+            <span class="material-stock-info">Total Stok: ${currentStock} tes</span>
         </div>
         
         <div class="form-group" style="margin-top: 10px; margin-bottom: 10px;">
@@ -1624,10 +1637,13 @@ function confirmSubmit() {
         type: selectedType,
         parameter: selectedParameters.map(p => p.name),
         metode: document.getElementById('metodeSelect').value,
+        sudahDistribusi: false, // ✅ TAMBAHKAN INI
         materials: {
             Reagen: materials.Reagen.map(m => `${m.nama}: ${m.quantity} ${m.satuan} (${m.batch})`),
             'Alat Habis Pakai': materials['Alat Habis Pakai'].map(m => `${m.nama}: ${m.quantity} ${m.satuan} (${m.batch})`)
-        }
+        },
+        // ✅ TAMBAHKAN field baru untuk raw material data
+        rawMaterials: materials
     };
 
     if (selectedType === 'sampel') {
@@ -1637,6 +1653,9 @@ function confirmSubmit() {
     }
 
     pengeluaranData.unshift(dataEntry);
+    
+    // Update stock after submission
+    updateStockAfterPengeluaran(dataEntry.materials);
     
     let summary = '✓ DATA BERHASIL DISIMPAN!\n\n';
     summary += `Tanggal: ${tanggalPengeluaran}\n`;
@@ -2516,4 +2535,238 @@ function updateStockAfterPengeluaran(materials) {
             }
         }
     });
+}
+
+// ========================================
+// DISTRIBUSI AKHIR FUNCTIONS
+// ========================================
+
+/**
+ * Show Distribusi Akhir Page
+ */
+function showDistribusiAkhirPage() {
+    const form = document.getElementById('labDistributionForm');
+    const menu = document.getElementById('inventoryMenu');
+    const history = document.getElementById('riwayatPengeluaranSection');
+    const stok = document.getElementById('stokSection');
+    const distribusi = document.getElementById('distribusiAkhirSection');
+    const title = document.getElementById('pageTitle');
+    
+    // Hide all sections
+    form.style.display = 'none';
+    menu.style.display = 'none';
+    history.style.display = 'none';
+    stok.style.display = 'none';
+    
+    // Show distribusi section
+    distribusi.style.display = 'block';
+    title.textContent = 'Distribusi Akhir';
+    
+    // Render data
+    renderDistribusiAkhir();
+}
+
+/**
+ * Aggregate material consumption from undistributed entries
+ */
+function aggregateDistribusiData() {
+    const aggregated = {};
+    
+    // Filter only undistributed entries
+    const undistributed = pengeluaranData.filter(entry => !entry.sudahDistribusi);
+    
+    undistributed.forEach(entry => {
+        if (!entry.rawMaterials) return;
+        
+        // Process Reagen
+        entry.rawMaterials.Reagen.forEach(material => {
+            const key = `${material.nama}-${material.batch}`;
+            
+            if (!aggregated[key]) {
+                aggregated[key] = {
+                    nama: material.nama,
+                    batch: material.batch,
+                    satuan: material.satuan,
+                    totalQuantity: 0,
+                    entries: []
+                };
+            }
+            
+            aggregated[key].totalQuantity += material.quantity;
+            aggregated[key].entries.push(entry.id);
+        });
+        
+        // Process Alat Habis Pakai
+        entry.rawMaterials['Alat Habis Pakai'].forEach(material => {
+            const key = `${material.nama}-${material.batch}`;
+            
+            if (!aggregated[key]) {
+                aggregated[key] = {
+                    nama: material.nama,
+                    batch: material.batch,
+                    satuan: material.satuan,
+                    totalQuantity: 0,
+                    entries: []
+                };
+            }
+            
+            aggregated[key].totalQuantity += material.quantity;
+            aggregated[key].entries.push(entry.id);
+        });
+    });
+    
+    return Object.values(aggregated);
+}
+
+/**
+ * Render Distribusi Akhir page
+ */
+/**
+ * Render Distribusi Akhir page
+ */
+function renderDistribusiAkhir() {
+    const aggregatedData = aggregateDistribusiData();
+    const container = document.getElementById('distribusiCardsContainer');
+    const emptyState = document.getElementById('distribusiEmptyState');
+    
+    // Clear previous content
+    container.innerHTML = '';
+    
+    if (aggregatedData.length === 0) {
+        container.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+    }
+    
+    container.style.display = 'flex';
+    emptyState.style.display = 'none';
+    
+    // Create cards for each material
+    aggregatedData.forEach(item => {
+        const card = createDistribusiCard(item);
+        container.appendChild(card);
+    });
+}
+
+/**
+ * Create Distribusi Card
+ */
+function createDistribusiCard(item) {
+    // Get material master data
+    const masterItem = masterMaterialDatabase['Reagen'].find(m => m.nama === item.nama) ||
+                      masterMaterialDatabase['Alat Habis Pakai'].find(m => m.nama === item.nama);
+    
+    if (!masterItem) return document.createElement('div');
+    
+    const testPerPackage = masterItem.testPerPackage;
+    const consumptionPerTest = masterItem.consumptionPerTest;
+    const satuan = item.satuan;
+    
+    // Calculate packages and tests
+    const totalTests = item.totalQuantity / consumptionPerTest;
+    const packages = totalTests / testPerPackage;
+    
+    // ✅ NEW LOGIC: Untuk satuan 'pcs', bisa distribusi jika >= 1 pcs
+    // Untuk satuan lain (ml, dll), bisa distribusi jika >= 1 package
+    let bisaDikeluarkan;
+    let statusText;
+    let kurangInfo = '';
+    
+    if (satuan.toLowerCase() === 'pcs') {
+        // Logic B: Untuk pcs, minimal 1 pcs sudah bisa distribusi
+        bisaDikeluarkan = item.totalQuantity >= 1;
+        statusText = bisaDikeluarkan 
+            ? '✓ Sudah Bisa Dikeluarkan' 
+            : '⏳ Belum Bisa Dikeluarkan';
+        
+        if (!bisaDikeluarkan) {
+            kurangInfo = `Kurang ${(1 - item.totalQuantity).toFixed(0)} pcs lagi`;
+        }
+    } else {
+        // Logic original: Untuk satuan lain, minimal 1 package
+        bisaDikeluarkan = packages >= 1;
+        statusText = bisaDikeluarkan 
+            ? '✓ Sudah Bisa Dikeluarkan' 
+            : '⏳ Belum Bisa Dikeluarkan';
+        
+        if (!bisaDikeluarkan) {
+            kurangInfo = `Kurang ${(1 - packages).toFixed(2)} pkg lagi`;
+        }
+    }
+    
+    // Create card element
+    const card = document.createElement('div');
+    card.className = 'distribusi-card';
+    
+    card.innerHTML = `
+        <div class="distribusi-card-left">
+            <div class="distribusi-material-info">
+                <div class="distribusi-material-name">${item.nama}</div>
+                <div class="distribusi-batch">${item.batch}</div>
+            </div>
+            
+            <div class="distribusi-consumption">
+                <div class="distribusi-consumption-title">Total Consumption</div>
+                <div class="distribusi-consumption-value">${packages.toFixed(2)} pkg</div>
+                <div class="distribusi-consumption-sub">${Math.round(totalTests)} tes</div>
+            </div>
+            
+            <div class="distribusi-volume">
+                <div class="distribusi-volume-title">Volume</div>
+                <div class="distribusi-volume-value">${item.totalQuantity.toFixed(2)} ${satuan}</div>
+            </div>
+        </div>
+        
+        <div class="distribusi-card-right">
+            <div class="distribusi-status">
+                <div class="distribusi-status-badge ${bisaDikeluarkan ? 'ready' : 'pending'}">
+                    ${statusText}
+                </div>
+                ${kurangInfo ? `<div class="distribusi-kurang-info">${kurangInfo}</div>` : ''}
+            </div>
+            
+            <button class="distribusi-action-btn primary" 
+                    onclick="distribusikanMaterial('${item.nama}', '${item.batch}')"
+                    ${!bisaDikeluarkan ? 'disabled' : ''}>
+                Distribusikan
+            </button>
+        </div>
+    `;
+    
+    return card;
+}
+
+/**
+ * Distribusikan material to Farmasi
+ */
+function distribusikanMaterial(materialName, batchNo) {
+    if (!confirm(`Distribusikan material "${materialName}" (${batchNo}) ke Farmasi?`)) {
+        return;
+    }
+    
+    // Find all entries that use this material-batch combination
+    const entriesToUpdate = pengeluaranData.filter(entry => {
+        if (entry.sudahDistribusi) return false;
+        if (!entry.rawMaterials) return false;
+        
+        const hasInReagen = entry.rawMaterials.Reagen.some(m => 
+            m.nama === materialName && m.batch === batchNo
+        );
+        
+        const hasInAlat = entry.rawMaterials['Alat Habis Pakai'].some(m => 
+            m.nama === materialName && m.batch === batchNo
+        );
+        
+        return hasInReagen || hasInAlat;
+    });
+    
+    // Mark as distributed
+    entriesToUpdate.forEach(entry => {
+        entry.sudahDistribusi = true;
+    });
+    
+    alert(`✓ Material "${materialName}" (${batchNo}) berhasil didistribusikan!\n\nTotal: ${entriesToUpdate.length} transaksi ditandai sebagai sudah distribusi.`);
+    
+    // Re-render
+    renderDistribusiAkhir();
 }
