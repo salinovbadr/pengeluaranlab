@@ -1,5 +1,4 @@
-
-    // ========================================
+// ========================================
     // MASTER DATA & GLOBAL VARIABLES
     // ========================================
     
@@ -135,7 +134,7 @@
     }
 
     // Parameter database dengan kategori (from spreadsheet)
-    const parameterDatabase = {
+const parameterDatabase = {
         'Hematologi': [
             'Hemoglobin, penetapan kadar',
             'Hematokrit, penetapan nilai',
@@ -379,6 +378,7 @@
     };
 
     // Global variables for form state
+    let selectedTipePemeriksaan = []; // Array untuk menyimpan tipe yang dipilih
     let selectedParameters = [];
     let selectedType = null;
     let customMaterials = { Reagen: [], 'Alat Habis Pakai': [] };
@@ -391,6 +391,32 @@
 
     // Storage for pengeluaran data (simulates database)
     let pengeluaranData = [];
+
+    // Data Penerima untuk Distribusi Akhir (GAYUNGAN)
+    const penerimaDistribusiData = [
+        {
+            id: 'lab-gayungan',
+            nama: 'LAB PUSKESMAS GAYUNGAN',
+            lokasi: 'Gayungan, Surabaya'
+        },
+        {
+            id: 'igd-gayungan',
+            nama: 'IGD PUSKESMAS GAYUNGAN',
+            lokasi: 'Gayungan, Surabaya'
+        },
+        {
+            id: 'farmasi-gayungan',
+            nama: 'RUANG FARMASI PUSKESMAS GAYUNGAN',
+            lokasi: 'Gayungan, Surabaya'
+        },
+        {
+            id: 'pustu-gayungan',
+            nama: 'PUSTU GAYUNGAN',
+            lokasi: 'GAYUNGAN'
+        }
+    ];
+
+    let selectedPenerimaDistribusi = null;
 
     // ========================================
     // NIK PARSING FUNCTIONS
@@ -510,29 +536,144 @@
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
-        initializeParameterDropdown();
+        initializeTipePemeriksaanDropdown(); 
+        // ❌ REMOVED: initializeParameterDropdown(); 
+        // Parameter dropdown akan diisi oleh filterParameterByTipe() setelah user pilih tipe pemeriksaan
+        
+        // Set pesan awal untuk parameter dropdown
+        const paramDropdown = document.getElementById('parameterDropdown');
+        if (paramDropdown) {
+            paramDropdown.innerHTML = '<div style="padding: 15px; text-align: center; color: #999;">Pilih tipe pemeriksaan terlebih dahulu</div>';
+        }
+        
         addSampleData(); // Add demo data for history
     });
 
     // ========================================
     // MULTI-SELECT PARAMETER FUNCTIONSBIContinue// ========================================
-function toggleParameterDropdown() {
-    const dropdown = document.getElementById('parameterDropdown');
-    dropdown.classList.toggle('active');
+// =====================================================
+// DROPDOWN TOGGLE FUNCTIONS - SIMPLIFIED VERSION
+// =====================================================
+
+function toggleTipePemeriksaanDropdown() {
+    const dropdown = document.getElementById('tipePemeriksaanDropdown');
+    const paramDropdown = document.getElementById('parameterDropdown');
+    
+    // Close parameter dropdown
+    if (paramDropdown) {
+        paramDropdown.style.display = 'none';
+    }
+    
+    // Toggle tipe dropdown
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+    } else {
+        // Open with all necessary styles
+        dropdown.style.cssText = `
+            display: block !important;
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            min-width: 300px !important;
+            max-height: 300px !important;
+            background: white !important;
+            border: 1px solid #ddd !important;
+            border-top: none !important;
+            border-radius: 0 0 6px 6px !important;
+            overflow-y: auto !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+            z-index: 99999 !important;
+        `;
+        
+        // Force all parent elements to allow visibility
+        let parent = dropdown.parentElement;
+        while (parent && parent !== document.body) {
+            if (parent.style) {
+                parent.style.position = 'relative';
+                parent.style.overflow = 'visible';
+            }
+            parent = parent.parentElement;
+        }
+    }
 }
 
-// Close dropdown when clicking outside
-document.addEventListener('click', function(event) {
-    const multiSelect = document.querySelector('.multi-select-wrapper');
+function toggleParameterDropdown() {
     const dropdown = document.getElementById('parameterDropdown');
+    const tipeDropdown = document.getElementById('tipePemeriksaanDropdown');
     
-    if (multiSelect && !multiSelect.contains(event.target)) {
-        dropdown.classList.remove('active');
+    // Check if tipe sudah dipilih
+    if (selectedTipePemeriksaan.length === 0) {
+        alert('Silakan pilih Tipe Pemeriksaan terlebih dahulu');
+        return;
+    }
+    
+    // Close tipe dropdown
+    if (tipeDropdown) {
+        tipeDropdown.style.display = 'none';
+    }
+    
+    // Toggle parameter dropdown
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+    } else {
+        // Open with all necessary styles
+        dropdown.style.cssText = `
+            display: block !important;
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            min-width: 300px !important;
+            max-height: 300px !important;
+            background: white !important;
+            border: 1px solid #ddd !important;
+            border-top: none !important;
+            border-radius: 0 0 6px 6px !important;
+            overflow-y: auto !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+            z-index: 99999 !important;
+        `;
+        
+        // Force all parent elements to allow visibility
+        let parent = dropdown.parentElement;
+        while (parent && parent !== document.body) {
+            if (parent.style) {
+                parent.style.position = 'relative';
+                parent.style.overflow = 'visible';
+            }
+            parent = parent.parentElement;
+        }
+    }
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+    const tipeDisplay = document.getElementById('tipePemeriksaanDisplay');
+    const tipeDropdown = document.getElementById('tipePemeriksaanDropdown');
+    const paramDisplay = document.getElementById('parameterDisplay');
+    const paramDropdown = document.getElementById('parameterDropdown');
+    
+    // Close tipe dropdown if clicking outside
+    if (tipeDisplay && tipeDropdown && 
+        !tipeDisplay.contains(event.target) && 
+        !tipeDropdown.contains(event.target)) {
+        tipeDropdown.style.display = 'none';
+    }
+    
+    // Close parameter dropdown if clicking outside
+    if (paramDisplay && paramDropdown && 
+        !paramDisplay.contains(event.target) && 
+        !paramDropdown.contains(event.target)) {
+        paramDropdown.style.display = 'none';
     }
 });
 
+// Update parameter display when checkboxes change
 function updateParameterDisplay() {
-    const checkboxes = document.querySelectorAll('.multi-select-checkbox');
+    const checkboxes = document.querySelectorAll('#parameterDropdown .multi-select-checkbox');
     selectedParameters = [];
     
     checkboxes.forEach(checkbox => {
@@ -551,13 +692,96 @@ function updateParameterDisplay() {
     if (selectedParameters.length > 0) {
         placeholder.style.display = 'none';
         values.style.display = 'block';
-        values.textContent = selectedParameters.map(p => p.name).join(', ');
+        values.textContent = `${selectedParameters.length} parameter dipilih`;
         hidden.value = selectedParameters.map(p => p.name).join('; ');
+        
+        // Update metode dropdown based on selected categories
+        updateMetodeDropdown();
     } else {
         placeholder.style.display = 'block';
         values.style.display = 'none';
         hidden.value = '';
+        
+        // Reset metode dropdown
+        resetMetodeDropdown();
     }
+}
+
+// Get available metode based on selected tipe pemeriksaan categories
+function getAvailableMetodeForCategories(categories) {
+    const availableMetode = new Set();
+    
+    // Loop through materialDatabase to find all metode for selected categories
+    Object.keys(materialDatabase).forEach(key => {
+        // Key format: "Category-Metode"
+        const parts = key.split('-');
+        if (parts.length >= 2) {
+            const category = parts[0];
+            const metode = parts.slice(1).join('-'); // Handle metode with hyphen
+            
+            // Check if this category is in selected categories
+            if (categories.includes(category)) {
+                availableMetode.add(metode);
+            }
+        }
+    });
+    
+    return Array.from(availableMetode);
+}
+
+// Update metode dropdown based on selected tipe pemeriksaan
+function updateMetodeDropdown() {
+    const metodeSelect = document.getElementById('metodeSelect');
+    
+    // Get unique categories from selected tipe pemeriksaan
+    const selectedCategories = selectedTipePemeriksaan;
+    
+    if (selectedCategories.length === 0) {
+        resetMetodeDropdown();
+        return;
+    }
+    
+    // Get available metode for selected categories
+    const availableMetode = getAvailableMetodeForCategories(selectedCategories);
+    
+    // Clear current options
+    metodeSelect.innerHTML = '<option value="">Pilih metode pemeriksaan</option>';
+    
+    // Add only available metode
+    availableMetode.forEach(metode => {
+        const option = document.createElement('option');
+        option.value = metode;
+        option.textContent = metode;
+        metodeSelect.appendChild(option);
+    });
+    
+    // If no metode available, show message
+    if (availableMetode.length === 0) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'Tidak ada metode tersedia untuk tipe ini';
+        option.disabled = true;
+        metodeSelect.appendChild(option);
+    }
+}
+
+// Reset metode dropdown to show all options
+function resetMetodeDropdown() {
+    const metodeSelect = document.getElementById('metodeSelect');
+    metodeSelect.innerHTML = `
+        <option value="">Pilih metode pemeriksaan</option>
+        <option value="Lateral Flow">Lateral Flow</option>
+        <option value="Flow Cytometry">Flow Cytometry</option>
+        <option value="Enzimatik">Enzimatik</option>
+        <option value="Pembuatan sediaan">Pembuatan sediaan</option>
+        <option value="Mikroskopis">Mikroskopis</option>
+        <option value="Reflactance photometri">Reflactance photometri</option>
+        <option value="Aglutinasi">Aglutinasi</option>
+        <option value="Flokulasi">Flokulasi</option>
+        <option value="Organoleptik">Organoleptik</option>
+        <option value="Molekuler">Molekuler</option>
+        <option value="Konvensional (kimia)">Konvensional (kimia)</option>
+    `;
 }
 
 // ========================================
@@ -577,6 +801,127 @@ function selectType(type) {
     event.currentTarget.classList.add('selected');
 }
 
+// Initialize Tipe Pemeriksaan dropdown
+function initializeTipePemeriksaanDropdown() {
+    const dropdown = document.getElementById('tipePemeriksaanDropdown');
+    dropdown.innerHTML = '';
+    
+    // Get all categories from parameterDatabase
+    const categories = Object.keys(parameterDatabase);
+    
+    categories.forEach(category => {
+        const option = document.createElement('div');
+        option.className = 'multi-select-option';
+        const uniqueId = `tipe-${category.replace(/[^a-zA-Z0-9]/g, '')}`;
+        option.innerHTML = `
+            <input type="checkbox" 
+                   class="multi-select-checkbox tipe-checkbox" 
+                   value="${category}" 
+                   id="${uniqueId}">
+            <label for="${uniqueId}" style="flex: 1; cursor: pointer;">${category}</label>
+        `;
+        dropdown.appendChild(option);
+        
+        // ✅ FIX: Tambahkan event listener setelah element ditambahkan
+        const checkbox = document.getElementById(uniqueId);
+        checkbox.addEventListener('change', function() {
+            console.log('[DEBUG] Tipe checkbox changed:', category);
+            updateTipePemeriksaanDisplay();
+        });
+    });
+}
+
+// Update Tipe Pemeriksaan display
+function updateTipePemeriksaanDisplay() {
+    const checkboxes = document.querySelectorAll('.tipe-checkbox');
+    selectedTipePemeriksaan = [];
+    
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            selectedTipePemeriksaan.push(checkbox.value);
+        }
+    });
+    
+    const placeholder = document.getElementById('tipePemeriksaanPlaceholder');
+    const values = document.getElementById('tipePemeriksaanValues');
+    const hidden = document.getElementById('tipePemeriksaanHidden');
+    
+    if (selectedTipePemeriksaan.length > 0) {
+        placeholder.style.display = 'none';
+        values.style.display = 'block';
+        values.textContent = selectedTipePemeriksaan.join(', ');
+        hidden.value = selectedTipePemeriksaan.join('; ');
+        
+        // Filter parameter dropdown
+        filterParameterByTipe();
+        
+        // Update metode dropdown based on selected tipe
+        updateMetodeDropdown();
+    } else {
+        placeholder.style.display = 'block';
+        values.style.display = 'none';
+        hidden.value = '';
+        
+        // Clear parameter dropdown
+        const paramDropdown = document.getElementById('parameterDropdown');
+        if (paramDropdown) {
+            paramDropdown.innerHTML = '<div style="padding: 15px; text-align: center; color: #999;">Pilih tipe pemeriksaan terlebih dahulu</div>';
+        }
+        
+        // Reset metode dropdown
+        resetMetodeDropdown();
+    }
+}
+
+// Filter and populate parameter dropdown based on selected tipe
+function filterParameterByTipe() {
+    const dropdown = document.getElementById('parameterDropdown');
+    dropdown.innerHTML = '';
+    
+    if (selectedTipePemeriksaan.length === 0) {
+        dropdown.innerHTML = '<div style="padding: 15px; text-align: center; color: #999;">Pilih tipe pemeriksaan terlebih dahulu</div>';
+        return;
+    }
+    
+    // Add parameters for each selected type
+    selectedTipePemeriksaan.forEach(tipe => {
+        if (parameterDatabase[tipe]) {
+            // Category header
+            const categoryHeader = document.createElement('div');
+            categoryHeader.className = 'multi-select-category';
+            categoryHeader.textContent = tipe;
+            dropdown.appendChild(categoryHeader);
+            
+            // Add parameters
+            parameterDatabase[tipe].forEach((param, index) => {
+                const option = document.createElement('div');
+                option.className = 'multi-select-option';
+                const uniqueId = `param-${tipe.replace(/[^a-zA-Z0-9]/g, '')}-${index}`;
+                option.innerHTML = `
+                    <input type="checkbox" 
+                           class="multi-select-checkbox" 
+                           value="${param}" 
+                           data-category="${tipe}" 
+                           id="${uniqueId}">
+                    <label for="${uniqueId}" style="flex: 1; cursor: pointer;">${param}</label>
+                `;
+                dropdown.appendChild(option);
+                
+                // Add event listener
+                const checkbox = document.getElementById(uniqueId);
+                checkbox.addEventListener('change', updateParameterDisplay);
+            });
+        }
+    });
+    
+    // Clear selected parameters when tipe changes
+    selectedParameters = [];
+    document.getElementById('parameterPlaceholder').style.display = 'block';
+    document.getElementById('parameterValues').style.display = 'none';
+    document.getElementById('parameterHidden').value = '';
+}
+
+
 // ========================================
 // NAVIGATION FUNCTIONS (UPDATED FLOW)
 // ========================================
@@ -586,7 +931,8 @@ function goBack() {
     const menu = document.getElementById('inventoryMenu');
     const riwayat = document.getElementById('riwayatPengeluaranSection');
     const stok = document.getElementById('stokSection');
-    const distribusi = document.getElementById('distribusiAkhirSection'); // ✅ TAMBAHKAN
+    const distribusi = document.getElementById('distribusiAkhirSection');
+    const penerimaDistribusi = document.getElementById('pilihPenerimaDistribusiSection'); // ✅ TAMBAHKAN INI
     const title = document.getElementById('pageTitle');
     const step0 = document.getElementById('step0Section');
     const step1 = document.getElementById('step1Section');
@@ -613,8 +959,13 @@ function goBack() {
         stok.style.display = 'none';
         menu.style.display = 'block';
         title.textContent = 'Inventaris';
-    } else if (distribusi.style.display === 'block') { // ✅ TAMBAHKAN
+    } else if (distribusi.style.display === 'block') { // ✅ DARI MATERIAL DISTRIBUSI KE PILIH PENERIMA
         distribusi.style.display = 'none';
+        penerimaDistribusi.style.display = 'block';
+        title.textContent = 'Distribusi Akhir';
+        selectedPenerimaDistribusi = null;
+    } else if (penerimaDistribusi.style.display === 'block') { // ✅ DARI PILIH PENERIMA KE MENU
+        penerimaDistribusi.style.display = 'none';
         menu.style.display = 'block';
         title.textContent = 'Inventaris';
     }
@@ -657,6 +1008,7 @@ function showPage(pageName) {
     const history = document.getElementById('riwayatPengeluaranSection');
     const stokSection = document.getElementById('stokSection');
     const distribusiSection = document.getElementById('distribusiAkhirSection'); // ✅ TAMBAHKAN
+    const penerimaDistribusiSection = document.getElementById('pilihPenerimaDistribusiSection');
     const title = document.getElementById('pageTitle');
     
     // Hide all sections first
@@ -665,7 +1017,8 @@ function showPage(pageName) {
     history.style.display = 'none';
     stokSection.style.display = 'none';
     distribusiSection.style.display = 'none'; // ✅ TAMBAHKAN
-    
+    penerimaDistribusiSection.style.display = 'none';
+
     // Show selected page
     switch(pageName) {
         case 'labDistribution':
@@ -687,9 +1040,11 @@ function showPage(pageName) {
             break;
             
         case 'distribusiAkhir': // ✅ TAMBAHKAN CASE INI
-            distribusiSection.style.display = 'block';
+            penerimaDistribusiSection.style.display = 'block'; // ✅ SHOW PILIH PENERIMA DULU
+            distribusiSection.style.display = 'none';
             title.textContent = 'Distribusi Akhir';
-            renderDistribusiAkhir();
+            document.getElementById('searchPenerimaDistribusi').value = '';
+            renderPenerimaDistribusiList(); // ✅ RENDER DAFTAR PENERIMA
             break;
             
         default:
@@ -721,6 +1076,19 @@ function backFromStep1() {
 
 // STEP 1 -> STEP 2: After Parameter & Metode, go to Jumlah (+ NIK for sampel)
 function goToStep2() {
+    // ✅ VALIDASI TANGGAL AKTUAL PENGELUARAN
+    const tanggalAktual = document.getElementById('tanggalAktualPengeluaran').value;
+    if (!tanggalAktual) {
+        alert('Silakan isi Tanggal Aktual Pengeluaran');
+        return;
+    }
+    
+    // ✅ TAMBAHKAN VALIDASI TIPE PEMERIKSAAN
+    if (selectedTipePemeriksaan.length === 0) {
+        alert('Silakan pilih minimal 1 tipe pemeriksaan');
+        return;
+    }
+    
     if (selectedParameters.length === 0) {
         alert('Silakan pilih minimal 1 parameter');
         return;
@@ -770,6 +1138,31 @@ function updateStep3IndicatorForControlAlat() {
             <div class="step-label">Material</div>
         </div>
     `;
+}
+
+// ========================================
+// STEP 2 FUNCTIONS
+// ========================================
+
+// Toggle NIK section based on checkbox
+function toggleNIKSection() {
+    const checkbox = document.getElementById('isiDataNIKCheckbox');
+    const nikContainer = document.getElementById('nikDataContainer');
+    const infoTextNIK = document.getElementById('infoTextNIK');
+    
+    if (checkbox.checked) {
+        nikContainer.style.display = 'block';
+        infoTextNIK.style.display = 'inline';
+        
+        // Generate NIK forms if sampel value exists
+        const sampelInput = document.getElementById('jumlahSampelInput');
+        if (sampelInput && sampelInput.value && parseInt(sampelInput.value) > 0) {
+            generateNIKForms();
+        }
+    } else {
+        nikContainer.style.display = 'none';
+        infoTextNIK.style.display = 'none';
+    }
 }
 
 function updateStep2Indicator() {
@@ -1151,20 +1544,27 @@ function goToStep3() {
     jumlahSampel = sampel;
     jumlahTes = tes;
     
-    // FOR SAMPEL TYPE: Validate all NIK data is complete
+    // FOR SAMPEL TYPE: Validate NIK data ONLY if checkbox is checked
     if (selectedType === 'sampel') {
-        // Check if all samples have complete data
-        for (let i = 0; i < sampel; i++) {
-            if (!validateSampleData(i)) {
-                alert(`Data sampel #${i + 1} belum lengkap. Silakan lengkapi semua data yang diperlukan.`);
-                // Scroll to that card
-                const card = document.getElementById(`sample-card-${i}`);
-                if (card) {
-                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    updateProgressIndicator(i);
+        const isiDataNIK = document.getElementById('isiDataNIKCheckbox').checked;
+        
+        if (isiDataNIK) {
+            // Check if all samples have complete data
+            for (let i = 0; i < sampel; i++) {
+                if (!validateSampleData(i)) {
+                    alert(`Data sampel #${i + 1} belum lengkap. Silakan lengkapi semua data yang diperlukan.`);
+                    // Scroll to that card
+                    const card = document.getElementById(`sample-card-${i}`);
+                    if (card) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        updateProgressIndicator(i);
+                    }
+                    return;
                 }
-                return;
             }
+        } else {
+            // If checkbox not checked, clear sampleDataArray
+            sampleDataArray = [];
         }
     }
     
@@ -1222,13 +1622,21 @@ document.addEventListener('DOMContentLoaded', function() {
     if (jumlahSampelInput) {
         jumlahSampelInput.addEventListener('change', function() {
             if (selectedType === 'sampel') {
-                generateNIKForms();
+                // Only generate NIK forms if checkbox is checked
+                const isiDataNIK = document.getElementById('isiDataNIKCheckbox');
+                if (isiDataNIK && isiDataNIK.checked) {
+                    generateNIKForms();
+                }
             }
         });
         
         jumlahSampelInput.addEventListener('blur', function() {
             if (selectedType === 'sampel') {
-                generateNIKForms();
+                // Only generate NIK forms if checkbox is checked
+                const isiDataNIK = document.getElementById('isiDataNIKCheckbox');
+                if (isiDataNIK && isiDataNIK.checked) {
+                    generateNIKForms();
+                }
             }
         });
     }
@@ -1619,7 +2027,8 @@ function closeConfirmModal() {
 }
 
 function confirmSubmit() {
-    const tanggalInput = document.getElementById('tanggalPengeluaran');
+    // ✅ Ambil tanggal dari field di step 1
+    const tanggalInput = document.getElementById('tanggalAktualPengeluaran');
     if (!tanggalInput || !tanggalInput.value) {
         alert('Silakan isi tanggal aktual pengeluaran!');
         return;
@@ -1727,12 +2136,6 @@ function collectMaterials() {
 
 function showDateConfirmModal(materials) {
     let modalContent = '<div class="summary-section">';
-    modalContent += '<div class="summary-title">TANGGAL AKTUAL PENGELUARAN</div>';
-    modalContent += `<div class="summary-text">`;
-    modalContent += `<input type="date" id="tanggalPengeluaran" class="form-input" value="${new Date().toISOString().split('T')[0]}" required style="margin-bottom: 15px;">`;
-    modalContent += `</div></div>`;
-    
-    modalContent += '<div class="summary-section">';
     modalContent += '<div class="summary-title">TIPE PENGELUARAN</div>';
     modalContent += `<div class="summary-text"><span class="summary-highlight">${selectedType.toUpperCase()}</span></div>`;
     modalContent += '</div>';
@@ -2740,7 +3143,12 @@ function createDistribusiCard(item) {
  * Distribusikan material to Farmasi
  */
 function distribusikanMaterial(materialName, batchNo) {
-    if (!confirm(`Distribusikan material "${materialName}" (${batchNo}) ke Farmasi?`)) {
+    // ✅ TAMBAHKAN VALIDASI PENERIMA
+    if (!selectedPenerimaDistribusi) {
+        alert('Silakan pilih penerima terlebih dahulu!');
+        return;
+    }
+    if (!confirm(`Distribusikan material "${materialName}" (${batchNo}) ke ${selectedPenerimaDistribusi.nama}?`)) {
         return;
     }
     
@@ -2765,8 +3173,53 @@ function distribusikanMaterial(materialName, batchNo) {
         entry.sudahDistribusi = true;
     });
     
-    alert(`✓ Material "${materialName}" (${batchNo}) berhasil didistribusikan!\n\nTotal: ${entriesToUpdate.length} transaksi ditandai sebagai sudah distribusi.`);
+    alert(`✓ Material "${materialName}" (${batchNo}) berhasil didistribusikan ke ${selectedPenerimaDistribusi.nama}!\n\nTotal: ${entriesToUpdate.length} transaksi ditandai sebagai sudah distribusi.`);
     
     // Re-render
     renderDistribusiAkhir();
+}
+
+// Render daftar penerima distribusi
+function renderPenerimaDistribusiList() {
+    const container = document.getElementById('penerimaDistribusiListContainer');
+    const searchTerm = document.getElementById('searchPenerimaDistribusi').value.toLowerCase();
+    
+    let filteredPenerima = penerimaDistribusiData.filter(p => {
+        return p.nama.toLowerCase().includes(searchTerm) || 
+               p.lokasi.toLowerCase().includes(searchTerm);
+    });
+
+    document.getElementById('penerimaDistribusiCount').textContent = filteredPenerima.length;
+
+    container.innerHTML = '';
+    filteredPenerima.forEach(penerima => {
+        const card = document.createElement('div');
+        card.className = 'penerima-card';
+        card.onclick = () => selectPenerimaDistribusi(penerima);
+        card.innerHTML = `
+            <div class="penerima-info">
+                <div class="penerima-name">${penerima.nama}</div>
+                <div class="penerima-location">${penerima.lokasi}</div>
+            </div>
+            <div class="penerima-arrow">›</div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function selectPenerimaDistribusi(penerima) {
+    selectedPenerimaDistribusi = penerima;
+    
+    document.getElementById('pilihPenerimaDistribusiSection').style.display = 'none';
+    document.getElementById('distribusiAkhirSection').style.display = 'block';
+    
+    document.getElementById('distribusiPenerimaTitle').textContent = `Distribusi ke ${penerima.nama}`;
+    document.getElementById('pageTitle').textContent = `Distribusi - ${penerima.nama}`;
+    
+    renderDistribusiAkhir();
+    window.scrollTo(0, 0);
+}
+
+function filterPenerimaDistribusi() {
+    renderPenerimaDistribusiList();
 }

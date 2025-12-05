@@ -59,12 +59,12 @@
           <div class="step-indicator">
             <div class="step-item active">
               <div class="step-number">1</div>
-              <div class="step-label">Tipe</div>
+              <div class="step-label">Jenis Pengeluaran</div>
               <div class="step-line"></div>
             </div>
             <div class="step-item">
               <div class="step-number">2</div>
-              <div class="step-label">Parameter & Metode</div>
+              <div class="step-label">Tipe, Parameter, & Metode</div>
               <div class="step-line"></div>
             </div>
             <div class="step-item">
@@ -78,7 +78,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Tipe Pengeluaran <span class="required">*</span>
+            <label class="form-label">Jenis Pengeluaran <span class="required">*</span>
             </label>
             <div class="type-selection">
               <div class="type-card" onclick="selectType('sampel')">
@@ -113,12 +113,12 @@
           <div class="step-indicator">
             <div class="step-item completed">
               <div class="step-number">✓</div>
-              <div class="step-label">Tipe</div>
+              <div class="step-label">Jenis Pengeluaran</div>
               <div class="step-line"></div>
             </div>
             <div class="step-item active">
               <div class="step-number">2</div>
-              <div class="step-label">Parameter & Metode</div>
+              <div class="step-label">Tipe, Parameter, & Metode</div>
               <div class="step-line"></div>
             </div>
             <div class="step-item">
@@ -132,24 +132,45 @@
             </div>
           </div>
           <form id="step1Form">
-            <div class="form-group">
-              <label class="form-label">Parameter <span class="required">*</span>
-              </label>
-              <div class="multi-select-wrapper">
-                <div class="multi-select-display" id="parameterDisplay" onclick="toggleParameterDropdown()">
+            <!-- Tanggal Aktual Pengeluaran -->
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label class="form-label">Tanggal Aktual Pengeluaran <span class="required">*</span></label>
+              <input type="date" class="form-input" id="tanggalAktualPengeluaran" required
+                     style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label class="form-label">Tipe Pemeriksaan <span class="required">*</span></label>
+              <div style="position: relative; width: 100%;">
+                <div class="multi-select-display" id="tipePemeriksaanDisplay" onclick="toggleTipePemeriksaanDropdown()" 
+                     style="width: 100%; cursor: pointer;">
+                  <span class="multi-select-placeholder" id="tipePemeriksaanPlaceholder">Pilih tipe pemeriksaan (bisa lebih dari 1)</span>
+                  <span class="multi-select-values" id="tipePemeriksaanValues" style="display: none;"></span>
+                  <span class="multi-select-arrow">▼</span>
+                </div>
+                <div class="multi-select-dropdown" id="tipePemeriksaanDropdown" style="display: none;">
+                  <!-- Will be populated dynamically -->
+                </div>
+                <input type="hidden" id="tipePemeriksaanHidden" required>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label class="form-label">Parameter <span class="required">*</span></label>
+              <div style="position: relative; width: 100%;">
+                <div class="multi-select-display" id="parameterDisplay" onclick="toggleParameterDropdown()"
+                     style="width: 100%; cursor: pointer;">
                   <span class="multi-select-placeholder" id="parameterPlaceholder">Pilih parameter (bisa lebih dari 1)</span>
                   <span class="multi-select-values" id="parameterValues" style="display: none;"></span>
                   <span class="multi-select-arrow">▼</span>
                 </div>
-                <div class="multi-select-dropdown" id="parameterDropdown">
-                  <!-- Will be populated dynamically -->
+                <div class="multi-select-dropdown" id="parameterDropdown" style="display: none;">
+                  <div style="padding: 15px; text-align: center; color: #999;">Pilih tipe pemeriksaan terlebih dahulu</div>
                 </div>
                 <input type="hidden" id="parameterHidden" required>
               </div>
             </div>
-            <div class="form-group">
-              <label class="form-label">Metode <span class="required">*</span>
-              </label>
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label class="form-label">Metode <span class="required">*</span></label>
               <select class="form-select" id="metodeSelect" required>
                 <option value="">Pilih metode pemeriksaan</option>
                 <option value="Lateral Flow">Lateral Flow</option>
@@ -189,11 +210,24 @@
                 <input type="number" id="jumlahTesInput" class="form-input" placeholder="0" min="1" required>
               </div>
             </div>
+            
+            <!-- Checkbox untuk optional NIK -->
+            <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
+              <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                <input type="checkbox" id="isiDataNIKCheckbox" onchange="toggleNIKSection()" 
+                       style="width: 20px; height: 20px; cursor: pointer;">
+                <span class="form-label" style="margin: 0;">Isi Data NIK untuk setiap sampel</span>
+              </label>
+              <div style="font-size: 13px; color: #666; margin-top: 5px; margin-left: 30px;">
+                Centang jika ingin mengisi data NIK, Nama, Tanggal Lahir, dan Jenis Kelamin untuk setiap sampel
+              </div>
+            </div>
+            
             <div class="info-box">
               <div class="info-box-title">Informasi</div>
               <div class="info-box-text">
                 <span id="infoTextSampel">Masukkan jumlah total sampel dan jumlah total tes yang akan dilakukan.</span>
-                <span id="infoTextNIK" style="display: none;"> Setelah itu, Anda akan diminta mengisi data NIK untuk setiap sampel.</span>
+                <span id="infoTextNIK" style="display: none;"> Centang opsi di atas jika ingin mengisi data NIK untuk setiap sampel.</span>
               </div>
             </div>
             <!-- NIK Data Container -->
@@ -367,10 +401,37 @@
     </div>
     <!-- ==================== AKHIR MODAL STOK ==================== -->
 
+    <!-- ==================== PILIH PENERIMA DISTRIBUSI SECTION ==================== -->
+    <div id="pilihPenerimaDistribusiSection" style="display: none;">
+      <div class="search-filter-section">
+        <div class="search-box">
+          <span class="search-icon"></span>
+          <input type="text" class="search-input" id="searchPenerimaDistribusi" 
+                 placeholder="cari nama penerima" onkeyup="filterPenerimaDistribusi()">
+        </div>
+      </div>
+
+      <div class="info-box">
+        <div class="info-box-text">ℹ️ Silakan pilih penerima distribusi material</div>
+      </div>
+
+      <div style="background: white; border-radius: 8px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h3 style="font-size: 16px; font-weight: 600; color: #1a1a1a; margin: 0;">Daftar Penerima</h3>
+          <span style="font-size: 14px; color: #666;">Total: <span id="penerimaDistribusiCount">4</span> Item</span>
+        </div>
+        <div id="penerimaDistribusiListContainer">
+          <!-- Penerima cards will be generated here -->
+        </div>
+      </div>
+    </div>
+    <!-- ==================== AKHIR PILIH PENERIMA DISTRIBUSI ==================== -->
+
+    
     <!-- ==================== DISTRIBUSI AKHIR SECTION ==================== -->
     <div id="distribusiAkhirSection" style="display: none;">
       <div class="page-header" style="margin-bottom: 20px;">
-        <h2 class="section-title">Distribusi Akhir</h2>
+        <h2 class="section-title" id="distribusiPenerimaTitle">Distribusi Akhir</h2>
         <p style="font-size: 13px; color: #666; margin-top: 8px;">Material yang sudah mencapai 1 package dapat didistribusikan</p>
       </div>
 
