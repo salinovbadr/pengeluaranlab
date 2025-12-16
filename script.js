@@ -1771,72 +1771,79 @@ function goToBMHPStep3() {
 
   // Generate material input UI grouped by sasaran
   const container = document.getElementById("bmhpMaterialContainer");
+
+  // Gunakan sasaranToCheck yang sudah didefinisikan di awal fungsi
+  // Tambahkan label untuk setiap sasaran
   const sasaranToShow =
     sasaran === "semua"
       ? allSasaranList
       : [{ value: sasaran, label: getSasaranLabel(sasaran) }];
 
-  let html = `
-        <div class="bmhp-summary-card">
-            <div class="bmhp-summary-title">Ringkasan Kriteria</div>
-            <div class="bmhp-summary-row"><span>Tahun:</span><strong>${bmhpFormData.tahun}</strong></div>
-            <div class="bmhp-summary-row"><span>Pemeriksaan:</span><strong>${bmhpFormData.pemeriksaan}</strong></div>
-            <div class="bmhp-summary-row"><span>Metode:</span><strong>${metode === "semua" ? "Semua Metode" : metode}</strong></div>
-        </div>
+  container.innerHTML = "";
+
+  sasaranToShow.forEach((sasaranItem) => {
+    const sasaranValue = sasaranItem.value;
+    const sasaranLabel = sasaranItem.label;
+
+    // Ambil jumlah tes untuk sasaran ini
+    const jumlahTes =
+      parseInt(document.getElementById(`bmhpTes_${sasaranValue}`).value) || 0;
+
+    // Group header
+    const groupHeader = document.createElement("div");
+    groupHeader.className = "bmhp-material-group-header";
+    groupHeader.innerHTML = `
+      <div class="bmhp-material-group-title">
+        <i class="fas fa-users"></i> ${sasaranLabel}
+      </div>
+      <div class="bmhp-material-group-info">
+        Sampel: ${document.getElementById(`bmhpSampel_${sasaranValue}`).value || 0} |
+        Tes: ${jumlahTes}
+      </div>
     `;
+    container.appendChild(groupHeader);
 
-  if (materials.length === 0) {
-    html +=
-      '<div class="bmhp-no-material">Tidak ada material untuk kriteria yang dipilih</div>';
-  } else {
-    sasaranToShow.forEach((s) => {
-      const sasaranData = bmhpFormData.sasaranData[s.value] || {};
-      html += `
-                <div class="bmhp-material-group">
-                    <div class="bmhp-material-group-header">
-                        <div class="bmhp-material-group-title">
-                            <span class="bmhp-sasaran-icon">👥</span> ${s.label}
-                        </div>
-                        <div class="bmhp-material-group-info">
-                            Sampel: <strong>${sasaranData.sampel || 0}</strong> |
-                            Tes: <strong>${sasaranData.tes || 0}</strong>
-                        </div>
-                    </div>
-                    <div class="bmhp-material-list">
-            `;
+    // Material list container
+    const materialList = document.createElement("div");
+    materialList.className = "bmhp-material-list";
 
-      materials.forEach((mat, idx) => {
-        const prevValue =
-          (bmhpFormData.materialData[s.value] || {})[mat.nama] || "";
-        html += `
-                    <div class="bmhp-material-item">
-                        <div class="bmhp-material-info">
-                            <div class="bmhp-material-name">${mat.nama}</div>
-                            <div class="bmhp-material-meta">
-                                <span class="bmhp-material-metode">${mat.metode}</span>
-                                <span class="bmhp-material-satuan">${mat.satuan}</span>
-                            </div>
-                        </div>
-                        <div class="bmhp-material-input">
-                            <label>Pengeluaran Lab</label>
-                            <input type="number" class="form-input"
-                                   id="bmhpPengeluaran_${s.value}_${idx}"
-                                   data-sasaran="${s.value}"
-                                   data-material="${mat.nama}"
-                                   placeholder="0" min="0" value="${prevValue}">
-                        </div>
-                    </div>
-                `;
-      });
+    // Material inputs
+    materials.forEach((mat) => {
+      const row = document.createElement("div");
+      row.className = "bmhp-material-item";
 
-      html += `
-                    </div>
-                </div>
-            `;
+      // HITUNG IDEAL PENGELUARAN LAB
+      const idealPengeluaran = Math.ceil(
+        jumlahTes * (mat.consumptionPerTest || 1),
+      );
+
+      row.innerHTML = `
+        <div class="bmhp-material-info">
+          <div class="bmhp-material-name">${mat.nama}</div>
+          <div class="bmhp-material-meta">
+            <span class="bmhp-material-metode">${mat.metode}</span>
+            <span class="bmhp-material-satuan">${mat.satuan}</span>
+          </div>
+        </div>
+        <div class="bmhp-material-input">
+          <label>Pengeluaran Lab</label>
+          <input
+            type="number"
+            class="form-input"
+            id="pengeluaran_${sasaranValue}_${mat.nama.replace(/\s+/g, "_")}"
+            value="${idealPengeluaran}"
+            min="0"
+            placeholder="Masukkan pengeluaran"
+            data-sasaran="${sasaranValue}"
+            data-material="${mat.nama}"
+          />
+        </div>
+      `;
+      materialList.appendChild(row);
     });
-  }
 
-  container.innerHTML = html;
+    container.appendChild(materialList);
+  });
 
   document.getElementById("bmhpStep2").style.display = "none";
   document.getElementById("bmhpStep3").style.display = "block";
