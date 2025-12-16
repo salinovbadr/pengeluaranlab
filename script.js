@@ -1286,6 +1286,94 @@ const materialDatabase = {
 };
 
 // ========================================
+// MATERIAL MAPPING: bmhpMasterData -> materialDatabase
+// Maps examinations to materialDatabase keys based on metode
+// ========================================
+const materialMapping = {
+  // Lainnya
+  "SHK, G6PD, SHAK": {
+    "Lateral Flow": "Hematologi-Lateral Flow",
+    "Enzimatik": "Hematologi-Lateral Flow"
+  },
+  "Risiko Jantung": {
+    "Konvensional (kimia)": null // Custom materials only
+  },
+  "Fibrosis/Sirosis": {
+    "Flow Cytometry": "Hematologi-Flow Cytometry",
+    "Enzimatik": "Kimia Klinik-Enzimatik"
+  },
+  "Kanker Payudara ": {
+    "Konvensional (kimia)": null // Custom materials only
+  },
+  "Kanker Leher Rahim": {
+    "Pembuatan sediaan": null // Custom materials only
+  },
+  "Gigi": {
+    "Organoleptik": null // Custom materials only
+  },
+  "Rekap Alkes Penunjang": {
+    "Konvensional (kimia)": null // Mixed materials
+  },
+  
+  // Feses
+  "Kanker Usus": {
+    "Lateral Flow": "Feses (Tinja)-Konvensional (kimia)",
+    "Organoleptik": "Feses (Tinja)-Organoleptik"
+  },
+  
+  // Hematologi
+  "Anemia": {
+    "Lateral Flow": "Hematologi-Lateral Flow",
+    "Reflactance photometri": "Hematologi-Lateral Flow"
+  },
+  "Talasemia Lanjutan (pemeriksaan darah lengkap)": {
+    "Flow Cytometry": "Hematologi-Flow Cytometry"
+  },
+  
+  // Kimia Klinik
+  "Gula Darah Sewaktu": {
+    "Enzimatik": "Kimia Klinik-Enzimatik",
+    "Reflactance photometri": "Kimia Klinik-Lateral Flow"
+  },
+  "Profil Lipid": {
+    "Enzimatik": "Kimia Klinik-Enzimatik"
+  },
+  "Fungsi Ginjal": {
+    "Enzimatik": "Kimia Klinik-Enzimatik"
+  },
+  
+  // Mikrobiologi
+  "Tuberkulosis": {
+    "Mikroskopis": "Mikrobiologi Klinik-Mikroskopis",
+    "Molekuler": "Mikrobiologi Klinik-Mikroskopis",
+    "Pembuatan sediaan": "Mikrobiologi Klinik-Mikroskopis"
+  },
+  "Hepatitis B": {
+    "Lateral Flow": "Serologi & Imunologi-Lateral Flow",
+    "Aglutinasi": "Serologi & Imunologi-Lateral Flow"
+  },
+  "Hepatitis C": {
+    "Lateral Flow": "Serologi & Imunologi-Lateral Flow",
+    "Aglutinasi": "Serologi & Imunologi-Lateral Flow"
+  },
+  "Catin - HIV dan Sifilis": {
+    "Lateral Flow": "Serologi & Imunologi-Lateral Flow"
+  },
+  "Kehamilan": {
+    "Lateral Flow": "Serologi & Imunologi-Lateral Flow"
+  },
+  "Malaria": {
+    "Lateral Flow": "Serologi & Imunologi-Lateral Flow",
+    "Mikroskopis": "Mikrobiologi Klinik-Mikroskopis"
+  },
+  
+  // Urinalisis
+  "Proteinuria": {
+    "Reflactance photometri": "Urinalisis-Reflactance photometri"
+  }
+};
+
+// ========================================
 // MASTER DATA BMHP DARI EXCEL
 // Data dari: master_data_perencanaan_bmhp_skrining.xlsx
 // ========================================
@@ -1322,241 +1410,6 @@ const bmhpMasterData = {
       ],
       sasaran: ["Bayi Baru Lahir"],
     },
-  },
-  Hematologi: {
-    Anemia: {
-      parameters: ["Hemoglobin, penetapan kadar"],
-      bmhp: [
-        {
-          nama: "Strip Hb",
-          sasaran: "Ibu Hamil",
-        },
-        {
-          nama: "Strip Hb",
-          sasaran: "Balita 2 tahun",
-        },
-        {
-          nama: "Strip Hb",
-          sasaran: "Kelas 7 (remaja laki - laki dan putri, usia 13 thn)",
-        },
-        {
-          nama: "Strip Hb",
-          sasaran: "Kelas 10 (remaja putri, usia 16 tahun)",
-        },
-        {
-          nama: "Strip Hb",
-          sasaran: "perempuan catin usia 18-49 tahun",
-        },
-        {
-          nama: "Blood Lancet",
-          sasaran: "Sasaran  pemeriksaan anemia",
-        },
-        {
-          nama: "Alcohol Swab",
-          sasaran: null,
-        },
-      ],
-      sasaran: [
-        "Balita 2 tahun",
-        "Ibu Hamil",
-        "Kelas 10 (remaja putri, usia 16 tahun)",
-        "Kelas 7 (remaja laki - laki dan putri, usia 13 thn)",
-        "Sasaran  pemeriksaan anemia",
-        "perempuan catin usia 18-49 tahun",
-      ],
-    },
-    "Talasemia Lanjutan (pemeriksaan darah lengkap)": {
-      parameters: [
-        "Hemoglobin, penetapan kadar\nHematokrit, penetapan nilai\nEritrosit, hitung jumlah\nIndeks Eritrosit (MCV, MCH, CHC), penetapan nilai\nTrombosit, hitung jumlah\nLeukosit, hitung jumlah",
-      ],
-      bmhp: [
-        {
-          nama: "Paket reagen diluent cleanser, Lyse ",
-          sasaran: "Balita 2 tahun dengan Anemia",
-        },
-        {
-          nama: "Paket reagen diluent cleanser, Lyse ",
-          sasaran: "Balita 3-6 thn Faktor Risiko Talasemia",
-        },
-        {
-          nama: "Paket reagen diluent cleanser, Lyse ",
-          sasaran:
-            "Kelas 7 dengan Anemia, Kelas 8-12 ( 13-17 tahun) dengan faktor risiko Talasemia",
-        },
-        {
-          nama: "Tabung vacutainer tutup ungu (EDTA)",
-          sasaran: "Sesuai sasaran Talasemia",
-        },
-        {
-          nama: "Wing needle",
-          sasaran: "usia sekolah/remaja",
-        },
-        {
-          nama: "Wing needle",
-          sasaran: "Balita",
-        },
-        {
-          nama: "Plester bulat bening",
-          sasaran: null,
-        },
-        {
-          nama: "Alcohol Swab",
-          sasaran: null,
-        },
-        {
-          nama: "Handscoon",
-          sasaran: null,
-        },
-      ],
-      sasaran: [
-        "Balita",
-        "Balita 2 tahun dengan Anemia",
-        "Balita 3-6 thn Faktor Risiko Talasemia",
-        "Kelas 7 dengan Anemia, Kelas 8-12 ( 13-17 tahun) dengan faktor risiko Talasemia",
-        "Sesuai sasaran Talasemia",
-        "usia sekolah/remaja",
-      ],
-    },
-  },
-  "Kimia Klinik": {
-    "Gula Darah Sewaktu": {
-      parameters: ["Glukosa, penetapan kadar"],
-      bmhp: [
-        {
-          nama: "Strip gula darah",
-          sasaran: "Ibu Hamil",
-        },
-        {
-          nama: "Strip gula darah",
-          sasaran: "Balita Usia 2 tahun",
-        },
-        {
-          nama: "Strip gula darah",
-          sasaran: "Balita 3-6 tahun dengan risiko",
-        },
-        {
-          nama: "Strip gula darah",
-          sasaran:
-            "Anak Usia Sekolah Kelas 1 - 6 ( usia 7-12 tahun) dengan faktor risiko",
-        },
-        {
-          nama: "Strip gula darah",
-          sasaran: "Seluruh Kelas 7 (13 tahun)",
-        },
-        {
-          nama: "Strip gula darah",
-          sasaran: "Kelas 8 -9 ( 14 - 15 tahun) dengan faktor risiko",
-        },
-        {
-          nama: "Strip gula darah",
-          sasaran: "Kelas 10 - 12 (usia 16 - 17 tahun)",
-        },
-        {
-          nama: "Strip gula darah",
-          sasaran: "Dewasa Usia 18 - 59 tahun",
-        },
-        {
-          nama: "Strip gula darah",
-          sasaran: "Lansia",
-        },
-        {
-          nama: "Blood Lancet",
-          sasaran: "Sesuai Sasaran Strip GDS",
-        },
-        {
-          nama: "Alcohol Swab",
-          sasaran: null,
-        },
-      ],
-      sasaran: [
-        "Anak Usia Sekolah Kelas 1 - 6 ( usia 7-12 tahun) dengan faktor risiko",
-        "Balita 3-6 tahun dengan risiko",
-        "Balita Usia 2 tahun",
-        "Dewasa Usia 18 - 59 tahun",
-        "Ibu Hamil",
-        "Kelas 10 - 12 (usia 16 - 17 tahun)",
-        "Kelas 8 -9 ( 14 - 15 tahun) dengan faktor risiko",
-        "Lansia",
-        "Seluruh Kelas 7 (13 tahun)",
-        "Sesuai Sasaran Strip GDS",
-      ],
-    },
-    "Profil Lipid": {
-      parameters: [
-        "Kolesterol HDL, penetapan kadar",
-        "Kolesterol LDL",
-        "Kolesterol total, penetapan kadar",
-        "Kolesterol total, penetapan kadar\nTrigliserida, penetapan kadar\nKolesterol HDL, penetapan kadar\nKolesterol LDL",
-        "Trigliserida, penetapan kadar",
-      ],
-      bmhp: [
-        {
-          nama: "Reagensia Cholesterol Total",
-          sasaran: "Dewasa Usia 40 - 59 dengan HT & DM",
-        },
-        {
-          nama: "Reagensia Cholesterol Total",
-          sasaran: "Lansia 60 tahun ke atas dengan HT & DM",
-        },
-        {
-          nama: "Reagensia Trigliserida",
-          sasaran: "Dewasa Usia 40 - 59 dengan HT & DM",
-        },
-        {
-          nama: "Reagensia Trigliserida",
-          sasaran: "Lansia 60 tahun ke atas dengan HT & DM",
-        },
-        {
-          nama: "Reagensia HDL Direct",
-          sasaran: "Dewasa Usia 40 - 59 dengan HT & DM",
-        },
-        {
-          nama: "Reagensia HDL Direct",
-          sasaran: "Lansia 60 tahun ke atas dengan HT & DM",
-        },
-        {
-          nama: "Reagensia LDL Direct",
-          sasaran: "Dewasa Usia 40 - 59 dengan HT & DM",
-        },
-        {
-          nama: "Reagensia LDL Direct",
-          sasaran: "Lansia 60 tahun ke atas dengan HT & DM",
-        },
-        {
-          nama: "Control Normal",
-          sasaran: "Dewasa Usia 40 - 59 dengan HT & DM",
-        },
-        {
-          nama: "Control Normal",
-          sasaran: "Lansia 60 tahun ke atas dengan HT & DM",
-        },
-        {
-          nama: "Alcohol Swab",
-          sasaran: "sesuai jumlah sasaran",
-        },
-        {
-          nama: "Tip Kuning",
-          sasaran: null,
-        },
-        {
-          nama: "Tabung vacutainer tutup kuning",
-          sasaran: null,
-        },
-        {
-          nama: "Vacutainer Needle",
-          sasaran: null,
-        },
-        {
-          nama: "Plester bulat bening",
-          sasaran: null,
-        },
-      ],
-      sasaran: [
-        "Dewasa Usia 40 - 59 dengan HT & DM",
-        "Lansia 60 tahun ke atas dengan HT & DM",
-        "sesuai jumlah sasaran",
-      ],
-    },
     "Risiko Jantung": {
       parameters: [],
       bmhp: [
@@ -1581,203 +1434,6 @@ const bmhpMasterData = {
         "Dewasa usia 40-59 tahun dengan HT & DM",
         "Lansia Usia 60 tahun ke atas dengan HT & DM",
       ],
-    },
-    "Fungsi Ginjal": {
-      parameters: [
-        "Kreatinin, penetapan kadar",
-        "Ureum/ BUN, penetapan kadar",
-        "Ureum/ BUN, penetapan kadar\nKreatinin, penetapan kadar",
-      ],
-      bmhp: [
-        {
-          nama: "Reagen Ureum",
-          sasaran: "Dewasa usia 40-59 tahun dengan HT & DM",
-        },
-        {
-          nama: "Reagen Ureum",
-          sasaran: "Lansia Usia 60 tahun ke atas dengan HT & DM",
-        },
-        {
-          nama: "Reagen kreatinin",
-          sasaran: "Dewasa usia 40-59 tahun dengan HT & DM",
-        },
-        {
-          nama: "Reagen kreatinin",
-          sasaran: "Lansia Usia 60 tahun ke atas dengan HT & DM",
-        },
-        {
-          nama: "Tabung vacutainer tutup kuning",
-          sasaran: "Sasaran skrining fungsi ginjal",
-        },
-        {
-          nama: "Vacutainer Needle",
-          sasaran: null,
-        },
-        {
-          nama: "Tip Kuning",
-          sasaran: null,
-        },
-        {
-          nama: "Handscoon",
-          sasaran: null,
-        },
-      ],
-      sasaran: [
-        "Dewasa usia 40-59 tahun dengan HT & DM",
-        "Lansia Usia 60 tahun ke atas dengan HT & DM",
-        "Sasaran skrining fungsi ginjal",
-      ],
-    },
-    "Fibrosis/Sirosis": {
-      parameters: ["SGOT, penetapan kadar"],
-      bmhp: [
-        {
-          nama: "Reagen SGOT",
-          sasaran: "Seluruh jumlah penduduk",
-        },
-        {
-          nama: "Tabung vacutainer tutup ungu (EDTA)",
-          sasaran: "Sesuai sasaran diatas",
-        },
-        {
-          nama: "Vacutainer Needle",
-          sasaran: null,
-        },
-        {
-          nama: "Plester bulat bening",
-          sasaran: null,
-        },
-        {
-          nama: "Vacutainer tutup merah",
-          sasaran: null,
-        },
-        {
-          nama: "Alcohol Swab",
-          sasaran: null,
-        },
-        {
-          nama: "Handscoon",
-          sasaran: null,
-        },
-      ],
-      sasaran: ["Seluruh jumlah penduduk", "Sesuai sasaran diatas"],
-    },
-  },
-  "Mikrobiologi Klinik, Parasitologi dan Imunologi": {
-    Tuberkulosis: {
-      parameters: ["BTA Mycobacterium Tuberculosis (semi kuantitatif)"],
-      bmhp: [
-        {
-          nama: "Tuberkulin Vial",
-          sasaran: "Estimasi kasus TB anak 0 - 14 tahun",
-        },
-        {
-          nama: "Reagensia BTA",
-          sasaran: "Estimasi kasus TB",
-        },
-        {
-          nama: "Cartridge TCM",
-          sasaran: null,
-        },
-        {
-          nama: "Pot Sputum",
-          sasaran: null,
-        },
-      ],
-      sasaran: ["Estimasi kasus TB", "Estimasi kasus TB anak 0 - 14 tahun"],
-    },
-    Kehamilan: {
-      parameters: ["Tes Kehamilan, kualitatif"],
-      bmhp: [
-        {
-          nama: "Gel USG",
-          sasaran: "Ibu Hamil",
-        },
-      ],
-      sasaran: ["Ibu Hamil"],
-    },
-    "Kanker Payudara ": {
-      parameters: [],
-      bmhp: [
-        {
-          nama: "Gel USG",
-          sasaran: "Perempuan 30-69 tahun",
-        },
-      ],
-      sasaran: ["Perempuan 30-69 tahun"],
-    },
-    "Kanker Leher Rahim": {
-      parameters: [],
-      bmhp: [
-        {
-          nama: "Collecting Kit (cytobrush + VTM)",
-          sasaran: "Perempuan 30-69 tahun",
-        },
-      ],
-      sasaran: ["Perempuan 30-69 tahun"],
-    },
-    "Hepatitis B": {
-      parameters: ["HBsAg, kualitatif"],
-      bmhp: [
-        {
-          nama: "Rapid test Hepatitis B (HBsAg)",
-          sasaran: "Ibu Hamil",
-        },
-        {
-          nama: "Rapid test Hepatitis B (HBsAg)",
-          sasaran:
-            "Kelas 1 - 12 ( 7 - 17 tahun) memiliki faktor risiko Hepatitis B",
-        },
-        {
-          nama: "Rapid test Hepatitis B (HBsAg)",
-          sasaran: "Usia 18 -59 tahun (Memiliki faktor risiko Hepatitis B)",
-        },
-        {
-          nama: "Rapid test Hepatitis B (HBsAg)",
-          sasaran: "Usia ≥ 60 tahun (Memiliki faktor risiko Hepatitis B)",
-        },
-      ],
-      sasaran: [
-        "Ibu Hamil",
-        "Kelas 1 - 12 ( 7 - 17 tahun) memiliki faktor risiko Hepatitis B",
-        "Usia 18 -59 tahun (Memiliki faktor risiko Hepatitis B)",
-        "Usia ≥ 60 tahun (Memiliki faktor risiko Hepatitis B)",
-      ],
-    },
-    "Hepatitis C": {
-      parameters: ["Anti HCV, kualitatif"],
-      bmhp: [
-        {
-          nama: "Rapid test Hepatitis C (anti HCV)",
-          sasaran:
-            "Kelas 7 - 12 ( 13 - 17 tahun) memiliki faktor risiko hepatitis C",
-        },
-        {
-          nama: "Rapid test Hepatitis C (anti HCV)",
-          sasaran:
-            "Usia 18 - 59 tahun ke atas (Memiliki faktor risiko Hepatitis C)",
-        },
-        {
-          nama: "Rapid test Hepatitis C (anti HCV)",
-          sasaran:
-            "Usia >=60 tahun ke atas (Memiliki faktor risiko Hepatitis C)",
-        },
-      ],
-      sasaran: [
-        "Kelas 7 - 12 ( 13 - 17 tahun) memiliki faktor risiko hepatitis C",
-        "Usia 18 - 59 tahun ke atas (Memiliki faktor risiko Hepatitis C)",
-        "Usia >=60 tahun ke atas (Memiliki faktor risiko Hepatitis C)",
-      ],
-    },
-    "Fibrosis/Sirosis": {
-      parameters: [],
-      bmhp: [
-        {
-          nama: "Paket reagen diluent cleanser, Lyse",
-          sasaran: "Seluruh jumlah penduduk",
-        },
-      ],
-      sasaran: ["Seluruh jumlah penduduk"],
     },
     "Catin - HIV dan Sifilis": {
       parameters: [
@@ -1812,40 +1468,6 @@ const bmhpMasterData = {
         },
       ],
       sasaran: ["Ibu Hamil", "Laki-laki dan perempuan catin usia 18-49 tahun"],
-    },
-    Gigi: {
-      parameters: [],
-      bmhp: [
-        {
-          nama: "Dental Kit",
-          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
-        },
-        {
-          nama: "Celemek dental",
-          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
-        },
-        {
-          nama: "Microbrush",
-          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
-        },
-        {
-          nama: "Cawan",
-          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
-        },
-        {
-          nama: "Dental plaque disclosing",
-          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
-        },
-        {
-          nama: "Fluorida Varnish",
-          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
-        },
-        {
-          nama: "Kapas ",
-          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
-        },
-      ],
-      sasaran: ["Kelas 1 - 6 ( usia 7 - 12 tahun)"],
     },
     Malaria: {
       parameters: ["Malaria, kualitatif", "Malaria, kuantitatif"],
@@ -1915,6 +1537,403 @@ const bmhpMasterData = {
         "(talasemia, fungsi ginjal, fibrosis) SHK, Kanker Usus",
         "(talasemia, profil lipid) Fibrosis/Sirosis, SHK",
       ],
+    },
+    "Fibrosis/Sirosis": {
+      parameters: ["SGOT, penetapan kadar"],
+      bmhp: [
+        {
+          nama: "Reagen SGOT",
+          sasaran: "Seluruh jumlah penduduk",
+        },
+        {
+          nama: "Tabung vacutainer tutup ungu (EDTA)",
+          sasaran: null,
+        },
+        {
+          nama: "Vacutainer Needle",
+          sasaran: null,
+        },
+        {
+          nama: "Plester bulat bening",
+          sasaran: null,
+        },
+        {
+          nama: "Alcohol Swab",
+          sasaran: null,
+        },
+        {
+          nama: "Handscoon",
+          sasaran: null,
+        },
+      ],
+      sasaran: ["Seluruh jumlah penduduk"],
+    },
+    "Kanker Payudara ": {
+      parameters: [],
+      bmhp: [
+        {
+          nama: "Gel USG",
+          sasaran: "Perempuan 30-69 tahun",
+        },
+      ],
+      sasaran: ["Perempuan 30-69 tahun"],
+    },
+    "Kanker Leher Rahim": {
+      parameters: [],
+      bmhp: [
+        {
+          nama: "Collecting Kit (cytobrush + VTM)",
+          sasaran: "Perempuan 30-69 tahun",
+        },
+      ],
+      sasaran: ["Perempuan 30-69 tahun"],
+    },
+    Gigi: {
+      parameters: [],
+      bmhp: [
+        {
+          nama: "Dental Kit",
+          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
+        },
+        {
+          nama: "Celemek dental",
+          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
+        },
+        {
+          nama: "Microbrush",
+          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
+        },
+        {
+          nama: "Cawan",
+          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
+        },
+        {
+          nama: "Dental plaque disclosing",
+          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
+        },
+        {
+          nama: "Fluorida Varnish",
+          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
+        },
+        {
+          nama: "Kapas",
+          sasaran: "Kelas 1 - 6 ( usia 7 - 12 tahun)",
+        },
+      ],
+      sasaran: ["Kelas 1 - 6 ( usia 7 - 12 tahun)"],
+    },
+  },
+  Hematologi: {
+    Anemia: {
+      parameters: ["Hemoglobin, penetapan kadar"],
+      bmhp: [
+        {
+          nama: "Strip Hb",
+          sasaran: "Ibu Hamil",
+        },
+        {
+          nama: "Strip Hb",
+          sasaran: "Balita 2 tahun",
+        },
+        {
+          nama: "Strip Hb",
+          sasaran: "Kelas 7 (remaja laki - laki dan putri, usia 13 thn)",
+        },
+        {
+          nama: "Strip Hb",
+          sasaran: "Kelas 10 (remaja putri, usia 16 tahun)",
+        },
+        {
+          nama: "Strip Hb",
+          sasaran: "perempuan catin usia 18-49 tahun",
+        },
+        {
+          nama: "Blood Lancet",
+          sasaran: null,
+        },
+        {
+          nama: "Alcohol Swab",
+          sasaran: null,
+        },
+      ],
+      sasaran: [
+        "Balita 2 tahun",
+        "Ibu Hamil",
+        "Kelas 10 (remaja putri, usia 16 tahun)",
+        "Kelas 7 (remaja laki - laki dan putri, usia 13 thn)",
+        "perempuan catin usia 18-49 tahun",
+      ],
+    },
+    "Talasemia Lanjutan (pemeriksaan darah lengkap)": {
+      parameters: [
+        "Hemoglobin, penetapan kadar\nHematokrit, penetapan nilai\nEritrosit, hitung jumlah\nIndeks Eritrosit (MCV, MCH, CHC), penetapan nilai\nTrombosit, hitung jumlah\nLeukosit, hitung jumlah",
+      ],
+      bmhp: [
+        {
+          nama: "Paket reagen diluent cleanser, Lyse",
+          sasaran: "Balita 2 tahun dengan Anemia",
+        },
+        {
+          nama: "Paket reagen diluent cleanser, Lyse",
+          sasaran: "Balita 3-6 thn Faktor Risiko Talasemia",
+        },
+        {
+          nama: "Paket reagen diluent cleanser, Lyse",
+          sasaran:
+            "Kelas 7 dengan Anemia, Kelas 8-12 ( 13-17 tahun) dengan faktor risiko Talasemia",
+        },
+        {
+          nama: "Tabung vacutainer tutup ungu (EDTA)",
+          sasaran: "Sesuai sasaran Talasemia",
+        },
+        {
+          nama: "Wing needle",
+          sasaran: "usia sekolah/remaja",
+        },
+        {
+          nama: "Wing needle",
+          sasaran: "Balita",
+        },
+        {
+          nama: "Plester bulat bening",
+          sasaran: null,
+        },
+        {
+          nama: "Alcohol Swab",
+          sasaran: null,
+        },
+        {
+          nama: "Handscoon",
+          sasaran: null,
+        },
+      ],
+      sasaran: [
+        "Balita",
+        "Balita 2 tahun dengan Anemia",
+        "Balita 3-6 thn Faktor Risiko Talasemia",
+        "Kelas 7 dengan Anemia, Kelas 8-12 ( 13-17 tahun) dengan faktor risiko Talasemia",
+        "Sesuai sasaran Talasemia",
+        "usia sekolah/remaja",
+      ],
+    },
+  },
+  "Kimia Klinik": {
+    "Gula Darah Sewaktu": {
+      parameters: ["Glukosa, penetapan kadar"],
+      bmhp: [
+        {
+          nama: "Reagen Glucose Enzymatic",
+          sasaran: "Dewasa usia 40-59 tahun dengan obesitas",
+        },
+        {
+          nama: "Reagen Glucose Enzymatic",
+          sasaran: "Lansia 60 tahun ke atas dengan obesitas",
+        },
+        {
+          nama: "Strip Glucose",
+          sasaran: "Dewasa usia 40-59 tahun dengan obesitas",
+        },
+        {
+          nama: "Strip Glucose",
+          sasaran: "Lansia 60 tahun ke atas dengan obesitas",
+        },
+        {
+          nama: "Blood Lancet",
+          sasaran: null,
+        },
+        {
+          nama: "Alcohol Swab",
+          sasaran: null,
+        },
+      ],
+      sasaran: [
+        "Dewasa usia 40-59 tahun dengan obesitas",
+        "Lansia 60 tahun ke atas dengan obesitas",
+      ],
+    },
+    "Profil Lipid": {
+      parameters: [
+        "Kolesterol HDL, penetapan kadar",
+        "Kolesterol LDL",
+        "Kolesterol total, penetapan kadar",
+        "Trigliserida, penetapan kadar",
+      ],
+      bmhp: [
+        {
+          nama: "Reagensia Cholesterol Total",
+          sasaran: "Dewasa Usia 40 - 59 dengan HT & DM",
+        },
+        {
+          nama: "Reagensia Cholesterol Total",
+          sasaran: "Lansia 60 tahun ke atas dengan HT & DM",
+        },
+        {
+          nama: "Reagensia Trigliserida",
+          sasaran: "Dewasa Usia 40 - 59 dengan HT & DM",
+        },
+        {
+          nama: "Reagensia Trigliserida",
+          sasaran: "Lansia 60 tahun ke atas dengan HT & DM",
+        },
+        {
+          nama: "Reagensia HDL Direct",
+          sasaran: "Dewasa Usia 40 - 59 dengan HT & DM",
+        },
+        {
+          nama: "Reagensia HDL Direct",
+          sasaran: "Lansia 60 tahun ke atas dengan HT & DM",
+        },
+        {
+          nama: "Reagensia LDL Direct",
+          sasaran: "Dewasa Usia 40 - 59 dengan HT & DM",
+        },
+        {
+          nama: "Reagensia LDL Direct",
+          sasaran: "Lansia 60 tahun ke atas dengan HT & DM",
+        },
+        {
+          nama: "Alcohol Swab",
+          sasaran: null,
+        },
+        {
+          nama: "Tip Kuning",
+          sasaran: null,
+        },
+        {
+          nama: "Tabung vacutainer tutup kuning",
+          sasaran: null,
+        },
+        {
+          nama: "Vacutainer Needle",
+          sasaran: null,
+        },
+        {
+          nama: "Plester bulat bening",
+          sasaran: null,
+        },
+      ],
+      sasaran: [
+        "Dewasa Usia 40 - 59 dengan HT & DM",
+        "Lansia 60 tahun ke atas dengan HT & DM",
+      ],
+    },
+    "Fungsi Ginjal": {
+      parameters: [
+        "Kreatinin, penetapan kadar",
+        "BUN (Urea), penetapan kadar",
+        "Asam Urat, penetapan kadar",
+      ],
+      bmhp: [
+        {
+          nama: "Reagen Kreatinin",
+          sasaran: "Dewasa usia 40-59 tahun dengan HT & DM",
+        },
+        {
+          nama: "Reagen Kreatinin",
+          sasaran: "Lansia Usia 60 tahun ke atas dengan HT & DM",
+        },
+        {
+          nama: "Reagen BUN (Urea)",
+          sasaran: "Dewasa usia 40-59 tahun dengan HT & DM",
+        },
+        {
+          nama: "Reagen BUN (Urea)",
+          sasaran: "Lansia Usia 60 tahun ke atas dengan HT & DM",
+        },
+        {
+          nama: "Reagen Asam Urat",
+          sasaran: "Dewasa usia 40-59 tahun dengan HT & DM",
+        },
+        {
+          nama: "Reagen Asam Urat",
+          sasaran: "Lansia Usia 60 tahun ke atas dengan HT & DM",
+        },
+        {
+          nama: "Tip Kuning",
+          sasaran: null,
+        },
+        {
+          nama: "Tabung vacutainer tutup kuning",
+          sasaran: null,
+        },
+      ],
+      sasaran: [
+        "Dewasa usia 40-59 tahun dengan HT & DM",
+        "Lansia Usia 60 tahun ke atas dengan HT & DM",
+      ],
+    },
+  },
+  "Mikrobiologi Klinik, Parasitologi dan Imunologi": {
+    Tuberkulosis: {
+      parameters: ["Mycobacterium tuberculosis, identifikasi"],
+      bmhp: [
+        {
+          nama: "Reagensia BTA",
+          sasaran: "Estimasi kasus TB",
+        },
+        {
+          nama: "Reagensia BTA",
+          sasaran: "Estimasi kasus TB anak 0-14 tahun",
+        },
+        {
+          nama: "Pot Sputum",
+          sasaran: null,
+        },
+      ],
+      sasaran: [
+        "Estimasi kasus TB",
+        "Estimasi kasus TB anak 0-14 tahun",
+      ],
+    },
+    "Hepatitis B": {
+      parameters: ["HBsAg, kualitatif"],
+      bmhp: [
+        {
+          nama: "HBsAg Test Strip",
+          sasaran: "Ibu Hamil",
+        },
+        {
+          nama: "Alcohol Swab",
+          sasaran: null,
+        },
+        {
+          nama: "Blood Lancet",
+          sasaran: null,
+        },
+      ],
+      sasaran: ["Ibu Hamil"],
+    },
+    "Hepatitis C": {
+      parameters: ["Anti HCV, kualitatif"],
+      bmhp: [
+        {
+          nama: "Anti HCV Test Strip",
+          sasaran: "Kelompok risiko tinggi",
+        },
+        {
+          nama: "Alcohol Swab",
+          sasaran: null,
+        },
+        {
+          nama: "Blood Lancet",
+          sasaran: null,
+        },
+      ],
+      sasaran: ["Kelompok risiko tinggi"],
+    },
+    Kehamilan: {
+      parameters: ["hCG, kualitatif"],
+      bmhp: [
+        {
+          nama: "Tes Kehamilan",
+          sasaran: "Wanita Usia Subur",
+        },
+        {
+          nama: "Pot urine",
+          sasaran: null,
+        },
+      ],
+      sasaran: ["Wanita Usia Subur"],
     },
   },
   "Feses (Tinja)": {
@@ -2526,7 +2545,23 @@ function resetForm() {
 function resetBMHPForm() {
   document.getElementById("bmhpTahunSelect").value = "";
   document.getElementById("bmhpPemeriksaanSelect").value = "";
-  document.getElementById("bmhpSasaranSelect").value = "";
+  
+  // Reset Sasaran multi-select
+  const sasaranHidden = document.getElementById("bmhpSasaranHidden");
+  const sasaranPlaceholder = document.getElementById("bmhpSasaranPlaceholder");
+  const sasaranValues = document.getElementById("bmhpSasaranValues");
+  const sasaranDropdown = document.getElementById("bmhpSasaranDropdown");
+  
+  if (sasaranHidden) sasaranHidden.value = "";
+  if (sasaranPlaceholder) sasaranPlaceholder.style.display = "inline";
+  if (sasaranValues) {
+    sasaranValues.style.display = "none";
+    sasaranValues.innerHTML = "";
+  }
+  if (sasaranDropdown) {
+    const checkboxes = sasaranDropdown.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.checked = false);
+  }
 
   // Reset Metode multi-select
   const dropdown = document.getElementById("bmhpMetodeDropdown");
@@ -2597,6 +2632,12 @@ document.addEventListener("click", function (event) {
 const metodePerPemeriksaan = {
   // Lainnya
   "SHK, G6PD, SHAK": ["Lateral Flow", "Enzimatik"],
+  "Risiko Jantung": ["Konvensional (kimia)"],
+  "Fibrosis/Sirosis": ["Flow Cytometry", "Enzimatik"],
+  "Kanker Payudara ": ["Konvensional (kimia)"],
+  "Kanker Leher Rahim": ["Pembuatan sediaan"],
+  Gigi: ["Organoleptik"],
+  "Rekap Alkes Penunjang": ["Konvensional (kimia)"],
   
   // Hematologi
   Anemia: ["Lateral Flow", "Reflactance photometri"],
@@ -2606,8 +2647,6 @@ const metodePerPemeriksaan = {
   "Gula Darah Sewaktu": ["Enzimatik", "Reflactance photometri"],
   "Profil Lipid": ["Enzimatik"],
   "Fungsi Ginjal": ["Enzimatik"],
-  "Fibrosis/Sirosis": ["Flow Cytometry", "Enzimatik"],
-  "Risiko Jantung": ["Konvensional (kimia)"],
 
   // Mikrobiologi Klinik, Parasitologi dan Imunologi
   Tuberkulosis: ["Mikroskopis", "Molekuler", "Pembuatan sediaan"],
@@ -2615,11 +2654,7 @@ const metodePerPemeriksaan = {
   "Hepatitis C": ["Lateral Flow", "Aglutinasi"],
   "Catin - HIV dan Sifilis": ["Lateral Flow"],
   Kehamilan: ["Lateral Flow"],
-  "Kanker Payudara ": ["Konvensional (kimia)"],
-  "Kanker Leher Rahim": ["Pembuatan sediaan"],
   Malaria: ["Lateral Flow", "Mikroskopis"],
-  Gigi: ["Organoleptik"],
-  "Rekap Alkes Penunjang": ["Konvensional (kimia)"],
 
   // Urinalisis
   Proteinuria: ["Reflactance photometri"],
@@ -2738,6 +2773,113 @@ function updateBMHPMetodeSelection() {
   }
 }
 
+// ==================== MULTI-SELECT SASARAN FUNCTIONS ====================
+
+/**
+ * Populate pemeriksaan dropdown from bmhpMasterData
+ * Show all examinations (materials will be added from materialDatabase)
+ */
+function populateBMHPPemeriksaanDropdown() {
+  const select = document.getElementById("bmhpPemeriksaanSelect");
+  if (!select) return;
+
+  // Clear existing options except the first one
+  select.innerHTML = '<option value="">Pilih Pemeriksaan</option>';
+
+  // Group examinations by jenis
+  Object.keys(bmhpMasterData).forEach((jenis) => {
+    const examinations = bmhpMasterData[jenis];
+    const optgroup = document.createElement("optgroup");
+    optgroup.label = jenis;
+
+    let hasExaminations = false;
+
+    Object.keys(examinations).forEach((pemeriksaan) => {
+      const option = document.createElement("option");
+      option.value = pemeriksaan;
+      option.textContent = pemeriksaan;
+      optgroup.appendChild(option);
+      hasExaminations = true;
+    });
+
+    // Only add optgroup if it has examinations
+    if (hasExaminations) {
+      select.appendChild(optgroup);
+    }
+  });
+}
+
+// Populate on page load
+document.addEventListener('DOMContentLoaded', function() {
+  populateBMHPPemeriksaanDropdown();
+});
+
+/**
+ * Toggle multi-select dropdown untuk Sasaran BMHP
+ */
+function toggleBMHPSasaranDropdown() {
+  const dropdown = document.getElementById("bmhpSasaranDropdown");
+  if (!dropdown) return;
+
+  const isVisible = dropdown.style.display === "block";
+  dropdown.style.display = isVisible ? "none" : "block";
+}
+
+/**
+ * Toggle semua sasaran
+ */
+function toggleBMHPAllSasaran(checkbox) {
+  const allCheckboxes = document.querySelectorAll(".bmhp-sasaran-checkbox");
+  allCheckboxes.forEach((cb) => {
+    cb.checked = checkbox.checked;
+  });
+  updateBMHPSasaranSelection();
+}
+
+/**
+ * Update tampilan selection sasaran
+ */
+function updateBMHPSasaranSelection() {
+  const checkboxes = document.querySelectorAll(".bmhp-sasaran-checkbox:checked");
+  const placeholder = document.getElementById("bmhpSasaranPlaceholder");
+  const valuesSpan = document.getElementById("bmhpSasaranValues");
+  const hiddenInput = document.getElementById("bmhpSasaranHidden");
+
+  if (!placeholder || !valuesSpan || !hiddenInput) return;
+
+  const selectedValues = Array.from(checkboxes).map((cb) => cb.value);
+
+  if (selectedValues.length === 0) {
+    // No selection
+    placeholder.style.display = "inline";
+    valuesSpan.style.display = "none";
+    hiddenInput.value = "";
+  } else {
+    // Has selection
+    placeholder.style.display = "none";
+    valuesSpan.style.display = "inline";
+
+    // Display selected values as badges
+    const displayText = selectedValues.length === 1
+      ? selectedValues[0]
+      : `${selectedValues.length} sasaran dipilih`;
+    
+    valuesSpan.innerHTML = `<span class="multi-select-badge">${displayText}</span>`;
+
+    // Save to hidden input (comma-separated)
+    hiddenInput.value = selectedValues.join(",");
+  }
+
+  // Update "Semua Sasaran" checkbox state
+  const allSasaranCheckbox = document.getElementById("bmhpSasaran_semua");
+  const totalCheckboxes = document.querySelectorAll(
+    ".bmhp-sasaran-checkbox",
+  ).length;
+  if (allSasaranCheckbox) {
+    allSasaranCheckbox.checked = selectedValues.length === totalCheckboxes;
+  }
+}
+
 function onBMHPPemeriksaanChange() {
   const pemeriksaan = document.getElementById("bmhpPemeriksaanSelect").value;
   const jenisPemeriksaanGroup = document.getElementById(
@@ -2748,16 +2890,19 @@ function onBMHPPemeriksaanChange() {
     "bmhpJenisPemeriksaanInfo",
   );
   const parameterList = document.getElementById("bmhpParameterList");
-  const sasaranSelect = document.getElementById("bmhpSasaranSelect");
+  const sasaranDropdown = document.getElementById("bmhpSasaranDropdown");
 
   if (!pemeriksaan) {
     jenisPemeriksaanGroup.style.display = "none";
     parameterGroup.style.display = "none";
     // Reset sasaran dropdown
-    sasaranSelect.innerHTML = `
-      <option value="">Pilih Sasaran</option>
-      <option value="semua">-- Semua Sasaran --</option>
+    sasaranDropdown.innerHTML = `
+      <div class="multi-select-option">
+        <input type="checkbox" id="bmhpSasaran_semua" value="semua" onchange="toggleBMHPAllSasaran(this)" />
+        <label for="bmhpSasaran_semua">-- Semua Sasaran --</label>
+      </div>
     `;
+    updateBMHPSasaranSelection();
     return;
   }
 
@@ -2806,19 +2951,34 @@ function onBMHPPemeriksaanChange() {
       '<div class="bmhp-parameter-empty">Tidak ada parameter untuk pemeriksaan ini</div>';
   }
 
-  // POPULATE SASARAN DROPDOWN
-  sasaranSelect.innerHTML = `
-    <option value="">Pilih Sasaran</option>
-    <option value="semua">-- Semua Sasaran --</option>
+  // POPULATE SASARAN DROPDOWN (Multi-select)
+  sasaranDropdown.innerHTML = `
+    <div class="multi-select-option">
+      <input type="checkbox" id="bmhpSasaran_semua" value="semua" onchange="toggleBMHPAllSasaran(this)" />
+      <label for="bmhpSasaran_semua">-- Semua Sasaran --</label>
+    </div>
   `;
   
   // Add sasaran options from pemeriksaan data
-  sasaranList.forEach((sasaran) => {
-    const option = document.createElement("option");
-    option.value = sasaran;
-    option.textContent = sasaran;
-    sasaranSelect.appendChild(option);
+  sasaranList.forEach((sasaran, index) => {
+    const safeId = sasaran.replace(/\s+/g, '_').replace(/[()]/g, '');
+    const div = document.createElement("div");
+    div.className = "multi-select-option";
+    div.innerHTML = `
+      <input
+        type="checkbox"
+        id="bmhpSasaran_${safeId}"
+        value="${sasaran}"
+        onchange="updateBMHPSasaranSelection()"
+        class="bmhp-sasaran-checkbox"
+      />
+      <label for="bmhpSasaran_${safeId}">${sasaran}</label>
+    `;
+    sasaranDropdown.appendChild(div);
   });
+
+  // Reset selection
+  updateBMHPSasaranSelection();
 
   // Update metode dropdown
   updateBMHPMetodeOptions(pemeriksaan);
@@ -2849,7 +3009,7 @@ const allSasaranList = [
 function processBMHPPerencanaan() {
   const tahun = document.getElementById("bmhpTahunSelect").value;
   const pemeriksaan = document.getElementById("bmhpPemeriksaanSelect").value;
-  const sasaran = document.getElementById("bmhpSasaranSelect").value;
+  const sasaran = document.getElementById("bmhpSasaranHidden").value;
   const metode = document.getElementById("bmhpMetodeHidden").value;
 
   if (!tahun) {
@@ -2870,8 +3030,10 @@ function processBMHPPerencanaan() {
   }
 
   // Show summary
-  let sasaranText =
-    sasaran === "semua" ? "Semua Sasaran" : getSasaranLabel(sasaran);
+  const sasaranArray = sasaran.split(",").map(s => s.trim()).filter(Boolean);
+  let sasaranText = sasaranArray.length === 1 
+    ? sasaranArray[0] 
+    : `${sasaranArray.length} sasaran dipilih`;
   let metodeText =
     metode === "semua"
       ? "Semua Metode"
@@ -2899,14 +3061,17 @@ function getSasaranLabel(value) {
 function goToBMHPStep2() {
   const tahun = document.getElementById("bmhpTahunSelect").value;
   const pemeriksaan = document.getElementById("bmhpPemeriksaanSelect").value;
-  const sasaran = document.getElementById("bmhpSasaranSelect").value;
+  const sasaranRaw = document.getElementById("bmhpSasaranHidden").value;
   const metode = document.getElementById("bmhpMetodeHidden").value;
 
   // Validasi
-  if (!tahun || !pemeriksaan || !sasaran || !metode) {
+  if (!tahun || !pemeriksaan || !sasaranRaw || !metode) {
     alert("Silakan lengkapi semua field!");
     return;
   }
+
+  // Parse sasaran (comma-separated)
+  const sasaranArray = sasaranRaw.split(",").map(s => s.trim()).filter(Boolean);
 
   // CARI JENIS PEMERIKSAAN
   let jenisPemeriksaan = null;
@@ -2920,48 +3085,35 @@ function goToBMHPStep2() {
   bmhpFormData.tahun = tahun;
   bmhpFormData.jenisPemeriksaan = jenisPemeriksaan;
   bmhpFormData.pemeriksaan = pemeriksaan;
-  bmhpFormData.sasaran = sasaran;
+  bmhpFormData.sasaran = sasaranRaw; // Save the raw comma-separated string
   bmhpFormData.metode = metode;
 
   // Generate sasaran input fields
   const container = document.getElementById("bmhpSasaranInputContainer");
-  let sasaranToShow = [];
   
-  if (sasaran === "semua") {
-    // Ambil sasaran dari bmhpMasterData berdasarkan pemeriksaan yang dipilih
-    if (bmhpMasterData[jenisPemeriksaan] && bmhpMasterData[jenisPemeriksaan][pemeriksaan]) {
-      const pemeriksaanSasaran = bmhpMasterData[jenisPemeriksaan][pemeriksaan].sasaran || [];
-      sasaranToShow = pemeriksaanSasaran.map(s => ({
-        value: s,
-        label: s
-      }));
-    }
-  } else {
-    // Gunakan sasaran spesifik yang dipilih
-    sasaranToShow = [{ value: sasaran, label: sasaran }];
-  }
-
+  // Generate fields for selected sasaran
   let html = "";
-  sasaranToShow.forEach((s) => {
-    const prevData = bmhpFormData.sasaranData[s.value] || {
+  sasaranArray.forEach((sasaran) => {
+    const prevData = bmhpFormData.sasaranData[sasaran] || {
       sampel: "",
       tes: "",
     };
+    const safeId = sasaran.replace(/\s+/g, '_').replace(/[()]/g, '');
     html += `
             <div class="bmhp-sasaran-input-card">
                 <div class="bmhp-sasaran-header">
                     <span class="bmhp-sasaran-icon">👥</span>
-                    <span class="bmhp-sasaran-title">${s.label}</span>
+                    <span class="bmhp-sasaran-title">${sasaran}</span>
                 </div>
                 <div class="bmhp-sasaran-inputs">
                     <div class="bmhp-input-group">
                         <label class="form-label">Jumlah Sampel <span class="required">*</span></label>
-                        <input type="number" class="form-input" id="bmhpSampel_${s.value.replace(/\s+/g, '_')}"
+                        <input type="number" class="form-input" id="bmhpSampel_${safeId}"
                                placeholder="0" min="0" value="${prevData.sampel}">
                     </div>
                     <div class="bmhp-input-group">
                         <label class="form-label">Jumlah Tes <span class="required">*</span></label>
-                        <input type="number" class="form-input" id="bmhpTes_${s.value.replace(/\s+/g, '_')}"
+                        <input type="number" class="form-input" id="bmhpTes_${safeId}"
                                placeholder="0" min="0" value="${prevData.tes}">
                     </div>
                 </div>
@@ -2982,26 +3134,15 @@ function goToBMHPStep1() {
 }
 
 function saveStep2Data() {
-  const sasaran = bmhpFormData.sasaran;
-  let sasaranToSave = [];
-  
-  if (sasaran === "semua") {
-    const jenisPemeriksaan = bmhpFormData.jenisPemeriksaan;
-    const pemeriksaan = bmhpFormData.pemeriksaan;
-    if (bmhpMasterData[jenisPemeriksaan] && bmhpMasterData[jenisPemeriksaan][pemeriksaan]) {
-      const pemeriksaanSasaran = bmhpMasterData[jenisPemeriksaan][pemeriksaan].sasaran || [];
-      sasaranToSave = pemeriksaanSasaran.map(s => ({ value: s }));
-    }
-  } else {
-    sasaranToSave = [{ value: sasaran }];
-  }
+  const sasaranRaw = bmhpFormData.sasaran;
+  const sasaranArray = sasaranRaw.split(",").map(s => s.trim()).filter(Boolean);
 
-  sasaranToSave.forEach((s) => {
-    const safeId = s.value.replace(/\s+/g, '_');
+  sasaranArray.forEach((sasaran) => {
+    const safeId = sasaran.replace(/\s+/g, '_').replace(/[()]/g, '');
     const sampelInput = document.getElementById(`bmhpSampel_${safeId}`);
     const tesInput = document.getElementById(`bmhpTes_${safeId}`);
     if (sampelInput && tesInput) {
-      bmhpFormData.sasaranData[s.value] = {
+      bmhpFormData.sasaranData[sasaran] = {
         sampel: sampelInput.value,
         tes: tesInput.value,
       };
@@ -3010,31 +3151,20 @@ function saveStep2Data() {
 }
 
 function goToBMHPStep3() {
-  const sasaran = bmhpFormData.sasaran;
-  let sasaranToCheck = [];
-  
-  if (sasaran === "semua") {
-    const jenisPemeriksaan = bmhpFormData.jenisPemeriksaan;
-    const pemeriksaan = bmhpFormData.pemeriksaan;
-    if (bmhpMasterData[jenisPemeriksaan] && bmhpMasterData[jenisPemeriksaan][pemeriksaan]) {
-      const pemeriksaanSasaran = bmhpMasterData[jenisPemeriksaan][pemeriksaan].sasaran || [];
-      sasaranToCheck = pemeriksaanSasaran.map(s => ({ value: s }));
-    }
-  } else {
-    sasaranToCheck = [{ value: sasaran }];
-  }
+  const sasaranRaw = bmhpFormData.sasaran;
+  const sasaranArray = sasaranRaw.split(",").map(s => s.trim()).filter(Boolean);
 
   // Validate step 2 data
-  for (const s of sasaranToCheck) {
-    const safeId = s.value.replace(/\s+/g, '_');
+  for (const sasaran of sasaranArray) {
+    const safeId = sasaran.replace(/\s+/g, '_').replace(/[()]/g, '');
     const sampel = document.getElementById(`bmhpSampel_${safeId}`).value;
     const tes = document.getElementById(`bmhpTes_${safeId}`).value;
     if (!sampel || sampel <= 0) {
-      alert(`Silakan masukkan Jumlah Sampel untuk ${s.value}`);
+      alert(`Silakan masukkan Jumlah Sampel untuk ${sasaran}`);
       return;
     }
     if (!tes || tes <= 0) {
-      alert(`Silakan masukkan Jumlah Tes untuk ${s.value}`);
+      alert(`Silakan masukkan Jumlah Tes untuk ${sasaran}`);
       return;
     }
   }
@@ -3055,34 +3185,74 @@ function goToBMHPStep3() {
   const pemeriksaanData = bmhpMasterData[jenisPemeriksaan][pemeriksaan];
   const bmhpList = pemeriksaanData.bmhp || [];
 
-  if (bmhpList.length === 0) {
-    alert("Tidak ada material (BMHP) untuk pemeriksaan ini");
-    return;
-  }
-
   // Parse metode yang dipilih
   const selectedMetode = metodeRaw
     .split(",")
     .map((m) => m.trim())
     .filter(Boolean);
 
-  // Generate material input UI grouped by sasaran
-  const container = document.getElementById("bmhpMaterialContainer");
-
-  let sasaranToShow = [];
-  if (sasaran === "semua") {
-    const pemeriksaanSasaran = bmhpMasterData[jenisPemeriksaan][pemeriksaan].sasaran || [];
-    sasaranToShow = pemeriksaanSasaran.map(s => ({ value: s, label: s }));
-  } else {
-    sasaranToShow = [{ value: sasaran, label: sasaran }];
+  // Get materials from materialDatabase based on mapping
+  const mappedMaterials = [];
+  if (materialMapping[pemeriksaan]) {
+    selectedMetode.forEach((metode) => {
+      const dbKey = materialMapping[pemeriksaan][metode];
+      if (dbKey && materialDatabase[dbKey]) {
+        // Add Reagen
+        if (materialDatabase[dbKey].Reagen) {
+          materialDatabase[dbKey].Reagen.forEach((mat) => {
+            mappedMaterials.push({
+              nama: mat.nama,
+              satuan: mat.satuan,
+              consumptionPerTest: mat.consumptionPerTest,
+              sasaran: null, // from materialDatabase, no specific sasaran
+              source: 'materialDatabase',
+              category: 'Reagen'
+            });
+          });
+        }
+        // Add Alat Habis Pakai
+        if (materialDatabase[dbKey]["Alat Habis Pakai"]) {
+          materialDatabase[dbKey]["Alat Habis Pakai"].forEach((mat) => {
+            mappedMaterials.push({
+              nama: mat.nama,
+              satuan: mat.satuan,
+              consumptionPerTest: mat.consumptionPerTest,
+              sasaran: null,
+              source: 'materialDatabase',
+              category: 'Alat Habis Pakai'
+            });
+          });
+        }
+      }
+    });
   }
 
+  // Merge materials from bmhpMasterData and materialDatabase
+  // Remove duplicates based on nama
+  const allMaterials = [...bmhpList, ...mappedMaterials];
+  const uniqueMaterials = [];
+  const seenNames = new Set();
+  
+  allMaterials.forEach((mat) => {
+    const nameLower = mat.nama.toLowerCase().trim();
+    if (!seenNames.has(nameLower)) {
+      seenNames.add(nameLower);
+      uniqueMaterials.push(mat);
+    }
+  });
+
+  if (uniqueMaterials.length === 0) {
+    alert("Tidak ada material (BMHP) untuk pemeriksaan dan metode ini");
+    return;
+  }
+
+  // Generate material input UI grouped by sasaran
+  const container = document.getElementById("bmhpMaterialContainer");
   container.innerHTML = "";
 
-  sasaranToShow.forEach((sasaranItem) => {
-    const sasaranValue = sasaranItem.value;
-    const sasaranLabel = sasaranItem.label;
-    const safeId = sasaranValue.replace(/\s+/g, '_');
+  sasaranArray.forEach((sasaran) => {
+    const sasaranLabel = sasaran;
+    const safeId = sasaran.replace(/\s+/g, '_').replace(/[()]/g, '');
 
     // Ambil jumlah sampel dan tes untuk sasaran ini
     const jumlahSampel =
@@ -3091,7 +3261,7 @@ function goToBMHPStep3() {
       parseInt(document.getElementById(`bmhpTes_${safeId}`).value) || 0;
 
     // Filter material yang sesuai dengan sasaran ini
-    const filteredMaterials = bmhpList.filter((mat) => {
+    const filteredMaterials = uniqueMaterials.filter((mat) => {
       // Jika material tidak punya sasaran (null), tampilkan untuk semua sasaran
       if (!mat.sasaran) return true;
       
@@ -3099,8 +3269,7 @@ function goToBMHPStep3() {
       const matSasaran = mat.sasaran.toLowerCase();
       const targetLabel = sasaranLabel.toLowerCase();
       
-      // Matching logic - bisa disesuaikan dengan kebutuhan
-      // Untuk saat ini, tampilkan jika sasaran cocok atau jika sasaran material adalah general
+      // Matching logic
       return matSasaran.includes(targetLabel) || targetLabel.includes(matSasaran);
     });
 
@@ -3129,27 +3298,28 @@ function goToBMHPStep3() {
       const row = document.createElement("div");
       row.className = "bmhp-material-item";
 
-      // Cari satuan dan consumption dari masterMaterialDatabase
-      let satuan = "unit";
-      let consumptionPerSample = 1;
+      // Get satuan and consumption
+      let satuan = mat.satuan || "unit";
+      let consumptionPerSample = mat.consumptionPerTest || 1;
       
-      // Cari material di masterMaterialDatabase berdasarkan nama
-      Object.keys(masterMaterialDatabase).forEach((kategori) => {
-        const found = masterMaterialDatabase[kategori].find(
-          (m) => m.nama === mat.nama
-        );
-        if (found) {
-          satuan = found.satuan || "unit";
-          // Gunakan consumptionPerTest sebagai consumptionPerSample
-          consumptionPerSample = found.consumptionPerTest || 1;
-        }
-      });
+      // If material comes from bmhpMasterData, try to find in masterMaterialDatabase
+      if (mat.source !== 'materialDatabase') {
+        Object.keys(masterMaterialDatabase).forEach((kategori) => {
+          const found = masterMaterialDatabase[kategori].find(
+            (m) => m.nama === mat.nama
+          );
+          if (found) {
+            satuan = found.satuan || satuan;
+            consumptionPerSample = found.consumptionPerTest || consumptionPerSample;
+          }
+        });
+      }
 
       // HITUNG IDEAL PENGELUARAN LAB berdasarkan TES
       const idealPengeluaran = Math.ceil(jumlahTes * consumptionPerSample);
 
       // Get previous value if exists
-      const prevValue = bmhpFormData.materialData[sasaranValue]?.[mat.nama] || idealPengeluaran;
+      const prevValue = bmhpFormData.materialData[sasaran]?.[mat.nama] || idealPengeluaran;
 
       row.innerHTML = `
         <div class="bmhp-material-info">
@@ -3168,7 +3338,7 @@ function goToBMHPStep3() {
             value="${prevValue}"
             min="0"
             placeholder="Masukkan pengeluaran"
-            data-sasaran="${sasaranValue}"
+            data-sasaran="${sasaran}"
             data-material="${mat.nama}"
           />
         </div>
@@ -3223,24 +3393,13 @@ function saveBMHPPerencanaan() {
           .join(", ")
   }\n\n`;
 
-  const sasaran = bmhpFormData.sasaran;
-  let sasaranToShow = [];
+  const sasaranRaw = bmhpFormData.sasaran;
+  const sasaranArray = sasaranRaw.split(",").map(s => s.trim()).filter(Boolean);
   
-  if (sasaran === "semua") {
-    const jenisPemeriksaan = bmhpFormData.jenisPemeriksaan;
-    const pemeriksaan = bmhpFormData.pemeriksaan;
-    if (bmhpMasterData[jenisPemeriksaan] && bmhpMasterData[jenisPemeriksaan][pemeriksaan]) {
-      const pemeriksaanSasaran = bmhpMasterData[jenisPemeriksaan][pemeriksaan].sasaran || [];
-      sasaranToShow = pemeriksaanSasaran.map(s => ({ value: s, label: s }));
-    }
-  } else {
-    sasaranToShow = [{ value: sasaran, label: sasaran }];
-  }
-
-  sasaranToShow.forEach((s) => {
-    const sasaranData = bmhpFormData.sasaranData[s.value] || {};
-    const materialData = bmhpFormData.materialData[s.value] || {};
-    confirmMsg += `📌 ${s.label}\n`;
+  sasaranArray.forEach((sasaran) => {
+    const sasaranData = bmhpFormData.sasaranData[sasaran] || {};
+    const materialData = bmhpFormData.materialData[sasaran] || {};
+    confirmMsg += `📌 ${sasaran}\n`;
     confirmMsg += `   Sampel: ${sasaranData.sampel || 0}, Tes: ${sasaranData.tes || 0}\n`;
 
     const materialCount = Object.keys(materialData).filter(
@@ -3285,7 +3444,24 @@ function resetBMHPForm() {
 
   document.getElementById("bmhpTahunSelect").value = "";
   document.getElementById("bmhpPemeriksaanSelect").value = "";
-  document.getElementById("bmhpSasaranSelect").value = "";
+  
+  // Reset Sasaran multi-select
+  const sasaranHidden = document.getElementById("bmhpSasaranHidden");
+  const sasaranPlaceholder = document.getElementById("bmhpSasaranPlaceholder");
+  const sasaranValues = document.getElementById("bmhpSasaranValues");
+  const sasaranDropdown = document.getElementById("bmhpSasaranDropdown");
+  
+  if (sasaranHidden) sasaranHidden.value = "";
+  if (sasaranPlaceholder) sasaranPlaceholder.style.display = "inline";
+  if (sasaranValues) {
+    sasaranValues.style.display = "none";
+    sasaranValues.innerHTML = "";
+  }
+  if (sasaranDropdown) {
+    // Uncheck all checkboxes
+    const checkboxes = sasaranDropdown.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.checked = false);
+  }
 
   // Reset Metode multi-select
   const dropdown = document.getElementById("bmhpMetodeDropdown");

@@ -925,73 +925,6 @@
                         required
                     >
                         <option value="">Pilih Pemeriksaan</option>
-
-                        <!-- Lainnya -->
-                        <optgroup label="Lainnya">
-                            <option value="SHK, G6PD, SHAK">SHK, G6PD, SHAK</option>
-                        </optgroup>
-
-                        <!-- Feses (Tinja) -->
-                        <optgroup label="Feses (Tinja)">
-                            <option value="Kanker Usus">Kanker Usus</option>
-                        </optgroup>
-
-                        <!-- Hematologi -->
-                        <optgroup label="Hematologi">
-                            <option value="Anemia">Anemia</option>
-                            <option
-                                value="Talasemia Lanjutan (pemeriksaan darah lengkap)"
-                            >
-                                Talasemia Lanjutan (pemeriksaan darah lengkap)
-                            </option>
-                        </optgroup>
-
-                        <!-- Kimia Klinik -->
-                        <optgroup label="Kimia Klinik">
-                            <option value="Fibrosis/Sirosis">
-                                Fibrosis/Sirosis
-                            </option>
-                            <option value="Fungsi Ginjal">Fungsi Ginjal</option>
-                            <option value="Gula Darah Sewaktu">
-                                Gula Darah Sewaktu
-                            </option>
-                            <option value="Profil Lipid">Profil Lipid</option>
-                            <option value="Risiko Jantung">
-                                Risiko Jantung
-                            </option>
-                        </optgroup>
-
-                        <!-- Mikrobiologi Klinik, Parasitologi dan Imunologi -->
-                        <optgroup
-                            label="Mikrobiologi Klinik, Parasitologi dan Imunologi"
-                        >
-                            <option value="Catin - HIV dan Sifilis">
-                                Catin - HIV dan Sifilis
-                            </option>
-                            <option value="Fibrosis/Sirosis">
-                                Fibrosis/Sirosis
-                            </option>
-                            <option value="Gigi">Gigi</option>
-                            <option value="Hepatitis B">Hepatitis B</option>
-                            <option value="Hepatitis C">Hepatitis C</option>
-                            <option value="Kanker Leher Rahim">
-                                Kanker Leher Rahim
-                            </option>
-                            <option value="Kanker Payudara ">
-                                Kanker Payudara
-                            </option>
-                            <option value="Kehamilan">Kehamilan</option>
-                            <option value="Malaria">Malaria</option>
-                            <option value="Rekap Alkes Penunjang">
-                                Rekap Alkes Penunjang
-                            </option>
-                            <option value="Tuberkulosis">Tuberkulosis</option>
-                        </optgroup>
-
-                        <!-- Urinalisis -->
-                        <optgroup label="Urinalisis">
-                            <option value="Proteinuria">Proteinuria</option>
-                        </optgroup>
                     </select>
                 </div>
 
@@ -1023,12 +956,42 @@
                     <label class="form-label"
                         >Sasaran <span class="required">*</span></label
                     >
-                    <select class="form-select" id="bmhpSasaranSelect" required>
-                        <option value="">Pilih Sasaran</option>
-                        <option value="semua">-- Semua Sasaran --</option>
-                    </select>
-                        </optgroup>
-                    </select>
+                    <div style="position: relative; width: 100%">
+                        <div
+                            class="multi-select-display"
+                            id="bmhpSasaranDisplay"
+                            onclick="toggleBMHPSasaranDropdown()"
+                            style="width: 100%; cursor: pointer"
+                        >
+                            <span
+                                class="multi-select-placeholder"
+                                id="bmhpSasaranPlaceholder"
+                                >Pilih sasaran (bisa lebih dari 1)</span
+                            >
+                            <span
+                                class="multi-select-values"
+                                id="bmhpSasaranValues"
+                                style="display: none"
+                            ></span>
+                            <span class="multi-select-arrow">▼</span>
+                        </div>
+                        <div
+                            class="multi-select-dropdown"
+                            id="bmhpSasaranDropdown"
+                            style="display: none"
+                        >
+                            <div class="multi-select-option">
+                                <input
+                                    type="checkbox"
+                                    id="bmhpSasaran_semua"
+                                    value="semua"
+                                    onchange="toggleBMHPAllSasaran(this)"
+                                />
+                                <label for="bmhpSasaran_semua">-- Semua Sasaran --</label>
+                            </div>
+                        </div>
+                        <input type="hidden" id="bmhpSasaranHidden" required />
+                    </div>
                 </div>
 
                 <div class="form-group">
