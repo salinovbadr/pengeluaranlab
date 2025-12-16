@@ -925,16 +925,73 @@
                         required
                     >
                         <option value="">Pilih Pemeriksaan</option>
-                        <option value="Hematologi">Hematologi</option>
-                        <option value="Kimia Klinik">Kimia Klinik</option>
-                        <option value="Urinalisis">Urinalisis</option>
-                        <option value="Mikrobiologi Klinik">
-                            Mikrobiologi Klinik
-                        </option>
-                        <option value="Serologi & Imunologi">
-                            Serologi & Imunologi
-                        </option>
-                        <option value="Feses (Tinja)">Feses (Tinja)</option>
+
+                        <!-- Lainnya -->
+                        <optgroup label="Lainnya">
+                            <option value="SHK, G6PD, SHAK">SHK, G6PD, SHAK</option>
+                        </optgroup>
+
+                        <!-- Feses (Tinja) -->
+                        <optgroup label="Feses (Tinja)">
+                            <option value="Kanker Usus">Kanker Usus</option>
+                        </optgroup>
+
+                        <!-- Hematologi -->
+                        <optgroup label="Hematologi">
+                            <option value="Anemia">Anemia</option>
+                            <option
+                                value="Talasemia Lanjutan (pemeriksaan darah lengkap)"
+                            >
+                                Talasemia Lanjutan (pemeriksaan darah lengkap)
+                            </option>
+                        </optgroup>
+
+                        <!-- Kimia Klinik -->
+                        <optgroup label="Kimia Klinik">
+                            <option value="Fibrosis/Sirosis">
+                                Fibrosis/Sirosis
+                            </option>
+                            <option value="Fungsi Ginjal">Fungsi Ginjal</option>
+                            <option value="Gula Darah Sewaktu">
+                                Gula Darah Sewaktu
+                            </option>
+                            <option value="Profil Lipid">Profil Lipid</option>
+                            <option value="Risiko Jantung">
+                                Risiko Jantung
+                            </option>
+                        </optgroup>
+
+                        <!-- Mikrobiologi Klinik, Parasitologi dan Imunologi -->
+                        <optgroup
+                            label="Mikrobiologi Klinik, Parasitologi dan Imunologi"
+                        >
+                            <option value="Catin - HIV dan Sifilis">
+                                Catin - HIV dan Sifilis
+                            </option>
+                            <option value="Fibrosis/Sirosis">
+                                Fibrosis/Sirosis
+                            </option>
+                            <option value="Gigi">Gigi</option>
+                            <option value="Hepatitis B">Hepatitis B</option>
+                            <option value="Hepatitis C">Hepatitis C</option>
+                            <option value="Kanker Leher Rahim">
+                                Kanker Leher Rahim
+                            </option>
+                            <option value="Kanker Payudara ">
+                                Kanker Payudara
+                            </option>
+                            <option value="Kehamilan">Kehamilan</option>
+                            <option value="Malaria">Malaria</option>
+                            <option value="Rekap Alkes Penunjang">
+                                Rekap Alkes Penunjang
+                            </option>
+                            <option value="Tuberkulosis">Tuberkulosis</option>
+                        </optgroup>
+
+                        <!-- Urinalisis -->
+                        <optgroup label="Urinalisis">
+                            <option value="Proteinuria">Proteinuria</option>
+                        </optgroup>
                     </select>
                 </div>
 
@@ -969,13 +1026,8 @@
                     <select class="form-select" id="bmhpSasaranSelect" required>
                         <option value="">Pilih Sasaran</option>
                         <option value="semua">-- Semua Sasaran --</option>
-                        <option value="balita">Balita (0-5 tahun)</option>
-                        <option value="anak">Anak (6-12 tahun)</option>
-                        <option value="remaja">Remaja (13-18 tahun)</option>
-                        <option value="dewasa">Dewasa (19-45 tahun)</option>
-                        <option value="lansia">Lansia (> 45 tahun)</option>
-                        <option value="ibu_hamil">Ibu Hamil</option>
-                        <option value="wus">Wanita Usia Subur (WUS)</option>
+                    </select>
+                        </optgroup>
                     </select>
                 </div>
 
@@ -983,10 +1035,34 @@
                     <label class="form-label"
                         >Metode <span class="required">*</span></label
                     >
-                    <select class="form-select" id="bmhpMetodeSelect" required>
-                        <option value="">Pilih Metode</option>
-                        <option value="semua">-- Semua Metode --</option>
-                    </select>
+                    <div style="position: relative; width: 100%">
+                        <div
+                            class="multi-select-display"
+                            id="bmhpMetodeDisplay"
+                            onclick="toggleBMHPMetodeDropdown()"
+                            style="width: 100%; cursor: pointer"
+                        >
+                            <span
+                                class="multi-select-placeholder"
+                                id="bmhpMetodePlaceholder"
+                                >Pilih metode (bisa lebih dari 1)</span
+                            >
+                            <span
+                                class="multi-select-values"
+                                id="bmhpMetodeValues"
+                                style="display: none"
+                            ></span>
+                            <span class="multi-select-arrow">▼</span>
+                        </div>
+                        <div
+                            class="multi-select-dropdown"
+                            id="bmhpMetodeDropdown"
+                            style="display: none"
+                        >
+                            <!-- Will be populated dynamically -->
+                        </div>
+                        <input type="hidden" id="bmhpMetodeHidden" required />
+                    </div>
                 </div>
 
                 <button
