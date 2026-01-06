@@ -69,6 +69,17 @@ body {
     font-size: 14px;
 }
 
+.version-badge {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 /* Content Styles */
 .content {
     padding: 20px;
@@ -2110,6 +2121,12 @@ body {
     gap: 12px;
 }
 
+/* REAGEN items take full width (no side-by-side layout) */
+.bmhp-material-item .bmhp-material-info:only-child {
+    flex: 1;
+    width: 100%;
+}
+
 .bmhp-material-item:last-child {
     margin-bottom: 0;
 }
@@ -2124,6 +2141,45 @@ body {
     font-weight: 600;
     color: #1a1a1a;
     margin-bottom: 4px;
+}
+
+/* New layout: Material name on left, Pengeluaran Lab on right */
+.bmhp-material-name-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.bmhp-material-name-left {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bmhp-material-pengeluaran-label {
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Input on right side for BMHP */
+.bmhp-material-input-right {
+    margin: 12px 0;
+}
+
+.bmhp-material-input-right .form-input {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+    border: 2px solid #DEE2E6;
+    border-radius: 6px;
 }
 
 .bmhp-material-meta {
@@ -2156,25 +2212,6 @@ body {
     border-radius: 4px;
     font-size: 11px;
     font-weight: 500;
-}
-
-.bmhp-material-input {
-    min-width: 120px;
-    text-align: right;
-}
-
-.bmhp-material-input label {
-    display: block;
-    font-size: 11px;
-    color: #666;
-    margin-bottom: 4px;
-}
-
-.bmhp-material-input .form-input {
-    width: 100%;
-    padding: 8px;
-    text-align: center;
-    font-weight: 600;
 }
 
 /* Template SMILE Styles */
@@ -2214,6 +2251,114 @@ body {
     outline: none;
     border-color: #2196f3;
     box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+/* Material Type Badges */
+.material-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 8px;
+}
+
+.material-badge.bmhp {
+    background-color: #28A745;
+    color: white;
+}
+
+.material-badge.reagen {
+    background-color: #007BFF;
+    color: white;
+}
+
+/* REAGEN Info Badges - Horizontal Layout (Image 1 style) */
+.reagen-info-badges {
+    display: flex;
+    gap: 12px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+}
+
+.reagen-badge {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.reagen-badge.test-per-pkg {
+    background-color: #E3F2FD;
+    color: #1565C0;
+}
+
+.reagen-badge.total-stok {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.reagen-badge.total-stok span {
+    font-weight: 700;
+}
+
+/* REAGEN Input Group (for Pengeluaran Lab field) */
+.bmhp-material-input-group-reagen {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+    padding: 12px;
+    background-color: #E7F4FF;
+    border-radius: 6px;
+    border-left: 3px solid #007BFF;
+}
+
+.bmhp-material-input-group-reagen label {
+    font-weight: 600;
+    color: #007BFF;
+    font-size: 14px;
+}
+
+.bmhp-material-input-group-reagen .input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bmhp-material-input-group-reagen .form-input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #007BFF;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.bmhp-material-input-group-reagen .form-input:focus {
+    outline: none;
+    border-color: #0056B3;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.bmhp-material-input-group-reagen .unit-label {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    min-width: 80px;
+}
+
+/* Update material item for REAGEN layout */
+.bmhp-material-item .bmhp-material-info {
+    flex: 1;
+    min-width: 0;
 }
 
 .bmhp-no-material {

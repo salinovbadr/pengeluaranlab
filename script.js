@@ -1363,7 +1363,7 @@ const materialMapping = {
     "Lateral Flow": "Serologi & Imunologi-Lateral Flow",
     Aglutinasi: "Serologi & Imunologi-Lateral Flow",
   },
-  "Catin - HIV dan Sifilis": {
+  "HIV dan Sifilis": {
     "Lateral Flow": "Serologi & Imunologi-Lateral Flow",
   },
   Kehamilan: {
@@ -1414,10 +1414,35 @@ const bmhpMasterDataV2 = {
       bySasaran: {
         "Balita Usia 2 Tahun": [
           {
-            nama: "Strip Hb",
+            nama: "[BMHP] - Hemoglobin test strip",
             templateSMILE: ["Hemoglobin test strip"],
             satuan: "test",
             consumptionPerTest: 1,
+            materialType: "BMHP",
+          },
+          {
+            nama: "[Reagen] - Paket reagen diluent cleanser",
+            templateSMILE: [
+              "Hematology Analyzer Reagent Kit 3 Diff",
+              "Blood cell diluents",
+              "Hematology Analyzer Reagent Kit 5 Diff",
+            ],
+            satuan: "package",
+            consumptionPerTest: 1,
+            materialType: "REAGEN",
+            testPerPackage: 100,
+          },
+          {
+            nama: "[Reagen] - Lyse",
+            templateSMILE: [
+              "Red cell lysing reagent",
+              "Diff lyse reagent",
+              "Lyse reagent",
+            ],
+            satuan: "package",
+            consumptionPerTest: 1,
+            materialType: "REAGEN",
+            testPerPackage: 100,
           },
         ],
         "Ibu Hamil": [
@@ -1469,7 +1494,7 @@ const bmhpMasterDataV2 = {
       },
     },
   },
-  "Catin - HIV dan Sifilis": {
+  "HIV dan Sifilis": {
     jenisPemeriksaan: "Mikrobiologi Klinik, Parasitologi dan Imunologi",
     parameters: [
       "Anti HIV, kualitatif",
@@ -2416,7 +2441,7 @@ const bmhpMasterDataV2 = {
     metode: ["Flow Cytometry"],
     sasaran: [
       "Balita (Umum)",
-      "Balita Usia 2 Tahun (Anemia)",
+      "Balita Usia 2 Tahun",
       "Balita Usia 3-6 Tahun dengan Risiko Talasemia",
       "Sasaran Skrining Anemia & Talasemia (Sekolah)",
       "Sasaran Skrining Talasemia",
@@ -2433,7 +2458,7 @@ const bmhpMasterDataV2 = {
             consumptionPerTest: 1,
           },
         ],
-        "Balita Usia 2 Tahun (Anemia)": [
+        "Balita Usia 2 Tahun": [
           {
             nama: "Paket reagen diluent cleanser",
             templateSMILE: [
@@ -3257,7 +3282,7 @@ const metodePerPemeriksaan = {
   Tuberkulosis: ["Mikroskopis", "Molekuler", "Pembuatan sediaan"],
   "Hepatitis B": ["Lateral Flow", "Aglutinasi"],
   "Hepatitis C": ["Lateral Flow", "Aglutinasi"],
-  "Catin - HIV dan Sifilis": ["Lateral Flow"],
+  "HIV dan Sifilis": ["Lateral Flow"],
   Kehamilan: ["Lateral Flow"],
   Malaria: ["Lateral Flow", "Mikroskopis"],
 
@@ -3781,6 +3806,37 @@ function saveStep2Data() {
   });
 }
 
+// Helper function to get material type from name
+function getMaterialType(materialName) {
+  if (materialName.startsWith("[BMHP]")) {
+    return "BMHP";
+  } else if (materialName.startsWith("[Reagen]")) {
+    return "REAGEN";
+  } else if (materialName.startsWith("[]")) {
+    return "UNKNOWN"; // Skip these
+  }
+  return "BMHP"; // Default to BMHP for backward compatibility
+}
+
+// Helper function to clean material name (remove prefix)
+function cleanMaterialName(materialName) {
+  return materialName.replace(/^\[(BMHP|Reagen)\]\s*-\s*/, "").trim();
+}
+
+// Update Total Stok when REAGEN Kebutuhan changes
+function updateReagenTotalStok(inputElement, safeId, index) {
+  const kebutuhan = parseInt(inputElement.value) || 0;
+  const testPerPackage = parseInt(inputElement.dataset.testPerPackage) || 100;
+  const totalStok = kebutuhan * testPerPackage;
+
+  const totalStokElement = document.getElementById(
+    `totalStok_${safeId}_${index}`,
+  );
+  if (totalStokElement) {
+    totalStokElement.textContent = totalStok;
+  }
+}
+
 function goToBMHPStep3() {
   const sasaranRaw = bmhpFormData.sasaran;
   const sasaranArray = sasaranRaw
@@ -3873,18 +3929,18 @@ function goToBMHPStep3() {
 
     // Tampilkan material
     sasaranMaterials.forEach((mat, index) => {
+      // Detect material type
+      const materialType = mat.materialType || getMaterialType(mat.nama);
+
+      // Skip UNKNOWN types
+      if (materialType === "UNKNOWN") return;
+
+      const cleanName = cleanMaterialName(mat.nama);
       const row = document.createElement("div");
       row.className = "bmhp-material-item";
 
       const satuan = mat.satuan || "unit";
       const consumptionPerSample = mat.consumptionPerTest || 1;
-
-      // HITUNG IDEAL PENGELUARAN LAB berdasarkan TES
-      const idealPengeluaran = Math.ceil(jumlahTes * consumptionPerSample);
-
-      // Get previous value if exists
-      const prevValue =
-        bmhpFormData.materialData[sasaran]?.[mat.nama] || idealPengeluaran;
 
       // Template SMILE selection
       let templateHTML = "";
@@ -3907,12 +3963,12 @@ function goToBMHPStep3() {
 
           templateHTML = `
             <div class="bmhp-material-template-select">
-              <label>Material Template:</label>
+              <label>Template SMILE:</label>
               <select
                 class="form-select"
                 id="template_${safeId}_${index}"
                 data-sasaran="${sasaran}"
-                data-material="${mat.nama}"
+                data-material="${cleanName}"
                 required
                 style="font-size: 0.875rem; margin-top: 4px;"
               >
@@ -3924,29 +3980,100 @@ function goToBMHPStep3() {
         }
       }
 
-      row.innerHTML = `
-        <div class="bmhp-material-info">
-          <div class="bmhp-material-name">${mat.nama}</div>
-          ${templateHTML}
-          <div class="bmhp-material-meta">
-            ${selectedMetode.length > 0 ? `<span class="bmhp-material-metode">${selectedMetode.join(", ")}</span>` : ""}
-            <span class="bmhp-material-satuan">${satuan}</span>
+      // Render based on material type
+      if (materialType === "REAGEN") {
+        // REAGEN: Show Test per Package badge, Total Stok, dan Pengeluaran Lab (editable)
+        const testPerPackage = mat.testPerPackage || 100;
+        const defaultKebutuhan = Math.ceil(jumlahTes / testPerPackage);
+        const prevValue =
+          bmhpFormData.materialData[sasaran]?.[cleanName] || defaultKebutuhan;
+        const totalStok = prevValue * testPerPackage;
+
+        row.innerHTML = `
+          <div class="bmhp-material-info">
+            <div class="bmhp-material-name-row">
+              <div class="bmhp-material-name-left">
+                <span class="material-badge reagen">REAGEN</span>
+                ${cleanName}
+              </div>
+              <div class="bmhp-material-pengeluaran-label">
+                Pengeluaran Lab
+              </div>
+            </div>
+
+            ${templateHTML}
+
+            <!-- Test per Package & Total Stok - Horizontal Badges -->
+            <div class="reagen-info-badges">
+              <div class="reagen-badge test-per-pkg">
+                ${testPerPackage} tes/pkg
+              </div>
+            </div>
+
+            <!-- Input Section: Pengeluaran Lab (Editable) -->
+            <div class="bmhp-material-input-group-reagen">
+              <label>Pengeluaran Lab:</label>
+              <div class="input-wrapper">
+                <input
+                  type="number"
+                  class="form-input"
+                  id="pengeluaran_${safeId}_${index}"
+                  value="${prevValue}"
+                  min="1"
+                  placeholder="${defaultKebutuhan}"
+                  data-sasaran="${sasaran}"
+                  data-material="${cleanName}"
+                  data-test-per-package="${testPerPackage}"
+                  oninput="updateReagenTotalStok(this, '${safeId}', ${index})"
+                />
+                <span class="unit-label">package</span>
+              </div>
+            </div>
+
+            <div class="bmhp-material-meta">
+              ${selectedMetode.length > 0 ? `<span class="bmhp-material-metode">${selectedMetode.join(", ")}</span>` : ""}
+              <span class="bmhp-material-satuan">package</span>
+            </div>
           </div>
-        </div>
-        <div class="bmhp-material-input">
-          <label>Pengeluaran Lab</label>
-          <input
-            type="number"
-            class="form-input"
-            id="pengeluaran_${safeId}_${index}"
-            value="${prevValue}"
-            min="0"
-            placeholder="Masukkan pengeluaran"
-            data-sasaran="${sasaran}"
-            data-material="${mat.nama}"
-          />
-        </div>
-      `;
+        `;
+      } else {
+        // BMHP: Original rendering with updated layout
+        const idealPengeluaran = Math.ceil(jumlahTes * consumptionPerSample);
+        const prevValue =
+          bmhpFormData.materialData[sasaran]?.[cleanName] || idealPengeluaran;
+
+        row.innerHTML = `
+          <div class="bmhp-material-info">
+            <div class="bmhp-material-name-row">
+              <div class="bmhp-material-name-left">
+                <span class="material-badge bmhp">BMHP</span>
+                ${cleanName}
+              </div>
+              <div class="bmhp-material-pengeluaran-label">
+                Pengeluaran Lab
+              </div>
+            </div>
+            ${templateHTML}
+            <div class="bmhp-material-input-right">
+              <input
+                type="number"
+                class="form-input"
+                id="pengeluaran_${safeId}_${index}"
+                value="${prevValue}"
+                min="0"
+                placeholder="Masukkan pengeluaran"
+                data-sasaran="${sasaran}"
+                data-material="${cleanName}"
+              />
+            </div>
+            <div class="bmhp-material-meta">
+              ${selectedMetode.length > 0 ? `<span class="bmhp-material-metode">${selectedMetode.join(", ")}</span>` : ""}
+              <span class="bmhp-material-satuan">${satuan}</span>
+            </div>
+          </div>
+        `;
+      }
+
       materialList.appendChild(row);
     });
 
@@ -3973,7 +4100,7 @@ function saveStep3Data() {
   for (const select of templateSelects) {
     if (!select.value) {
       alert(
-        "Silakan pilih Material Template untuk semua material yang memiliki multiple opsi",
+        "Silakan pilih Template SMILE untuk semua material yang memiliki multiple opsi",
       );
       select.focus();
       return false;
