@@ -1,1142 +1,1012 @@
 <!doctype html>
 <html lang="id">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Pengeluaran Lab - Puskesmas</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <!-- Header -->
-        <div class="header">
-            <div class="header-left">
-                <button class="back-btn" onclick="goBack()">←</button>
-                <div class="header-title" id="pageTitle">Inventaris</div>
-            </div>
-            <div class="header-right">
-                <div class="user-avatar">IM</div>
-            </div>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pengeluaran Lab - Puskesmas</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <div class="header-title" id="pageTitle">Inventaris</div>
         </div>
-        <!-- Content -->
-        <div class="content">
-            <!-- Inventory Menu -->
-            <div class="menu-section" id="inventoryMenu">
-                <div class="menu-header">
-                    <span class="menu-title">Inventaris</span>
-                </div>
-                <ul class="menu-list">
-                    <li class="menu-item">
-                        <a
-                            href="#"
-                            class="menu-link"
-                            onclick="
-                                showPage('labDistribution');
-                                return false;
-                            "
-                        >
-                            <span>Pengeluaran Lab</span>
-                            <span class="menu-arrow">›</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a
-                            href="#"
-                            class="menu-link"
-                            onclick="
-                                showPage('riwayatPengeluaran');
-                                return false;
-                            "
-                        >
-                            <span>Riwayat Pengeluaran Lab</span>
-                            <span class="menu-arrow">›</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a
-                            href="#"
-                            class="menu-link"
-                            onclick="
-                                showPage('stokSection');
-                                return false;
-                            "
-                        >
-                            <span>Lihat Stok</span>
-                            <span class="menu-arrow">›</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a
-                            href="#"
-                            class="menu-link"
-                            onclick="
-                                showPage('distribusiAkhir');
-                                return false;
-                            "
-                        >
-                            <span>Distribusi Akhir</span>
-                            <span class="menu-arrow">›</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a
-                            href="#"
-                            class="menu-link"
-                            onclick="
-                                showPage('perencanaanBMHP');
-                                return false;
-                            "
-                        >
-                            <span>Perencanaan BMHP Skrining</span>
-                            <span class="menu-arrow">›</span>
-                        </a>
-                    </li>
-                </ul>
+        <div class="header-right">
+            <div class="user-avatar">IM</div>
+        </div>
+    </div>
+    <!-- Content -->
+    <div class="content">
+        <!-- Inventory Menu -->
+        <div class="menu-section" id="inventoryMenu">
+            <div class="menu-header">
+                <span class="menu-title">Inventaris</span>
             </div>
-            <!-- Lab Distribution Form (Initially Hidden) -->
-            <div
-                class="form-section"
-                id="labDistributionForm"
-                style="display: none"
-            >
-                <!-- STEP 0: PILIH TIPE PENGELUARAN -->
-                <div id="step0Section">
-                    <!-- Step Indicator -->
-                    <div class="step-indicator">
-                        <div class="step-item active">
-                            <div class="step-number">1</div>
-                            <div class="step-label">Jenis Pengeluaran</div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-item">
-                            <div class="step-number">2</div>
-                            <div class="step-label">
-                                Tipe, Parameter, & Metode
-                            </div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-item">
-                            <div class="step-number">3</div>
-                            <div class="step-label">Jumlah</div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-item">
-                            <div class="step-number">4</div>
-                            <div class="step-label">Material</div>
-                        </div>
+            <!-- Group A: Inventaris -->
+            <div class="menu-group-header">Inventaris</div>
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <a href="#" class="menu-link" onclick="showPage('stokSection'); return false;">
+                        <span>Lihat Stok</span>
+                        <span class="menu-arrow">›</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link" onclick="showPage('pilihPenerimaDistribusiSection'); return false;">
+                        <span>Distribusi Akhir</span>
+                        <span class="menu-arrow">›</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Group B: Perencanaan BMHP Skrining -->
+            <div class="menu-group-header">Perencanaan BMHP Skrining</div>
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <a href="#" class="menu-link" onclick="showPage('perencanaanBMHP'); return false;">
+                        <span>Buat Perencanaan BMHP Skrining</span>
+                        <span class="menu-arrow">›</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Group C: Pengeluaran Lab -->
+            <div class="menu-group-header">Pengeluaran Lab</div>
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <a href="#" class="menu-link" onclick="showPage('labDistribution'); return false;">
+                        <span>Tambah Pengeluaran Lab</span>
+                        <span class="menu-arrow">›</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link" onclick="showPage('riwayatPengeluaran'); return false;">
+                        <span>Riwayat Pengeluaran Lab</span>
+                        <span class="menu-arrow">›</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Group D: Pengujian Kesling -->
+            <div class="menu-group-header">Pengujian Kesling</div>
+            <ul class="menu-list">
+                <li class="menu-item">
+                    <a href="#" class="menu-link" onclick="showPage('pengujianKesling'); return false;">
+                        <span>Tambah Pengujian Kesling</span>
+                        <span class="menu-arrow">›</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#" class="menu-link" onclick="showPage('riwayatKesling'); return false;">
+                        <span>Riwayat Pengujian Kesling</span>
+                        <span class="menu-arrow">›</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- Lab Distribution Form (Initially Hidden) -->
+        <div class="form-section" id="labDistributionForm" style="display: none">
+            <!-- STEP 0: PILIH TIPE PENGELUARAN -->
+            <div id="step0Section">
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                    <div class="step-item active">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Jenis Pengeluaran</div>
+                        <div class="step-line"></div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label"
-                            >Jenis Pengeluaran <span class="required">*</span>
-                        </label>
-                        <div class="type-selection">
-                            <div
-                                class="type-card"
-                                onclick="selectType('sampel')"
-                            >
-                                <input
-                                    type="radio"
-                                    name="tipeOutput"
-                                    value="sampel"
-                                    class="type-radio"
-                                    id="typeSampel"
-                                />
-                                <div class="type-info">
-                                    <div class="type-title">Sampel</div>
-                                    <div class="type-desc">
-                                        Pengeluaran untuk pemeriksaan sampel
-                                        (batch processing)
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                class="type-card"
-                                onclick="selectType('control')"
-                            >
-                                <input
-                                    type="radio"
-                                    name="tipeOutput"
-                                    value="control"
-                                    class="type-radio"
-                                    id="typeControl"
-                                />
-                                <div class="type-info">
-                                    <div class="type-title">Control</div>
-                                    <div class="type-desc">
-                                        Kontrol kualitas sebagai ambang batas
-                                        pembanding sampel
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                class="type-card type-alat"
-                                onclick="selectType('alat')"
-                            >
-                                <input
-                                    type="radio"
-                                    name="tipeOutput"
-                                    value="alat"
-                                    class="type-radio"
-                                    id="typeAlat"
-                                />
-                                <div class="type-info">
-                                    <div class="type-title">
-                                        Alat
-                                        <span class="type-badge"
-                                            >KALIBRASI • 1x/TAHUN</span
-                                        >
-                                    </div>
-                                    <div class="type-desc">
-                                        Pengeluaran khusus untuk kalibrasi alat
-                                        laboratorium tahunan
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-label">
+                            Tipe, Parameter, & Metode
                         </div>
+                        <div class="step-line"></div>
                     </div>
-                    <button
-                        type="button"
-                        class="form-button"
-                        onclick="goToStep1()"
-                    >
-                        Lanjutkan
-                    </button>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Jumlah</div>
+                        <div class="step-line"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Material</div>
+                    </div>
                 </div>
-                <!-- STEP 1: PARAMETER & METODE SELECTION -->
-                <div id="step1Section" style="display: none">
-                    <!-- Step Indicator -->
-                    <div class="step-indicator">
-                        <div class="step-item completed">
-                            <div class="step-number">✓</div>
-                            <div class="step-label">Jenis Pengeluaran</div>
-                            <div class="step-line"></div>
-                        </div>
-                        <div class="step-item active">
-                            <div class="step-number">2</div>
-                            <div class="step-label">
-                                Tipe, Parameter, & Metode
+                <div class="form-group">
+                    <label class="form-label">Jenis Pengeluaran <span class="required">*</span>
+                    </label>
+                    <div class="type-selection">
+                        <div class="type-card" onclick="selectType('sampel')">
+                            <input type="radio" name="tipeOutput" value="sampel" class="type-radio" id="typeSampel" />
+                            <div class="type-info">
+                                <div class="type-title">Sampel</div>
+                                <div class="type-desc">
+                                    Pengeluaran untuk pemeriksaan sampel
+                                    (batch processing)
+                                </div>
                             </div>
-                            <div class="step-line"></div>
                         </div>
-                        <div class="step-item">
-                            <div class="step-number">3</div>
-                            <div class="step-label">Jumlah</div>
-                            <div class="step-line"></div>
+                        <div class="type-card" onclick="selectType('control')">
+                            <input type="radio" name="tipeOutput" value="control" class="type-radio" id="typeControl" />
+                            <div class="type-info">
+                                <div class="type-title">Control</div>
+                                <div class="type-desc">
+                                    Kontrol kualitas sebagai ambang batas
+                                    pembanding sampel
+                                </div>
+                            </div>
                         </div>
-                        <div class="step-item">
-                            <div class="step-number">4</div>
-                            <div class="step-label">Material</div>
+                        <div class="type-card type-alat" onclick="selectType('alat')">
+                            <input type="radio" name="tipeOutput" value="alat" class="type-radio" id="typeAlat" />
+                            <div class="type-info">
+                                <div class="type-title">
+                                    Alat
+                                    <span class="type-badge">KALIBRASI • 1x/TAHUN</span>
+                                </div>
+                                <div class="type-desc">
+                                    Pengeluaran khusus untuk kalibrasi alat
+                                    laboratorium tahunan
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <form id="step1Form">
-                        <!-- Tanggal Aktual Pengeluaran -->
-                        <div class="form-group" style="margin-bottom: 20px">
-                            <label class="form-label"
-                                >Tanggal Aktual Pengeluaran
-                                <span class="required">*</span></label
-                            >
-                            <input
-                                type="date"
-                                class="form-input"
-                                id="tanggalAktualPengeluaran"
-                                required
-                                style="
+                </div>
+                <button type="button" class="form-button" onclick="goToStep1()">
+                    Lanjutkan
+                </button>
+            </div>
+            <!-- STEP 1: PARAMETER & METODE SELECTION -->
+            <div id="step1Section" style="display: none">
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                    <div class="step-item completed">
+                        <div class="step-number">✓</div>
+                        <div class="step-label">Jenis Pengeluaran</div>
+                        <div class="step-line"></div>
+                    </div>
+                    <div class="step-item active">
+                        <div class="step-number">2</div>
+                        <div class="step-label">
+                            Tipe, Parameter, & Metode
+                        </div>
+                        <div class="step-line"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Jumlah</div>
+                        <div class="step-line"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Material</div>
+                    </div>
+                </div>
+                <form id="step1Form">
+                    <!-- Tanggal Aktual Pengeluaran -->
+                    <div class="form-group" style="margin-bottom: 20px">
+                        <label class="form-label">Tanggal Aktual Pengeluaran
+                            <span class="required">*</span></label>
+                        <input type="date" class="form-input" id="tanggalAktualPengeluaran" required style="
                                     width: 100%;
                                     padding: 12px 15px;
                                     border: 1px solid #ddd;
                                     border-radius: 6px;
                                     font-size: 15px;
-                                "
-                            />
-                        </div>
+                                " />
+                    </div>
 
-                        <div class="form-group" style="margin-bottom: 20px">
-                            <label class="form-label"
-                                >Tipe Pemeriksaan
-                                <span class="required">*</span></label
-                            >
-                            <div style="position: relative; width: 100%">
-                                <div
-                                    class="multi-select-display"
-                                    id="tipePemeriksaanDisplay"
-                                    onclick="toggleTipePemeriksaanDropdown()"
-                                    style="width: 100%; cursor: pointer"
-                                >
-                                    <span
-                                        class="multi-select-placeholder"
-                                        id="tipePemeriksaanPlaceholder"
-                                        >Pilih tipe pemeriksaan (bisa lebih dari
-                                        1)</span
-                                    >
-                                    <span
-                                        class="multi-select-values"
-                                        id="tipePemeriksaanValues"
-                                        style="display: none"
-                                    ></span>
-                                    <span class="multi-select-arrow">▼</span>
-                                </div>
-                                <div
-                                    class="multi-select-dropdown"
-                                    id="tipePemeriksaanDropdown"
-                                    style="display: none"
-                                >
-                                    <!-- Will be populated dynamically -->
-                                </div>
-                                <input
-                                    type="hidden"
-                                    id="tipePemeriksaanHidden"
-                                    required
-                                />
+                    <div class="form-group" style="margin-bottom: 20px">
+                        <label class="form-label">Tipe Pemeriksaan
+                            <span class="required">*</span></label>
+                        <div style="position: relative; width: 100%">
+                            <div class="multi-select-display" id="tipePemeriksaanDisplay"
+                                onclick="toggleTipePemeriksaanDropdown()" style="width: 100%; cursor: pointer">
+                                <span class="multi-select-placeholder" id="tipePemeriksaanPlaceholder">Pilih tipe
+                                    pemeriksaan (bisa lebih dari
+                                    1)</span>
+                                <span class="multi-select-values" id="tipePemeriksaanValues"
+                                    style="display: none"></span>
+                                <span class="multi-select-arrow">▼</span>
                             </div>
+                            <div class="multi-select-dropdown" id="tipePemeriksaanDropdown" style="display: none">
+                                <!-- Will be populated dynamically -->
+                            </div>
+                            <input type="hidden" id="tipePemeriksaanHidden" required />
                         </div>
-                        <div class="form-group" style="margin-bottom: 20px">
-                            <label class="form-label"
-                                >Parameter
-                                <span class="required">*</span></label
-                            >
-                            <div style="position: relative; width: 100%">
-                                <div
-                                    class="multi-select-display"
-                                    id="parameterDisplay"
-                                    onclick="toggleParameterDropdown()"
-                                    style="width: 100%; cursor: pointer"
-                                >
-                                    <span
-                                        class="multi-select-placeholder"
-                                        id="parameterPlaceholder"
-                                        >Pilih parameter (bisa lebih dari
-                                        1)</span
-                                    >
-                                    <span
-                                        class="multi-select-values"
-                                        id="parameterValues"
-                                        style="display: none"
-                                    ></span>
-                                    <span class="multi-select-arrow">▼</span>
-                                </div>
-                                <div
-                                    class="multi-select-dropdown"
-                                    id="parameterDropdown"
-                                    style="display: none"
-                                >
-                                    <div
-                                        style="
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px">
+                        <label class="form-label">Parameter
+                            <span class="required">*</span></label>
+                        <div style="position: relative; width: 100%">
+                            <div class="multi-select-display" id="parameterDisplay" onclick="toggleParameterDropdown()"
+                                style="width: 100%; cursor: pointer">
+                                <span class="multi-select-placeholder" id="parameterPlaceholder">Pilih parameter (bisa
+                                    lebih dari
+                                    1)</span>
+                                <span class="multi-select-values" id="parameterValues" style="display: none"></span>
+                                <span class="multi-select-arrow">▼</span>
+                            </div>
+                            <div class="multi-select-dropdown" id="parameterDropdown" style="display: none">
+                                <div style="
                                             padding: 15px;
                                             text-align: center;
                                             color: #999;
-                                        "
-                                    >
-                                        Pilih tipe pemeriksaan terlebih dahulu
-                                    </div>
+                                        ">
+                                    Pilih tipe pemeriksaan terlebih dahulu
                                 </div>
-                                <input
-                                    type="hidden"
-                                    id="parameterHidden"
-                                    required
-                                />
                             </div>
+                            <input type="hidden" id="parameterHidden" required />
                         </div>
-                        <div class="form-group" style="margin-bottom: 20px">
-                            <label class="form-label"
-                                >Metode <span class="required">*</span></label
-                            >
-                            <select
-                                class="form-select"
-                                id="metodeSelect"
-                                required
-                            >
-                                <option value="">
-                                    Pilih metode pemeriksaan
-                                </option>
-                                <option value="Lateral Flow">
-                                    Lateral Flow
-                                </option>
-                                <option value="Flow Cytometry">
-                                    Flow Cytometry
-                                </option>
-                                <option value="Enzimatik">Enzimatik</option>
-                                <option value="Pembuatan sediaan">
-                                    Pembuatan sediaan
-                                </option>
-                                <option value="Mikroskopis">Mikroskopis</option>
-                                <option value="Reflactance photometri">
-                                    Reflactance photometri
-                                </option>
-                                <option value="Aglutinasi">Aglutinasi</option>
-                                <option value="Flokulasi">Flokulasi</option>
-                                <option value="Organoleptik">
-                                    Organoleptik
-                                </option>
-                                <option value="Molekuler">Molekuler</option>
-                                <option value="Konvensional (kimia)">
-                                    Konvensional (kimia)
-                                </option>
-                            </select>
-                        </div>
-                        <button
-                            type="button"
-                            class="form-button"
-                            onclick="goToStep2()"
-                        >
-                            Lanjutkan
-                        </button>
-                        <button
-                            type="button"
-                            class="form-button secondary"
-                            onclick="backFromStep1()"
-                        >
-                            Kembali
-                        </button>
-                    </form>
-                </div>
-                <!-- STEP 2: JUMLAH SAMPEL & TES + NIK DATA -->
-                <div id="step2Section" style="display: none">
-                    <!-- Step Indicator -->
-                    <div class="step-indicator" id="step2Indicator">
-                        <!-- Will be populated dynamically based on type -->
                     </div>
-                    <form id="step2Form">
-                        <!-- Jumlah input -->
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label"
-                                    >Jumlah Sampel
-                                    <span class="required">*</span>
-                                </label>
-                                <input
-                                    type="number"
-                                    id="jumlahSampelInput"
-                                    class="form-input"
-                                    placeholder="0"
-                                    min="1"
-                                    required
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label"
-                                    >Jumlah Tes <span class="required">*</span>
-                                </label>
-                                <input
-                                    type="number"
-                                    id="jumlahTesInput"
-                                    class="form-input"
-                                    placeholder="0"
-                                    min="1"
-                                    required
-                                />
-                            </div>
+                    <div class="form-group" style="margin-bottom: 20px">
+                        <label class="form-label">Metode <span class="required">*</span></label>
+                        <select class="form-select" id="metodeSelect" required>
+                            <option value="">
+                                Pilih metode pemeriksaan
+                            </option>
+                            <option value="Lateral Flow">
+                                Lateral Flow
+                            </option>
+                            <option value="Flow Cytometry">
+                                Flow Cytometry
+                            </option>
+                            <option value="Enzimatik">Enzimatik</option>
+                            <option value="Pembuatan sediaan">
+                                Pembuatan sediaan
+                            </option>
+                            <option value="Mikroskopis">Mikroskopis</option>
+                            <option value="Reflactance photometri">
+                                Reflactance photometri
+                            </option>
+                            <option value="Aglutinasi">Aglutinasi</option>
+                            <option value="Flokulasi">Flokulasi</option>
+                            <option value="Organoleptik">
+                                Organoleptik
+                            </option>
+                            <option value="Molekuler">Molekuler</option>
+                            <option value="Konvensional (kimia)">
+                                Konvensional (kimia)
+                            </option>
+                        </select>
+                    </div>
+                    <button type="button" class="form-button" onclick="goToStep2()">
+                        Lanjutkan
+                    </button>
+                    <button type="button" class="form-button secondary" onclick="backFromStep1()">
+                        Kembali
+                    </button>
+                </form>
+            </div>
+            <!-- STEP 2: JUMLAH SAMPEL & TES + NIK DATA -->
+            <div id="step2Section" style="display: none">
+                <!-- Step Indicator -->
+                <div class="step-indicator" id="step2Indicator">
+                    <!-- Will be populated dynamically based on type -->
+                </div>
+                <form id="step2Form">
+                    <!-- Jumlah input -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Jumlah Sampel
+                                <span class="required">*</span>
+                            </label>
+                            <input type="number" id="jumlahSampelInput" class="form-input" placeholder="0" min="1"
+                                required />
                         </div>
+                        <div class="form-group">
+                            <label class="form-label">Jumlah Tes <span class="required">*</span>
+                            </label>
+                            <input type="number" id="jumlahTesInput" class="form-input" placeholder="0" min="1"
+                                required />
+                        </div>
+                    </div>
 
-                        <!-- Checkbox untuk optional NIK -->
-                        <div
-                            class="form-group"
-                            style="margin-top: 20px; margin-bottom: 20px"
-                        >
-                            <label
-                                style="
+                    <!-- Checkbox untuk optional NIK -->
+                    <div class="form-group" style="margin-top: 20px; margin-bottom: 20px">
+                        <label style="
                                     display: flex;
                                     align-items: center;
                                     gap: 10px;
                                     cursor: pointer;
-                                "
-                            >
-                                <input
-                                    type="checkbox"
-                                    id="isiDataNIKCheckbox"
-                                    onchange="toggleNIKSection()"
-                                    style="
+                                ">
+                            <input type="checkbox" id="isiDataNIKCheckbox" onchange="toggleNIKSection()" style="
                                         width: 20px;
                                         height: 20px;
                                         cursor: pointer;
-                                    "
-                                />
-                                <span class="form-label" style="margin: 0"
-                                    >Isi Data NIK untuk setiap sampel</span
-                                >
-                            </label>
-                            <div
-                                style="
+                                    " />
+                            <span class="form-label" style="margin: 0">Isi Data NIK untuk setiap sampel</span>
+                        </label>
+                        <div style="
                                     font-size: 13px;
                                     color: #666;
                                     margin-top: 5px;
                                     margin-left: 30px;
-                                "
-                            >
-                                Centang jika ingin mengisi data NIK, Nama,
-                                Tanggal Lahir, dan Jenis Kelamin untuk setiap
-                                sampel
-                            </div>
+                                ">
+                            Centang jika ingin mengisi data NIK, Nama,
+                            Tanggal Lahir, dan Jenis Kelamin untuk setiap
+                            sampel
                         </div>
-
-                        <div class="info-box">
-                            <div class="info-box-title">Informasi</div>
-                            <div class="info-box-text">
-                                <span id="infoTextSampel"
-                                    >Masukkan jumlah total sampel dan jumlah
-                                    total tes yang akan dilakukan.</span
-                                >
-                                <span id="infoTextNIK" style="display: none">
-                                    Centang opsi di atas jika ingin mengisi data
-                                    NIK untuk setiap sampel.</span
-                                >
-                            </div>
-                        </div>
-                        <!-- NIK Data Container -->
-                        <div id="nikDataContainer" style="display: none">
-                            <h3
-                                class="material-section-title"
-                                style="margin-top: 20px"
-                            >
-                                Data Sampel (NIK)
-                            </h3>
-                            <!-- Sample Progress Indicator -->
-                            <div
-                                class="sample-progress"
-                                id="sampleProgress"
-                            ></div>
-                            <!-- Sample Cards will be generated here -->
-                            <div id="sampleCardsContainer"></div>
-                        </div>
-                        <button
-                            type="button"
-                            class="form-button"
-                            onclick="goToStep3()"
-                            id="step2ContinueBtn"
-                        >
-                            Lanjutkan
-                        </button>
-                        <button
-                            type="button"
-                            class="form-button secondary"
-                            onclick="backFromStep2()"
-                        >
-                            Kembali
-                        </button>
-                    </form>
-                </div>
-                <!-- STEP 3: MATERIAL LIST -->
-                <div id="step3Section" style="display: none">
-                    <!-- Step Indicator -->
-                    <div class="step-indicator" id="step3Indicator"></div>
-                    <h3 class="material-section-title">Daftar Material</h3>
-                    <div id="materialListContainer">
-                        <!-- Will be populated by JavaScript -->
                     </div>
-                    <button
-                        type="button"
-                        class="form-button"
-                        onclick="handleSubmit()"
-                    >
-                        Simpan Data
+
+                    <div class="info-box">
+                        <div class="info-box-title">Informasi</div>
+                        <div class="info-box-text">
+                            <span id="infoTextSampel">Masukkan jumlah total sampel dan jumlah
+                                total tes yang akan dilakukan.</span>
+                            <span id="infoTextNIK" style="display: none">
+                                Centang opsi di atas jika ingin mengisi data
+                                NIK untuk setiap sampel.</span>
+                        </div>
+                    </div>
+                    <!-- NIK Data Container -->
+                    <div id="nikDataContainer" style="display: none">
+                        <h3 class="material-section-title" style="margin-top: 20px">
+                            Data Sampel (NIK)
+                        </h3>
+                        <!-- Sample Progress Indicator -->
+                        <div class="sample-progress" id="sampleProgress"></div>
+                        <!-- Sample Cards will be generated here -->
+                        <div id="sampleCardsContainer"></div>
+                    </div>
+                    <button type="button" class="form-button" onclick="goToStep3()" id="step2ContinueBtn">
+                        Lanjutkan
                     </button>
-                    <button
-                        type="button"
-                        class="form-button secondary"
-                        onclick="backFromStep3()"
-                    >
+                    <button type="button" class="form-button secondary" onclick="backFromStep2()">
                         Kembali
                     </button>
-                </div>
+                </form>
             </div>
-
-            <!-- Riwayat Pengeluaran Lab (Initially Hidden) -->
-            <div id="riwayatPengeluaranSection" style="display: none">
-                <div class="history-container">
-                    <!-- Search & Filter -->
-                    <div class="search-filter-section">
-                        <div class="search-box">
-                            <span class="search-icon"></span>
-                            <input
-                                type="text"
-                                class="search-input"
-                                id="searchInput"
-                                placeholder="Cari..."
-                                onkeyup="filterHistory()"
-                            />
-                        </div>
-                        <div class="filter-row">
-                            <select
-                                class="filter-select"
-                                id="filterType"
-                                onchange="filterHistory()"
-                            >
-                                <option value="">Semua Tipe</option>
-                                <option value="sampel">Sampel</option>
-                                <option value="control">Control</option>
-                                <option value="alat">Alat</option>
-                            </select>
-                            <select
-                                class="filter-select"
-                                id="filterDate"
-                                onchange="filterHistory()"
-                            >
-                                <option value="">Semua Waktu</option>
-                                <option value="today">Hari Ini</option>
-                                <option value="yesterday">Kemarin</option>
-                                <option value="7days">7 Hari Terakhir</option>
-                                <option value="30days">30 Hari Terakhir</option>
-                            </select>
-                        </div>
-                    </div>
-                    <!-- History Cards Container -->
-                    <div id="historyCardsContainer">
-                        <!-- Cards will be generated by JavaScript -->
-                    </div>
+            <!-- STEP 3: MATERIAL LIST -->
+            <div id="step3Section" style="display: none">
+                <!-- Step Indicator -->
+                <div class="step-indicator" id="step3Indicator"></div>
+                <h3 class="material-section-title">Daftar Material</h3>
+                <div id="materialListContainer">
+                    <!-- Will be populated by JavaScript -->
                 </div>
+                <button type="button" class="form-button" onclick="handleSubmit()">
+                    Simpan Data
+                </button>
+                <button type="button" class="form-button secondary" onclick="backFromStep3()">
+                    Kembali
+                </button>
             </div>
+        </div>
 
-            <!-- ==================== STOK SECTION (BARU) ==================== -->
-            <div id="stokSection" style="display: none">
-                <div class="page-header" style="margin-bottom: 20px">
-                    <h2 class="section-title">Stok Material Laboratorium</h2>
-                </div>
-
-                <!-- Search Bar -->
+        <!-- Riwayat Pengeluaran Lab (Initially Hidden) -->
+        <div id="riwayatPengeluaranSection" style="display: none">
+            <div class="history-container">
+                <!-- Search & Filter -->
                 <div class="search-filter-section">
                     <div class="search-box">
                         <span class="search-icon"></span>
-                        <input
-                            type="text"
-                            class="search-input"
-                            id="stokSearch"
-                            placeholder="Cari material berdasarkan nama..."
-                            onkeyup="searchStokMaterial()"
-                        />
+                        <input type="text" class="search-input" id="searchInput" placeholder="Cari..."
+                            onkeyup="filterHistory()" />
                     </div>
-                </div>
-
-                <!-- Material Cards Container -->
-                <div id="stokCardsContainer" class="stok-cards-container">
-                    <!-- Cards akan di-generate oleh JavaScript -->
-                </div>
-            </div>
-            <!-- ==================== AKHIR STOK SECTION ==================== -->
-        </div>
-
-        <!-- Modal: Detail Pengeluaran -->
-        <div class="modal-overlay" id="detailModal">
-            <div class="modal-content detail-modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Detail Pengeluaran Lab</h3>
-                </div>
-                <div class="modal-body" id="detailModalBody">
-                    <!-- Will be populated by JavaScript -->
-                </div>
-                <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="modal-btn modal-btn-cancel"
-                        onclick="closeDetailModal()"
-                        style="width: 100%"
-                    >
-                        Tutup
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal: Add Material -->
-        <div class="modal-overlay" id="addMaterialModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Tambah Material</h3>
-                </div>
-                <div class="modal-body">
-                    <div class="input-group">
-                        <label class="input-label"
-                            >Kategori <span class="required">*</span>
-                        </label>
-                        <select
-                            class="modal-input"
-                            id="newMaterialCategory"
-                            onchange="updateMaterialOptions()"
-                        >
-                            <option value="">Pilih Kategori</option>
-                            <option value="Reagen">Reagen</option>
-                            <option value="Alat Habis Pakai">
-                                Alat Habis Pakai
-                            </option>
+                    <div class="filter-row">
+                        <select class="filter-select" id="filterType" onchange="filterHistory()">
+                            <option value="">Semua Tipe</option>
+                            <option value="sampel">Sampel</option>
+                            <option value="control">Control</option>
+                            <option value="alat">Alat</option>
+                        </select>
+                        <select class="filter-select" id="filterDate" onchange="filterHistory()">
+                            <option value="">Semua Waktu</option>
+                            <option value="today">Hari Ini</option>
+                            <option value="yesterday">Kemarin</option>
+                            <option value="7days">7 Hari Terakhir</option>
+                            <option value="30days">30 Hari Terakhir</option>
                         </select>
                     </div>
-                    <div class="input-group">
-                        <label class="input-label"
-                            >Nama Material <span class="required">*</span>
-                        </label>
-                        <select
-                            class="modal-input"
-                            id="newMaterialName"
-                            onchange="updateMaterialUnit()"
-                            disabled
-                        >
-                            <option value="">
-                                Pilih material terlebih dahulu
-                            </option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label"
-                            >Satuan <span class="required">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            class="modal-input"
-                            id="newMaterialUnit"
-                            placeholder="Otomatis terisi"
-                            readonly
-                            style="
-                                background-color: #f5f5f5;
-                                cursor: not-allowed;
-                            "
-                        />
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label"
-                            >Test/Package <span class="required">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            class="modal-input"
-                            id="newMaterialTestPkg"
-                            placeholder="Otomatis terisi"
-                            readonly
-                            style="
-                                background-color: #f5f5f5;
-                                cursor: not-allowed;
-                            "
-                        />
-                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="modal-btn modal-btn-cancel"
-                        onclick="closeAddMaterialModal()"
-                    >
-                        Batal
-                    </button>
-                    <button
-                        type="button"
-                        class="modal-btn modal-btn-confirm"
-                        onclick="addNewMaterial()"
-                    >
-                        Tambahkan
-                    </button>
+                <!-- History Cards Container -->
+                <div id="historyCardsContainer">
+                    <!-- Cards will be generated by JavaScript -->
                 </div>
             </div>
         </div>
 
-        <!-- Modal: Confirmation -->
-        <div class="modal-overlay" id="confirmModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Konfirmasi Penyimpanan Data</h3>
-                </div>
-                <div class="modal-body" id="confirmModalBody">
-                    <!-- Will be populated by JavaScript -->
-                </div>
-                <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="modal-btn modal-btn-cancel"
-                        onclick="closeConfirmModal()"
-                    >
-                        Batal
-                    </button>
-                    <button
-                        type="button"
-                        class="modal-btn modal-btn-confirm"
-                        onclick="confirmSubmit()"
-                    >
-                        Ya, Simpan
-                    </button>
-                </div>
+        <!-- ==================== STOK SECTION (BARU) ==================== -->
+        <div id="stokSection" style="display: none">
+            <div class="page-header" style="margin-bottom: 20px">
+                <h2 class="section-title">Stok Material Laboratorium</h2>
             </div>
-        </div>
 
-        <!-- ==================== MODAL: DETAIL STOK (BARU) ==================== -->
-        <div class="modal-overlay" id="stokDetailModal">
-            <div class="modal-content detail-modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="stokDetailTitle">
-                        Detail Material
-                    </h3>
-                </div>
-                <div class="modal-body" id="stokDetailBody">
-                    <!-- Will be populated by JavaScript -->
-                </div>
-                <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="modal-btn modal-btn-cancel"
-                        onclick="closeStokDetailModal()"
-                        style="width: 100%"
-                    >
-                        Tutup
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- ==================== AKHIR MODAL STOK ==================== -->
-
-        <!-- ==================== PILIH PENERIMA DISTRIBUSI SECTION ==================== -->
-        <div id="pilihPenerimaDistribusiSection" style="display: none">
+            <!-- Search Bar -->
             <div class="search-filter-section">
                 <div class="search-box">
                     <span class="search-icon"></span>
-                    <input
-                        type="text"
-                        class="search-input"
-                        id="searchPenerimaDistribusi"
-                        placeholder="cari nama penerima"
-                        onkeyup="filterPenerimaDistribusi()"
-                    />
+                    <input type="text" class="search-input" id="stokSearch"
+                        placeholder="Cari material berdasarkan nama..." onkeyup="searchStokMaterial()" />
                 </div>
             </div>
 
-            <div class="info-box">
-                <div class="info-box-text">
-                    ℹ️ Silakan pilih penerima distribusi material
+            <!-- Material Cards Container -->
+            <div id="stokCardsContainer" class="stok-cards-container">
+                <!-- Cards akan di-generate oleh JavaScript -->
+            </div>
+        </div>
+        <!-- ==================== AKHIR STOK SECTION ==================== -->
+    </div>
+
+    <!-- Modal: Detail Pengeluaran -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-content detail-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Detail Pengeluaran Lab</h3>
+            </div>
+            <div class="modal-body" id="detailModalBody">
+                <!-- Will be populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-btn modal-btn-cancel" onclick="closeDetailModal()"
+                    style="width: 100%">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add Material -->
+    <div class="modal-overlay" id="addMaterialModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Tambah Material</h3>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label class="input-label">Kategori <span class="required">*</span>
+                    </label>
+                    <select class="modal-input" id="newMaterialCategory" onchange="updateMaterialOptions()">
+                        <option value="">Pilih Kategori</option>
+                        <option value="Reagen">Reagen</option>
+                        <option value="Alat Habis Pakai">
+                            Alat Habis Pakai
+                        </option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Nama Material <span class="required">*</span>
+                    </label>
+                    <select class="modal-input" id="newMaterialName" onchange="updateMaterialUnit()" disabled>
+                        <option value="">
+                            Pilih material terlebih dahulu
+                        </option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Satuan <span class="required">*</span>
+                    </label>
+                    <input type="text" class="modal-input" id="newMaterialUnit" placeholder="Otomatis terisi" readonly
+                        style="
+                                background-color: #f5f5f5;
+                                cursor: not-allowed;
+                            " />
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Test/Package <span class="required">*</span>
+                    </label>
+                    <input type="text" class="modal-input" id="newMaterialTestPkg" placeholder="Otomatis terisi"
+                        readonly style="
+                                background-color: #f5f5f5;
+                                cursor: not-allowed;
+                            " />
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-btn modal-btn-cancel" onclick="closeAddMaterialModal()">
+                    Batal
+                </button>
+                <button type="button" class="modal-btn modal-btn-confirm" onclick="addNewMaterial()">
+                    Tambahkan
+                </button>
+            </div>
+        </div>
+    </div>
 
-            <div
-                style="
+    <!-- Modal: Confirmation -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Konfirmasi Penyimpanan Data</h3>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+                <!-- Will be populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-btn modal-btn-cancel" onclick="closeConfirmModal()">
+                    Batal
+                </button>
+                <button type="button" class="modal-btn modal-btn-confirm" onclick="confirmSubmit()">
+                    Ya, Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL: DETAIL STOK (BARU) ==================== -->
+    <div class="modal-overlay" id="stokDetailModal">
+        <div class="modal-content detail-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="stokDetailTitle">
+                    Detail Material
+                </h3>
+            </div>
+            <div class="modal-body" id="stokDetailBody">
+                <!-- Will be populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-btn modal-btn-cancel" onclick="closeStokDetailModal()"
+                    style="width: 100%">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- ==================== AKHIR MODAL STOK ==================== -->
+
+    <!-- ==================== PILIH PENERIMA DISTRIBUSI SECTION ==================== -->
+    <div id="pilihPenerimaDistribusiSection" style="display: none">
+        <div class="search-filter-section">
+            <div class="search-box">
+                <span class="search-icon"></span>
+                <input type="text" class="search-input" id="searchPenerimaDistribusi" placeholder="cari nama penerima"
+                    onkeyup="filterPenerimaDistribusi()" />
+            </div>
+        </div>
+
+        <div class="info-box">
+            <div class="info-box-text">
+                ℹ️ Silakan pilih penerima distribusi material
+            </div>
+        </div>
+
+        <div style="
                     background: white;
                     border-radius: 8px;
                     padding: 15px;
                     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                "
-            >
-                <div
-                    style="
+                ">
+            <div style="
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
                         margin-bottom: 15px;
-                    "
-                >
-                    <h3
-                        style="
+                    ">
+                <h3 style="
                             font-size: 16px;
                             font-weight: 600;
                             color: #1a1a1a;
                             margin: 0;
-                        "
-                    >
-                        Daftar Penerima
-                    </h3>
-                    <span style="font-size: 14px; color: #666"
-                        >Total:
-                        <span id="penerimaDistribusiCount">4</span> Item</span
-                    >
-                </div>
-                <div id="penerimaDistribusiListContainer">
-                    <!-- Penerima cards will be generated here -->
-                </div>
+                        ">
+                    Daftar Penerima
+                </h3>
+                <span style="font-size: 14px; color: #666">Total:
+                    <span id="penerimaDistribusiCount">4</span> Item</span>
+            </div>
+            <div id="penerimaDistribusiListContainer">
+                <!-- Penerima cards will be generated here -->
             </div>
         </div>
-        <!-- ==================== AKHIR PILIH PENERIMA DISTRIBUSI ==================== -->
+    </div>
+    <!-- ==================== AKHIR PILIH PENERIMA DISTRIBUSI ==================== -->
 
-        <!-- ==================== DISTRIBUSI AKHIR SECTION ==================== -->
-        <div id="distribusiAkhirSection" style="display: none">
-            <div class="page-header" style="margin-bottom: 20px">
-                <h2 class="section-title" id="distribusiPenerimaTitle">
-                    Distribusi Akhir
-                </h2>
-                <p style="font-size: 13px; color: #666; margin-top: 8px">
-                    Material yang sudah mencapai 1 package dapat didistribusikan
-                </p>
-            </div>
+    <!-- ==================== DISTRIBUSI AKHIR SECTION ==================== -->
+    <div id="distribusiAkhirSection" style="display: none">
+        <div class="page-header" style="margin-bottom: 20px">
+            <h2 class="section-title" id="distribusiPenerimaTitle">
+                Distribusi Akhir
+            </h2>
+            <p style="font-size: 13px; color: #666; margin-top: 8px">
+                Material yang sudah mencapai 1 package dapat didistribusikan
+            </p>
+        </div>
 
-            <!-- Material Cards Container -->
-            <div
-                class="distribusi-cards-container"
-                id="distribusiCardsContainer"
-            >
-                <!-- Generated by JS -->
-            </div>
+        <!-- Material Cards Container -->
+        <div class="distribusi-cards-container" id="distribusiCardsContainer">
+            <!-- Generated by JS -->
+        </div>
 
-            <!-- Empty State -->
-            <div
-                id="distribusiEmptyState"
-                class="stok-empty-state"
-                style="display: none"
-            >
-                <div class="stok-empty-text">
-                    Belum ada material yang perlu didistribusikan
-                </div>
+        <!-- Empty State -->
+        <div id="distribusiEmptyState" class="stok-empty-state" style="display: none">
+            <div class="stok-empty-text">
+                Belum ada material yang perlu didistribusikan
             </div>
         </div>
-        <!-- ==================== AKHIR DISTRIBUSI AKHIR SECTION ==================== -->
+    </div>
+    <!-- ==================== AKHIR DISTRIBUSI AKHIR SECTION ==================== -->
 
-        <!-- ==================== PERENCANAAN BMHP SKRINING SECTION ==================== -->
-        <div id="perencanaanBMHPSection" style="display: none">
-            <!-- STEP 1: Pilih Kriteria -->
-            <div class="form-section" id="bmhpStep1">
-                <div class="step-indicator">
-                    <div class="step-item active">
-                        <div class="step-number">1</div>
-                        <div class="step-label">Pilih Kriteria Perencanaan</div>
-                        <div class="step-line"></div>
+    <!-- ==================== PERENCANAAN BMHP SKRINING SECTION ==================== -->
+    <div id="perencanaanBMHPSection" style="display: none">
+        <!-- STEP 1: Pilih Kriteria -->
+        <div class="form-section" id="bmhpStep1">
+            <div class="step-indicator">
+                <div class="step-item active">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Pilih Kriteria Perencanaan</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Input Jumlah Sampel & Tes</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-label">
+                        Input Realisasi Pengeluaran
                     </div>
-                    <div class="step-item">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Input Jumlah Sampel & Tes</div>
-                        <div class="step-line"></div>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-bottom: 20px">
+                <div class="info-box-title">Perencanaan BMHP Skrining</div>
+                <div class="info-box-text">
+                    Pilih kriteria untuk menghitung kebutuhan Bahan Medis
+                    Habis Pakai (BMHP) untuk program skrining.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Tahun <span class="required">*</span></label>
+                <select class="form-select" id="bmhpTahunSelect" required>
+                    <option value="">Pilih Tahun</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                    <option value="2030">2030</option>
+                    <option value="2031">2031</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Pemeriksaan <span class="required">*</span></label>
+                <select class="form-select" id="bmhpPemeriksaanSelect" onchange="onBMHPPemeriksaanChange()" required>
+                    <option value="">Pilih Pemeriksaan</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="bmhpJenisPemeriksaanGroup" style="display: none">
+                <label class="form-label">Jenis Pemeriksaan</label>
+                <div class="bmhp-info-card" id="bmhpJenisPemeriksaanInfo"></div>
+            </div>
+
+            <div class="form-group" id="bmhpParameterGroup" style="display: none">
+                <label class="form-label">Parameter</label>
+                <div class="bmhp-parameter-list" id="bmhpParameterList"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Sasaran <span class="required">*</span></label>
+                <div style="position: relative; width: 100%">
+                    <div class="multi-select-display" id="bmhpSasaranDisplay" onclick="toggleBMHPSasaranDropdown()"
+                        style="width: 100%; cursor: pointer">
+                        <span class="multi-select-placeholder" id="bmhpSasaranPlaceholder">Pilih sasaran (bisa lebih
+                            dari 1)</span>
+                        <span class="multi-select-values" id="bmhpSasaranValues" style="display: none"></span>
+                        <span class="multi-select-arrow">▼</span>
                     </div>
-                    <div class="step-item">
-                        <div class="step-number">3</div>
-                        <div class="step-label">
-                            Input Realisasi Pengeluaran
+                    <div class="multi-select-dropdown" id="bmhpSasaranDropdown" style="display: none">
+                        <div class="multi-select-option">
+                            <input type="checkbox" id="bmhpSasaran_semua" value="semua"
+                                onchange="toggleBMHPAllSasaran(this)" />
+                            <label for="bmhpSasaran_semua">-- Semua Sasaran --</label>
                         </div>
                     </div>
+                    <input type="hidden" id="bmhpSasaranHidden" required />
                 </div>
+            </div>
 
-                <div class="info-box" style="margin-bottom: 20px">
-                    <div class="info-box-title">Perencanaan BMHP Skrining</div>
-                    <div class="info-box-text">
-                        Pilih kriteria untuk menghitung kebutuhan Bahan Medis
-                        Habis Pakai (BMHP) untuk program skrining.
+            <div class="form-group">
+                <label class="form-label">Metode <span class="required">*</span></label>
+                <div style="position: relative; width: 100%">
+                    <div class="multi-select-display" id="bmhpMetodeDisplay" onclick="toggleBMHPMetodeDropdown()"
+                        style="width: 100%; cursor: pointer">
+                        <span class="multi-select-placeholder" id="bmhpMetodePlaceholder">Pilih metode (bisa lebih dari
+                            1)</span>
+                        <span class="multi-select-values" id="bmhpMetodeValues" style="display: none"></span>
+                        <span class="multi-select-arrow">▼</span>
+                    </div>
+                    <div class="multi-select-dropdown" id="bmhpMetodeDropdown" style="display: none">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                    <input type="hidden" id="bmhpMetodeHidden" required />
+                </div>
+            </div>
+
+            <button type="button" class="form-button" onclick="goToBMHPStep2()">
+                Lanjutkan
+            </button>
+        </div>
+
+        <!-- STEP 2: Input Jumlah Sampel & Tes -->
+        <div class="form-section" id="bmhpStep2" style="display: none">
+            <div class="step-indicator">
+                <div class="step-item completed">
+                    <div class="step-number">✓</div>
+                    <div class="step-label">Pilih Kriteria Perencanaan</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-item active">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Input Jumlah Sampel & Tes</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-label">
+                        Input Realisasi Pengeluaran
                     </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label"
-                        >Tahun <span class="required">*</span></label
-                    >
-                    <select class="form-select" id="bmhpTahunSelect" required>
-                        <option value="">Pilih Tahun</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                        <option value="2028">2028</option>
-                        <option value="2029">2029</option>
-                        <option value="2030">2030</option>
-                        <option value="2031">2031</option>
-                    </select>
+            <div class="info-box" style="margin-bottom: 20px">
+                <div class="info-box-title">Input Jumlah Sampel & Tes</div>
+                <div class="info-box-text">
+                    Masukkan jumlah sampel dan jumlah tes untuk setiap
+                    sasaran.
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label"
-                        >Pemeriksaan <span class="required">*</span></label
-                    >
-                    <select
-                        class="form-select"
-                        id="bmhpPemeriksaanSelect"
-                        onchange="onBMHPPemeriksaanChange()"
-                        required
-                    >
-                        <option value="">Pilih Pemeriksaan</option>
-                    </select>
-                </div>
+            <div id="bmhpSasaranInputContainer"></div>
 
-                <div
-                    class="form-group"
-                    id="bmhpJenisPemeriksaanGroup"
-                    style="display: none"
-                >
-                    <label class="form-label">Jenis Pemeriksaan</label>
-                    <div
-                        class="bmhp-info-card"
-                        id="bmhpJenisPemeriksaanInfo"
-                    ></div>
-                </div>
-
-                <div
-                    class="form-group"
-                    id="bmhpParameterGroup"
-                    style="display: none"
-                >
-                    <label class="form-label">Parameter</label>
-                    <div
-                        class="bmhp-parameter-list"
-                        id="bmhpParameterList"
-                    ></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label"
-                        >Sasaran <span class="required">*</span></label
-                    >
-                    <div style="position: relative; width: 100%">
-                        <div
-                            class="multi-select-display"
-                            id="bmhpSasaranDisplay"
-                            onclick="toggleBMHPSasaranDropdown()"
-                            style="width: 100%; cursor: pointer"
-                        >
-                            <span
-                                class="multi-select-placeholder"
-                                id="bmhpSasaranPlaceholder"
-                                >Pilih sasaran (bisa lebih dari 1)</span
-                            >
-                            <span
-                                class="multi-select-values"
-                                id="bmhpSasaranValues"
-                                style="display: none"
-                            ></span>
-                            <span class="multi-select-arrow">▼</span>
-                        </div>
-                        <div
-                            class="multi-select-dropdown"
-                            id="bmhpSasaranDropdown"
-                            style="display: none"
-                        >
-                            <div class="multi-select-option">
-                                <input
-                                    type="checkbox"
-                                    id="bmhpSasaran_semua"
-                                    value="semua"
-                                    onchange="toggleBMHPAllSasaran(this)"
-                                />
-                                <label for="bmhpSasaran_semua">-- Semua Sasaran --</label>
-                            </div>
-                        </div>
-                        <input type="hidden" id="bmhpSasaranHidden" required />
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label"
-                        >Metode <span class="required">*</span></label
-                    >
-                    <div style="position: relative; width: 100%">
-                        <div
-                            class="multi-select-display"
-                            id="bmhpMetodeDisplay"
-                            onclick="toggleBMHPMetodeDropdown()"
-                            style="width: 100%; cursor: pointer"
-                        >
-                            <span
-                                class="multi-select-placeholder"
-                                id="bmhpMetodePlaceholder"
-                                >Pilih metode (bisa lebih dari 1)</span
-                            >
-                            <span
-                                class="multi-select-values"
-                                id="bmhpMetodeValues"
-                                style="display: none"
-                            ></span>
-                            <span class="multi-select-arrow">▼</span>
-                        </div>
-                        <div
-                            class="multi-select-dropdown"
-                            id="bmhpMetodeDropdown"
-                            style="display: none"
-                        >
-                            <!-- Will be populated dynamically -->
-                        </div>
-                        <input type="hidden" id="bmhpMetodeHidden" required />
-                    </div>
-                </div>
-
-                <button
-                    type="button"
-                    class="form-button"
-                    onclick="goToBMHPStep2()"
-                >
+            <div class="form-button-group">
+                <button type="button" class="form-button secondary" onclick="goToBMHPStep1()">
+                    Kembali
+                </button>
+                <button type="button" class="form-button" onclick="goToBMHPStep3()">
                     Lanjutkan
                 </button>
             </div>
+        </div>
 
-            <!-- STEP 2: Input Jumlah Sampel & Tes -->
-            <div class="form-section" id="bmhpStep2" style="display: none">
-                <div class="step-indicator">
-                    <div class="step-item completed">
-                        <div class="step-number">✓</div>
-                        <div class="step-label">Pilih Kriteria Perencanaan</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item active">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Input Jumlah Sampel & Tes</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">3</div>
-                        <div class="step-label">
-                            Input Realisasi Pengeluaran
-                        </div>
-                    </div>
+        <!-- STEP 3: Input Pengeluaran Lab per Material -->
+        <div class="form-section" id="bmhpStep3" style="display: none">
+            <div class="step-indicator">
+                <div class="step-item completed">
+                    <div class="step-number">✓</div>
+                    <div class="step-label">Pilih Kriteria Perencanaan</div>
+                    <div class="step-line"></div>
                 </div>
-
-                <div class="info-box" style="margin-bottom: 20px">
-                    <div class="info-box-title">Input Jumlah Sampel & Tes</div>
-                    <div class="info-box-text">
-                        Masukkan jumlah sampel dan jumlah tes untuk setiap
-                        sasaran.
-                    </div>
+                <div class="step-item active">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Input Jumlah Sampel & Tes</div>
+                    <div class="step-line"></div>
                 </div>
-
-                <div id="bmhpSasaranInputContainer"></div>
-
-                <div class="form-button-group">
-                    <button
-                        type="button"
-                        class="form-button secondary"
-                        onclick="goToBMHPStep1()"
-                    >
-                        Kembali
-                    </button>
-                    <button
-                        type="button"
-                        class="form-button"
-                        onclick="goToBMHPStep3()"
-                    >
-                        Lanjutkan
-                    </button>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-label">
+                        Input Realisasi Pengeluaran
+                    </div>
                 </div>
             </div>
 
-            <!-- STEP 3: Input Pengeluaran Lab per Material -->
-            <div class="form-section" id="bmhpStep3" style="display: none">
-                <div class="step-indicator">
-                    <div class="step-item completed">
-                        <div class="step-number">✓</div>
-                        <div class="step-label">Pilih Kriteria Perencanaan</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item active">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Input Jumlah Sampel & Tes</div>
-                        <div class="step-line"></div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">3</div>
-                        <div class="step-label">
-                            Input Realisasi Pengeluaran
-                        </div>
-                    </div>
+            <div class="info-box" style="margin-bottom: 20px">
+                <div class="info-box-title">Material & Pengeluaran Lab</div>
+                <div class="info-box-text">
+                    Masukkan jumlah pengeluaran lab yang sudah dilakukan
+                    untuk setiap material.
                 </div>
+            </div>
 
-                <div class="info-box" style="margin-bottom: 20px">
-                    <div class="info-box-title">Material & Pengeluaran Lab</div>
-                    <div class="info-box-text">
-                        Masukkan jumlah pengeluaran lab yang sudah dilakukan
-                        untuk setiap material.
-                    </div>
-                </div>
+            <div id="bmhpMaterialContainer"></div>
 
-                <div id="bmhpMaterialContainer"></div>
-
-                <div class="form-button-group">
-                    <button
-                        type="button"
-                        class="form-button secondary"
-                        onclick="goToBMHPStep2FromStep3()"
-                    >
-                        Kembali
-                    </button>
-                    <button
-                        type="button"
-                        class="form-button"
-                        onclick="saveBMHPPerencanaan()"
-                    >
-                        Simpan
-                    </button>
-                </div>
+            <div class="form-button-group">
+                <button type="button" class="form-button secondary" onclick="goToBMHPStep2FromStep3()">
+                    Kembali
+                </button>
+                <button type="button" class="form-button" onclick="saveBMHPPerencanaan()">
+                    Simpan
+                </button>
             </div>
         </div>
-        <!-- ==================== AKHIR PERENCANAAN BMHP SKRINING SECTION ==================== -->
+    </div>
+    <!-- ==================== PENGUJIAN KESLING SECTION ==================== -->
+    <div id="pengujianKeslingSection" style="display: none">
+        <!-- STEP 1: Pilih Pelanggan -->
+        <div class="form-section" id="keslingStep1">
+            <div class="step-indicator">
+                <div class="step-item active">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Pilih Pelanggan</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Pilih Parameter & Bahan Uji</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Input Hasil Pengujian</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Cari Pelanggan <span class="required">*</span></label>
+                <div class="search-container" style="margin-bottom: 15px;">
+                    <input type="text" id="keslingCustomerSearch" class="form-input"
+                        placeholder="Ketik nama atau alamat pelanggan..." oninput="renderKeslingCustomerCards()">
+                </div>
+            </div>
 
-        <script src="script.js"></script>
-    </body>
+            <div id="keslingCustomerCardList" class="kesling-customer-list">
+                <!-- Customer cards will be populated dynamically -->
+            </div>
+
+            <!-- This will still be used to store selection but hidden from UI -->
+            <select id="keslingCustomerSelect" style="display: none;">
+                <option value=""></option>
+            </select>
+        </div>
+
+        <!-- STEP 2: Pilih Parameter & Bahan Uji -->
+        <div class="form-section" id="keslingStep2" style="display: none">
+            <div class="step-indicator">
+                <div class="step-item completed">
+                    <div class="step-number">✓</div>
+                    <div class="step-label">Pilih Pelanggan</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-item active">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Pilih Parameter & Bahan Uji</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Input Hasil Pengujian</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Pilih Parameter <span class="required">*</span></label>
+                <select class="form-select" id="keslingParameterCategorySelect"
+                    onchange="handleKeslingParameterCategoryChange()">
+                    <option value="">-- Pilih Parameter --</option>
+                    <option value="Kualitas Air Minum">Kualitas Air Minum</option>
+                    <option value="Kualitas Udara">Kualitas Udara</option>
+                    <option value="Keamanan Pangan">Keamanan Pangan</option>
+                    <option value="Vektor dan Binatang Pembawa Penyakit">Vektor dan Binatang Pembawa Penyakit</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Jenis Bahan Uji <span class="required">*</span></label>
+                <input type="text" class="form-input" id="keslingBahanUji" placeholder="Contoh: Air PDAM, Bakso, dll">
+            </div>
+
+            <div id="keslingAirMinumFields" style="display: none">
+                <div class="form-group">
+                    <label class="form-label">Kemasan apa? (Optional)</label>
+                    <input type="text" class="form-input" id="keslingKemasan" placeholder="Contoh: Botol Plastik">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Merk apa? (Optional)</label>
+                    <input type="text" class="form-input" id="keslingMerk" placeholder="Contoh: Aqua, Le Minerale">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">ID Sample (No Lab)</label>
+                    <input type="text" class="form-input" id="keslingNoLab" placeholder="Masukkan ID Manual">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tanggal Penerimaan <span class="required">*</span></label>
+                    <input type="date" class="form-input" id="keslingTglPenerimaan">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Status Hasil Lab <span class="required">*</span></label>
+                <div style="display: flex; gap: 20px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="radio" name="keslingStatusLab" value="Sudah" onchange="toggleKeslingNextButton()">
+                        Sudah
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="radio" name="keslingStatusLab" value="Belum" checked
+                            onchange="toggleKeslingNextButton()"> Belum
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-button-group" style="display: flex; gap: 10px;">
+                <button type="button" class="form-button secondary" onclick="goToKeslingStep1()">Kembali</button>
+                <button type="button" class="form-button" id="keslingStep2NextBtn"
+                    onclick="handleKeslingStep2Next()">Simpan & Selesai</button>
+            </div>
+        </div>
+
+        <!-- STEP 3: Input Hasil Pengujian -->
+        <div class="form-section" id="keslingStep3" style="display: none">
+            <div class="step-indicator">
+                <div class="step-item completed">
+                    <div class="step-number">✓</div>
+                    <div class="step-label">Pilih Pelanggan</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-item completed">
+                    <div class="step-number">✓</div>
+                    <div class="step-label">Pilih Parameter & Bahan Uji</div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-item active">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Input Hasil Pengujian</div>
+                </div>
+            </div>
+
+            <div class="form-group" style="display: flex; flex-direction: column;">
+                <label class="form-label">Tanggal Pengujian <span class="required">*</span></label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="date" class="form-input" id="keslingTglMulai">
+                    <span>sd</span>
+                    <input type="date" class="form-input" id="keslingTglSelesai">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Pengambilan Sampel Oleh <span class="required">*</span></label>
+                <div style="display: flex; gap: 20px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="radio" name="keslingPengambilSampel" value="Pelanggan" checked> Pelanggan
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="radio" name="keslingPengambilSampel" value="Lab Puskesmas"> Lab Puskesmas
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Lokasi <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="keslingLokasi" placeholder="Masukkan lokasi pengambilan">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tanggal Pengambilan <span class="required">*</span></label>
+                    <input type="date" class="form-input" id="keslingLokasiTgl">
+                </div>
+            </div>
+
+            <!-- Mobile-friendly results container -->
+            <div id="keslingResultMobileContainer" class="kesling-mobile-results">
+                <!-- Cards will be populated dynamically -->
+            </div>
+
+            <button type="button" class="add-material-btn" onclick="addKeslingParameterRow()"
+                style="margin-bottom: 20px;">
+                + Tambah Parameter Baru
+            </button>
+
+            <div class="form-button-group" style="display: flex; gap: 10px;">
+                <button type="button" class="form-button secondary" onclick="goToKeslingStep2()">Kembali</button>
+                <button type="button" class="form-button" onclick="handleKeslingSubmit()">Simpan Data</button>
+            </div>
+        </div>
+    </div>
+    <!-- ==================== AKHIR PENGUJIAN KESLING SECTION ==================== -->
+
+    <!-- ==================== RIWAYAT KESLING SECTION ==================== -->
+    <div id="riwayatKeslingSection" style="display: none">
+        <div class="history-container">
+            <div class="filter-section">
+                <input type="text" id="keslingHistorySearch" class="form-input"
+                    placeholder="Cari pelanggan atau no lab..." oninput="renderHistoryKesling()">
+            </div>
+            <div id="keslingHistoryList">
+                <!-- Kesling history cards will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+    <!-- ==================== AKHIR RIWAYAT KESLING SECTION ==================== -->
+
+    <script src="script.js"></script>
+</body>
+
 </html>

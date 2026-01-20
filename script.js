@@ -9,6 +9,46 @@
 // MASTER DATA & GLOBAL VARIABLES
 // ========================================
 
+// Master Data for Pengujian Kesling
+const masterKeslingCustomers = [
+  { id: 'C001', nama: 'CV. Alviandra Kreasindo (TP PPG)', alamat: 'Jl. Iskandarsyah Raya No. 105, Kebayoran Baru, Jakarta Selatan', tipe: 'TPPPG' },
+  { id: 'C002', nama: 'Medina Catering (TP PPG)', alamat: 'Gedung Menara 165 Lantai 24, Jakarta Selatan', tipe: 'TPPPG' },
+  { id: 'C003', nama: 'SPPG Wilayah Jakarta Selatan Unit 1', alamat: 'Jl. Radio I No. 8, Kebayoran Baru, Jakarta Selatan', tipe: 'SPPG' },
+  { id: 'C004', nama: 'SPPG Jakarta Selatan Cilandak', alamat: 'Jl. Komplek BNI 46 No. 57, Cilandak Barat, Jakarta Selatan', tipe: 'SPPG' },
+  { id: 'C005', nama: 'PAM Jaya Wilayah Jakarta Selatan', alamat: 'Jl. Penjernihan II, Pejompongan, Jakarta Pusat 10210', tipe: 'PAM RT' },
+  { id: 'C006', nama: 'PAM PALYJA Cabang Darmawangsa', alamat: 'Jl. Darmawangsa Raya No. 4, Jakarta Selatan 12160', tipe: 'PAM RT' },
+  { id: 'C007', nama: 'RS Fatmawati (Udara)', alamat: 'Jl. RS Fatmawati, Cilandak, Jakarta Selatan', tipe: 'Udara' },
+  { id: 'C008', nama: 'Gedung Menara 165 (Udara)', alamat: 'Jl. TB Simatupang, Jakarta Selatan', tipe: 'Udara' },
+  { id: 'C009', nama: 'Suku Dinas Kesehatan Jakarta Selatan (Vektor)', alamat: 'Jl. Radio I No. 8, Kebayoran Baru, Jakarta Selatan', tipe: 'Vektor' },
+  { id: 'C010', nama: 'Puskesmas Kecamatan Kebayoran Baru (Vektor)', alamat: 'Jl. Iskandarsyah Raya No. 105, Kebayoran Baru, Jakarta Selatan', tipe: 'Vektor' },
+];
+
+const masterKeslingParameters = {
+  "Kualitas Air Minum": [
+    { kategori: "FISIKA", nama: "Suhu", bakuMutu: "Suhu Udara ± 3", satuan: "°C", metode: "SNI 06-6989.23-2005" },
+    { kategori: "FISIKA", nama: "TDS", bakuMutu: "300", satuan: "mg/L", metode: "SNI 6989.27:2009" },
+    { kategori: "FISIKA", nama: "Kekeruhan", bakuMutu: "3", satuan: "NTU", metode: "SNI 06-6989.25-2005" },
+    { kategori: "FISIKA", nama: "Warna", bakuMutu: "10", satuan: "TCU", metode: "SNI 06-6989.24-2005" },
+    { kategori: "FISIKA", nama: "Bau", bakuMutu: "Tidak berbau", satuan: "-", metode: "Organoleptik" },
+    { kategori: "KIMIA", nama: "pH", bakuMutu: "6.5 - 8.5", satuan: "-", metode: "SNI 06-6989.11-2004" },
+    { kategori: "KIMIA", nama: "Nitrat", bakuMutu: "50", satuan: "mg/L", metode: "SNI 06-6989.79-2011" },
+    { kategori: "KIMIA", nama: "Nitrit", bakuMutu: "3", satuan: "mg/L", metode: "SNI 06-6989.9-2004" },
+    { kategori: "KIMIA", nama: "Kromium", bakuMutu: "0.01", satuan: "mg/L", metode: "SNI 06-6989.17-2004" }
+  ],
+  "Kualitas Udara": [
+    { kategori: "FISIKA", nama: "Suhu", bakuMutu: "18-28", satuan: "°C", metode: "Termometer" },
+    { kategori: "FISIKA", nama: "Kelembaban", bakuMutu: "40-60", satuan: "%RH", metode: "Higrometer" },
+    { kategori: "KIMIA", nama: "Karbon Monoksida (CO)", bakuMutu: "10", satuan: "mg/m3", metode: "Direct Reading" }
+  ],
+  "Keamanan Pangan": [
+    { kategori: "KIMIA", nama: "Formalin", bakuMutu: "Negatif", satuan: "-", metode: "Test Kit" },
+    { kategori: "KIMIA", nama: "Boraks", bakuMutu: "Negatif", satuan: "-", metode: "Test Kit" }
+  ],
+  "Vektor dan Binatang Pembawa Penyakit": [
+    { kategori: "ENTOMOLOGI", nama: "Indeks Jentik", bakuMutu: "< 5", satuan: "%", metode: "Visual" }
+  ]
+};
+
 // Master Material Database dengan inventory simulation
 const masterMaterialDatabase = {
   Reagen: [
@@ -3031,6 +3071,7 @@ document.addEventListener("DOMContentLoaded", function () {
       '<div style="padding: 15px; text-align: center; color: #999;">Pilih tipe pemeriksaan terlebih dahulu</div>';
   }
   addSampleData();
+  initializeKeslingCustomers();
 });
 
 // ========================================
@@ -3046,11 +3087,16 @@ function goBack() {
     "pilihPenerimaDistribusiSection",
   );
   const perencanaanBMHP = document.getElementById("perencanaanBMHPSection");
+  const keslingSection = document.getElementById("pengujianKeslingSection");
+  const riwayatKesling = document.getElementById("riwayatKeslingSection");
   const title = document.getElementById("pageTitle");
   const step0 = document.getElementById("step0Section");
   const step1 = document.getElementById("step1Section");
   const step2 = document.getElementById("step2Section");
   const step3 = document.getElementById("step3Section");
+  const keslingStep1 = document.getElementById("keslingStep1");
+  const keslingStep2 = document.getElementById("keslingStep2");
+  const keslingStep3 = document.getElementById("keslingStep3");
 
   if (step3.style.display === "block") {
     backFromStep3();
@@ -3065,6 +3111,10 @@ function goBack() {
     resetForm();
   } else if (riwayat.style.display === "block") {
     riwayat.style.display = "none";
+    menu.style.display = "block";
+    title.textContent = "Inventaris";
+  } else if (riwayatKesling.style.display === "block") {
+    riwayatKesling.style.display = "none";
     menu.style.display = "block";
     title.textContent = "Inventaris";
   } else if (stok.style.display === "block") {
@@ -3084,6 +3134,14 @@ function goBack() {
     perencanaanBMHP.style.display = "none";
     menu.style.display = "block";
     title.textContent = "Inventaris";
+  } else if (keslingStep3.style.display === "block") {
+    goToKeslingStep2();
+  } else if (keslingStep2.style.display === "block") {
+    goToKeslingStep1();
+  } else if (keslingSection.style.display === "block") {
+    keslingSection.style.display = "none";
+    menu.style.display = "block";
+    title.textContent = "Inventaris";
   }
 }
 
@@ -3099,6 +3157,8 @@ function showPage(pageName) {
   const perencanaanBMHPSection = document.getElementById(
     "perencanaanBMHPSection",
   );
+  const keslingSection = document.getElementById("pengujianKeslingSection");
+  const riwayatKeslingSection = document.getElementById("riwayatKeslingSection");
   const title = document.getElementById("pageTitle");
 
   // Hide all sections first
@@ -3109,6 +3169,8 @@ function showPage(pageName) {
   distribusiSection.style.display = "none";
   penerimaDistribusiSection.style.display = "none";
   perencanaanBMHPSection.style.display = "none";
+  keslingSection.style.display = "none";
+  riwayatKeslingSection.style.display = "none";
 
   switch (pageName) {
     case "labDistribution":
@@ -3119,6 +3181,11 @@ function showPage(pageName) {
       history.style.display = "block";
       title.textContent = "Riwayat Pengeluaran";
       renderHistory();
+      break;
+    case "riwayatKesling":
+      riwayatKeslingSection.style.display = "block";
+      title.textContent = "Riwayat Pengujian Kesling";
+      renderHistoryKesling();
       break;
     case "stokSection":
       stokSection.style.display = "block";
@@ -3137,6 +3204,11 @@ function showPage(pageName) {
       perencanaanBMHPSection.style.display = "block";
       title.textContent = "Perencanaan BMHP Skrining";
       resetBMHPForm();
+      break;
+    case "pengujianKesling":
+      keslingSection.style.display = "block";
+      title.textContent = "Pengujian Kesling";
+      resetKeslingForm();
       break;
     default:
       menu.style.display = "block";
@@ -3694,10 +3766,10 @@ function processBMHPPerencanaan() {
     metode === "semua"
       ? "Semua Metode"
       : (metode || "")
-          .split(",")
-          .map((m) => m.trim())
-          .filter(Boolean)
-          .join(", ");
+        .split(",")
+        .map((m) => m.trim())
+        .filter(Boolean)
+        .join(", ");
 
   let summary = `RINGKASAN PERENCANAAN BMHP SKRINING\n\n`;
   summary += `Tahun: ${tahun}\n`;
@@ -4156,15 +4228,14 @@ function saveBMHPPerencanaan() {
   let confirmMsg = `KONFIRMASI PENYIMPANAN PERENCANAAN BMHP\n\n`;
   confirmMsg += `Tahun: ${bmhpFormData.tahun}\n`;
   confirmMsg += `Pemeriksaan: ${bmhpFormData.pemeriksaan}\n`;
-  confirmMsg += `Metode: ${
-    bmhpFormData.metode === "semua"
-      ? "Semua Metode"
-      : (bmhpFormData.metode || "")
-          .split(",")
-          .map((m) => m.trim())
-          .filter(Boolean)
-          .join(", ")
-  }\n\n`;
+  confirmMsg += `Metode: ${bmhpFormData.metode === "semua"
+    ? "Semua Metode"
+    : (bmhpFormData.metode || "")
+      .split(",")
+      .map((m) => m.trim())
+      .filter(Boolean)
+      .join(", ")
+    }\n\n`;
 
   const sasaranRaw = bmhpFormData.sasaran;
   const sasaranArray = sasaranRaw
@@ -5442,7 +5513,7 @@ function renderHistory() {
         matchDate = itemDate >= thirtyDaysAgo;
       }
     }
-    return matchSearch && matchType && matchDate;
+    return matchSearch && matchType && matchDate && item.type !== 'kesling';
   });
 
   if (filteredData.length === 0) {
@@ -5478,18 +5549,34 @@ function createHistoryCard(item) {
       ? "badge-control"
       : item.type === "alat"
         ? "badge-alat"
-        : "badge-sampel";
+        : item.type === "kesling"
+          ? "badge-kesling"
+          : "badge-sampel";
+
   const parameterDisplay =
-    item.parameter.length > 2
+    item.parameter && item.parameter.length > 2
       ? item.parameter.slice(0, 2).join(", ") +
-        `, +${item.parameter.length - 2} lainnya`
-      : item.parameter.join(", ");
+      `, +${item.parameter.length - 2} lainnya`
+      : item.parameter ? item.parameter.join(", ") : "Kesling Parameter";
 
   let cardHTML = `<div class="card-header"><div class="card-title-section"><div class="card-type-badge ${badgeClass}">${item.type.toUpperCase()}</div><div class="card-datetime">${dateStr}, ${timeStr}</div></div></div><div class="card-divider"></div>`;
+
   if (item.type === "sampel" && item.jumlahSampel) {
     cardHTML += `<div class="card-info-row"><span class="card-label">Jumlah Sampel</span><span class="card-value">${item.jumlahSampel}</span></div><div class="card-info-row"><span class="card-label">Jumlah Tes</span><span class="card-value">${item.jumlahTes}</span></div>`;
+  } else if (item.type === "kesling") {
+    cardHTML += `
+      <div class="card-info-row"><span class="card-label">Pelanggan</span><span class="card-value">${item.customer}</span></div>
+      <div class="card-info-row"><span class="card-label">Bahan Uji</span><span class="card-value">${item.bahanUji}</span></div>
+      <div class="card-info-row"><span class="card-label">No Lab</span><span class="card-value">${item.noLab}</span></div>
+      <div class="card-info-row"><span class="card-label">Status Lab</span><span class="card-value">${item.statusLab}</span></div>
+    `;
   }
-  cardHTML += `<div class="card-info-row"><span class="card-label">Metode</span><span class="card-value">${item.metode}</span></div><div class="card-info-row"><span class="card-label">Parameter</span><span class="card-value">${parameterDisplay}</span></div><div class="card-info-row"><span class="card-label">Material</span><span class="card-value">${item.materials.Reagen.length + item.materials["Alat Habis Pakai"].length} item</span></div><div class="card-footer"><button class="view-detail-btn">Lihat Detail →</button></div>`;
+
+  if (item.type !== "kesling") {
+    cardHTML += `<div class="card-info-row"><span class="card-label">Metode</span><span class="card-value">${item.metode}</span></div><div class="card-info-row"><span class="card-label">Parameter</span><span class="card-value">${parameterDisplay}</span></div><div class="card-info-row"><span class="card-label">Material</span><span class="card-value">${item.materials.Reagen.length + item.materials["Alat Habis Pakai"].length} item</span></div>`;
+  }
+
+  cardHTML += `<div class="card-footer"><button class="view-detail-btn">Lihat Detail →</button></div>`;
   card.innerHTML = cardHTML;
   return card;
 }
@@ -5519,13 +5606,61 @@ function showDetail(id) {
       ? "badge-control"
       : item.type === "alat"
         ? "badge-alat"
-        : "badge-sampel";
+        : item.type === "kesling"
+          ? "badge-kesling"
+          : "badge-sampel";
 
   let detailHTML = `<div style="text-align: center; margin-bottom: 20px;"><div class="badge-type-large ${badgeClass}">${item.type.toUpperCase()}</div><div style="font-size: 14px; color: #666;">${dateStr}, ${timeStr} WIB</div></div>`;
+
   if (item.type === "sampel" && item.jumlahSampel) {
     detailHTML += `<div class="detail-section"><div class="detail-section-title">JUMLAH</div><div class="detail-row"><div class="detail-label">Jumlah Sampel</div><div class="detail-value">${item.jumlahSampel}</div></div><div class="detail-row"><div class="detail-label">Jumlah Tes</div><div class="detail-value">${item.jumlahTes}</div></div></div>`;
+  } else if (item.type === "kesling") {
+    detailHTML += `
+      <div class="detail-section">
+        <div class="detail-section-title">INFORMASI PENGUJIAN KESLING</div>
+        <div class="detail-row"><div class="detail-label">Pelanggan</div><div class="detail-value">${item.customer || ""}</div></div>
+        <div class="detail-row"><div class="detail-label">Bahan Uji</div><div class="detail-value">${item.bahanUji || ""}</div></div>
+        <div class="detail-row"><div class="detail-label">No Lab</div><div class="detail-value">${item.noLab || ""}</div></div>
+        <div class="detail-row"><div class="detail-label">Status Lab</div><div class="detail-value">${item.statusLab || ""}</div></div>
+        <div class="detail-row"><div class="detail-label">Tgl Pengujian</div><div class="detail-value">${item.tglPengujian || ""}</div></div>
+        <div class="detail-row"><div class="detail-label">Pengambil Sampel</div><div class="detail-value">${item.pengambilSampel || ""}</div></div>
+        <div class="detail-row"><div class="detail-label">Lokasi</div><div class="detail-value">${item.lokasi || ""}</div></div>
+        <div class="detail-row"><div class="detail-label">Tgl Pengambilan</div><div class="detail-value">${item.tglPengambilan || ""}</div></div>
+      </div>
+    `;
+
+    if (item.statusLab === "Sudah") {
+      detailHTML += `
+        <div class="detail-section">
+          <div class="detail-section-title">HASIL PENGUJIAN</div>
+          <div class="table-container" style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px;">
+              <thead>
+                <tr style="background: #f5f5f5;">
+                  <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Parameter</th>
+                  <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Std Baku Mutu</th>
+                  <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Hasil</th>
+                  <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Metode</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${item.results.map(r => `
+                  <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${r.parameter || ""}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${(r.bakuMutu || "")} ${(r.satuan || "")}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold; color: #004990;">${r.hasil || ""}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${r.metode || ""}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+  } else {
+    detailHTML += `<div class="detail-section"><div class="detail-section-title">PARAMETER & METODE</div><div class="detail-row"><div class="detail-label">Metode</div><div class="detail-value">${item.metode || ""}</div></div><div class="detail-row"><div class="detail-label">Parameter</div><div class="detail-value"><ul class="detail-list">${item.parameter ? item.parameter.map((p) => `<li>${p}</li>`).join("") : ""}</ul></div></div></div>`;
   }
-  detailHTML += `<div class="detail-section"><div class="detail-section-title">PARAMETER & METODE</div><div class="detail-row"><div class="detail-label">Metode</div><div class="detail-value">${item.metode}</div></div><div class="detail-row"><div class="detail-label">Parameter</div><div class="detail-value"><ul class="detail-list">${item.parameter.map((p) => `<li>${p}</li>`).join("")}</ul></div></div></div>`;
   if (item.materials.Reagen.length > 0)
     detailHTML += `<div class="detail-section"><div class="detail-section-title">MATERIAL REAGEN (${item.materials.Reagen.length} item)</div><ul class="detail-list">${item.materials.Reagen.map((m) => `<li>${m}</li>`).join("")}</ul></div>`;
   if (item.materials["Alat Habis Pakai"].length > 0)
@@ -5923,6 +6058,565 @@ function distribusikanMaterial(materialName, batchNo) {
   );
   renderDistribusiAkhir();
 }
+
+// ========================================
+// PENGUJIAN KESLING FUNCTIONS
+// ========================================
+
+/**
+ * Initialize Kesling Customers (Card View)
+ */
+function initializeKeslingCustomers() {
+  renderKeslingCustomerCards();
+}
+
+/**
+ * Render customer cards based on search
+ */
+function renderKeslingCustomerCards() {
+  const container = document.getElementById("keslingCustomerCardList");
+  const searchTerm = document.getElementById("keslingCustomerSearch").value.toLowerCase();
+
+  const filteredCustomers = masterKeslingCustomers.filter(c =>
+    c.nama.toLowerCase().includes(searchTerm) ||
+    c.alamat.toLowerCase().includes(searchTerm)
+  );
+
+  container.innerHTML = "";
+
+  if (filteredCustomers.length === 0) {
+    container.innerHTML = '<div style="text-align: center; padding: 20px; color: #999;">Pelanggan tidak ditemukan</div>';
+    return;
+  }
+
+  filteredCustomers.forEach(customer => {
+    const card = document.createElement("div");
+    card.className = "kesling-customer-card";
+    card.onclick = () => selectKeslingCustomer(customer.id);
+
+    // Check if this card is currently selected
+    const currentSelection = document.getElementById("keslingCustomerSelect").value;
+    if (currentSelection === customer.id) {
+      card.classList.add("selected");
+    }
+
+    card.innerHTML = `
+      <div class="customer-card-content">
+        <div class="customer-name">${customer.nama}</div>
+        <div class="customer-address">${customer.alamat}</div>
+      </div>
+      <div class="customer-card-arrow">›</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+/**
+ * Handle customer selection from card
+ */
+function selectKeslingCustomer(customerId) {
+  const select = document.getElementById("keslingCustomerSelect");
+
+  // Update hidden select
+  select.innerHTML = `<option value="${customerId}">${customerId}</option>`;
+  select.value = customerId;
+
+  // Visual feedback: Re-render cards to show selection highlight
+  renderKeslingCustomerCards();
+
+  const customer = masterKeslingCustomers.find((c) => c.id === customerId);
+  if (customer) {
+    // Auto-proceed to Step 2
+    setTimeout(() => {
+      goToKeslingStep2();
+    }, 300);
+  }
+}
+
+/**
+ * Navigation Kesling: Go to Step 1
+ */
+function goToKeslingStep1() {
+  document.getElementById("keslingStep1").style.display = "block";
+  document.getElementById("keslingStep2").style.display = "none";
+  document.getElementById("keslingStep3").style.display = "none";
+  window.scrollTo(0, 0);
+}
+
+/**
+ * Navigation Kesling: Go to Step 2
+ */
+function goToKeslingStep2() {
+  // Generate No Lab if empty
+  const noLabInput = document.getElementById("keslingNoLab");
+  if (!noLabInput.value) {
+    noLabInput.value = generateKeslingNoLab();
+  }
+
+  // Set default tgl penerimaan if empty
+  const tglInput = document.getElementById("keslingTglPenerimaan");
+  if (!tglInput.value) {
+    tglInput.value = new Date().toISOString().split("T")[0];
+  }
+
+  document.getElementById("keslingStep1").style.display = "none";
+  document.getElementById("keslingStep2").style.display = "block";
+  document.getElementById("keslingStep3").style.display = "none";
+  window.scrollTo(0, 0);
+}
+
+/**
+ * Navigation Kesling: Go to Step 3
+ */
+function goToKeslingStep3() {
+  const paramCategory = document.getElementById("keslingParameterCategorySelect").value;
+  const bahanUji = document.getElementById("keslingBahanUji").value;
+  const tglPenerimaan = document.getElementById("keslingTglPenerimaan").value;
+
+  if (!paramCategory || !bahanUji || !tglPenerimaan) {
+    alert("Silakan lengkapi data Parameter, Bahan Uji, dan Tanggal Penerimaan!");
+    return;
+  }
+
+  // Update Lokasi/Tanggal default if empty
+  const lokasiTglInput = document.getElementById("keslingLokasiTgl");
+  if (!lokasiTglInput.value) {
+    const customer = masterKeslingCustomers.find(c => c.id === document.getElementById("keslingCustomerSelect").value);
+    const alamatShort = customer ? customer.alamat.split(',')[0] : "Sidakalang";
+    const dateFormatted = tglPenerimaan.split('-').reverse().join('.');
+    lokasiTglInput.value = `${alamatShort} / ${dateFormatted}`;
+  }
+
+  // Update Tgl Pengujian defaults
+  if (!document.getElementById("keslingTglMulai").value) {
+    document.getElementById("keslingTglMulai").value = tglPenerimaan;
+  }
+  if (!document.getElementById("keslingTglSelesai").value) {
+    const end = new Date(tglPenerimaan);
+    end.setDate(end.getDate() + 6);
+    document.getElementById("keslingTglSelesai").value = end.toISOString().split("T")[0];
+  }
+
+  document.getElementById("keslingStep1").style.display = "none";
+  document.getElementById("keslingStep2").style.display = "none";
+  document.getElementById("keslingStep3").style.display = "block";
+  window.scrollTo(0, 0);
+}
+
+/**
+ * Generate No Lab LX
+ */
+function generateKeslingNoLab() {
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const year = now.getFullYear();
+  const random = Math.floor(1000 + Math.random() * 9000);
+  return `${random}LX/${month}/${year}`;
+}
+
+/**
+ * Handle parameter category change
+ */
+function handleKeslingParameterCategoryChange() {
+  const category = document.getElementById("keslingParameterCategorySelect").value;
+  const airMinumFields = document.getElementById("keslingAirMinumFields");
+  const container = document.getElementById("keslingResultMobileContainer");
+
+  // Show/hide specific fields
+  if (category === "Kualitas Air Minum") {
+    airMinumFields.style.display = "block";
+  } else {
+    airMinumFields.style.display = "none";
+  }
+
+  // Clear and populate result cards
+  container.innerHTML = "";
+  if (category && masterKeslingParameters[category]) {
+    masterKeslingParameters[category].forEach((param) => {
+      addKeslingParameterRow(param);
+    });
+  }
+}
+
+/**
+ * Add card to Kesling result list (mobile-friendly)
+ */
+function addKeslingParameterRow(data = null) {
+  const container = document.getElementById("keslingResultMobileContainer");
+  const card = document.createElement("div");
+  card.className = "kesling-mobile-card";
+
+  // Mapping parameter to specific methods
+  const methodMapping = {
+    'pH': ['SNI 6989.11-2019'],
+    'TDS': ['SNI 6989.27-2019'],
+    'Kekeruhan': ['SNI 3554-2015'],
+    'Bau': ['SNI 3554-2015'],
+    'Nitrit': ['SNI 06-6989.9-2004'],
+    'Warna': ['APHA 2120B'],
+    'Kromium': ['US-EPA Method 200.8'],
+    'Formalin': ['Test Kit'],
+    'Boraks': ['Test Kit'],
+    'Suhu': ['SNI 06-6989.23-2005'],
+    'Kelembaban': ['Higrometer'],
+    'Karbon Monoksida (CO)': ['Direct Reading'],
+    'Indeks Jentik': ['Visual']
+  };
+
+  const paramName = data ? data.nama : "Parameter Baru";
+  const allowedMethods = methodMapping[paramName] || (data && data.metode ? [data.metode] : []);
+
+  // All possible methods for UI reference
+  const allMethodOptions = [
+    { value: "SNI 6989.11-2019", label: "SNI 6989.11-2019 (pH)" },
+    { value: "SNI 6989.27-2019", label: "SNI 6989.27-2019 (TDS)" },
+    { value: "SNI 3554-2015", label: "SNI 3554-2015 (Kekeruhan/Bau)" },
+    { value: "SNI 06-6989.9-2004", label: "SNI 06-6989.9-2004 (Nitrit)" },
+    { value: "APHA 2120B", label: "APHA 2120B (Warna)" },
+    { value: "US-EPA Method 200.8", label: "US-EPA Method 200.8 (Kromium)" },
+    { value: "Turbidimetri", label: "Turbidimetri" },
+    { value: "Photometric", label: "Photometric" },
+    { value: "IK (Instruksi Kerja)", label: "IK (Instruksi Kerja)" },
+    { value: "Test Kit", label: "Test Kit" },
+    { value: "Organoleptik", label: "Organoleptik" },
+    { value: "Permenkes", label: "Permenkes" },
+    { value: "Higrometer", label: "Higrometer" },
+    { value: "Direct Reading", label: "Direct Reading" },
+    { value: "Visual", label: "Visual" },
+    { value: "SNI 06-6989.23-2005", label: "SNI 06-6989.23-2005 (Suhu)" }
+  ];
+
+  let methodOptionsHtml = '<option value="">-- Pilih Metode --</option>';
+  if (allowedMethods.length > 0) {
+    allMethodOptions.forEach(opt => {
+      if (allowedMethods.includes(opt.value)) {
+        methodOptionsHtml += `<option value="${opt.value}" selected>${opt.label}</option>`;
+      }
+    });
+  } else {
+    // If no specific mapping, show all or standard ones. 
+    // User requested "tidak ada pilihan lain", so if it's a known param, it's restricted.
+    // Otherwise we show all options as a fallback but for master data it's always restricted.
+    allMethodOptions.forEach(opt => {
+      methodOptionsHtml += `<option value="${opt.value}">${opt.label}</option>`;
+    });
+  }
+
+  card.innerHTML = `
+    <div class="kesling-card-header">
+      <input type="text" class="kesling-p-name-main kesling-p-name" value="${paramName}" placeholder="Nama Parameter" ${data ? 'readonly style="background-color: #f9f9f9;"' : ''}>
+      <button type="button" class="remove-card-btn" onclick="this.parentElement.parentElement.remove()">×</button>
+    </div>
+    <div class="kesling-card-body">
+        <div class="kesling-info-grid">
+            <div class="info-item">
+                <label>Standar Baku Mutu</label>
+                <input type="text" class="kesling-p-baku" value="${data ? data.bakuMutu : ''}" readonly>
+            </div>
+            <div class="info-item">
+                <label>Satuan</label>
+                <input type="text" class="kesling-p-unit" value="${data ? data.satuan : ''}" readonly>
+            </div>
+        </div>
+
+        <div class="kesling-input-section">
+            <label>Hasil Pengujian <span class="required">*</span></label>
+            <input type="text" class="kesling-p-res" placeholder="Masukkan Hasil Pengujian" value="${data && data.hasil !== undefined ? data.hasil : ''}">
+        </div>
+
+        <div class="kesling-metode-section">
+            <label>Metode Pengujian</label>
+            <select class="kesling-p-meth form-select" style="width: 100%; border: 1px solid #ddd; border-radius: 4px; padding: 4px;">
+                ${methodOptionsHtml}
+            </select>
+        </div>
+    </div>
+  `;
+
+  container.appendChild(card);
+}
+
+/**
+ * Reset Kesling Form
+ */
+function resetKeslingForm() {
+  document.getElementById("keslingCustomerSearch").value = "";
+  document.getElementById("keslingCustomerSelect").innerHTML = '<option value=""></option>';
+  document.getElementById("keslingCustomerSelect").value = "";
+  document.getElementById("keslingParameterCategorySelect").value = "";
+  document.getElementById("keslingBahanUji").value = "";
+  document.getElementById("keslingKemasan").value = "";
+  document.getElementById("keslingMerk").value = "";
+  document.getElementById("keslingNoLab").value = "";
+  document.getElementById("keslingTglPenerimaan").value = "";
+  document.querySelectorAll('input[name="keslingStatusLab"]').forEach(r => {
+    if (r.value === "Belum") r.checked = true;
+  });
+  document.getElementById("keslingTglMulai").value = "";
+  document.getElementById("keslingTglSelesai").value = "";
+
+  // Reset Radio to Pelanggan
+  document.querySelector('input[name="keslingPengambilSampel"][value="Pelanggan"]').checked = true;
+
+  document.getElementById("keslingLokasi").value = "";
+  document.getElementById("keslingLokasiTgl").value = "";
+  document.getElementById("keslingResultMobileContainer").innerHTML = "";
+  window.editingKeslingId = null;
+  toggleKeslingNextButton();
+  goToKeslingStep1();
+}
+
+/**
+ * Handle Kesling Submission
+ */
+function handleKeslingSubmit() {
+  const customerId = document.getElementById("keslingCustomerSelect").value;
+  const paramCategory = document.getElementById("keslingParameterCategorySelect").value;
+  const isSudahLab = document.querySelector('input[name="keslingStatusLab"]:checked').value === "Sudah";
+
+  // Validation for Step 3 Mandatory Fields
+  const tglMulai = document.getElementById("keslingTglMulai").value;
+  const tglSelesai = document.getElementById("keslingTglSelesai").value;
+  const lokasi = document.getElementById("keslingLokasi").value;
+  const lokasiTgl = document.getElementById("keslingLokasiTgl").value;
+
+  if (isSudahLab) {
+    if (!tglMulai || !tglSelesai) {
+      alert("Silakan lengkapi Tanggal Pengujian (Mulai & Selesai)!");
+      return;
+    }
+  }
+
+  if (!lokasi || !lokasiTgl) {
+    alert("Silakan lengkapi Lokasi dan Tanggal Pengambilan!");
+    return;
+  }
+
+  const results = [];
+  let allResultsFilled = true;
+  document.querySelectorAll(".kesling-mobile-card").forEach(card => {
+    const name = card.querySelector(".kesling-p-name").value;
+    const res = card.querySelector(".kesling-p-res").value;
+
+    if (name) {
+      if (!res) {
+        allResultsFilled = false;
+      }
+      results.push({
+        parameter: name,
+        bakuMutu: card.querySelector(".kesling-p-baku").value,
+        satuan: card.querySelector(".kesling-p-unit").value,
+        hasil: res,
+        metode: card.querySelector(".kesling-p-meth").value
+      });
+    }
+  });
+
+  if (results.length === 0) {
+    alert("Silakan tambahkan setidaknya satu parameter pengujian!");
+    return;
+  }
+
+  if (!allResultsFilled) {
+    alert("Silakan lengkapi semua Hasil Pengujian!");
+    return;
+  }
+
+  if (!confirm("Apakah Anda yakin ingin menyimpan data pengujian kesling ini?")) return;
+
+  const customer = masterKeslingCustomers.find(c => c.id === customerId);
+
+  const dataEntry = {
+    id: window.editingKeslingId || Date.now(),
+    timestamp: new Date(),
+    tanggalAktual: document.getElementById("keslingTglPenerimaan").value,
+    type: "kesling",
+    customer: customer ? customer.nama : "Umum",
+    parameterCategory: paramCategory,
+    bahanUji: document.getElementById("keslingBahanUji").value,
+    noLab: document.getElementById("keslingNoLab").value,
+    statusLab: isSudahLab ? "Sudah" : "Belum",
+    results: results,
+    parameter: results.map(r => r.parameter),
+    materials: { Reagen: [], "Alat Habis Pakai": [] },
+    pengambilSampel: document.querySelector('input[name="keslingPengambilSampel"]:checked').value,
+    lokasi: document.getElementById("keslingLokasi").value,
+    tglPengambilan: document.getElementById("keslingLokasiTgl").value,
+    tglPengujian: isSudahLab ? `${document.getElementById("keslingTglMulai").value} s/d ${document.getElementById("keslingTglSelesai").value}` : "-",
+    sudahDistribusi: false
+  };
+
+  if (window.editingKeslingId) {
+    const index = pengeluaranData.findIndex(d => d.id === window.editingKeslingId);
+    if (index !== -1) {
+      pengeluaranData[index] = dataEntry;
+    } else {
+      pengeluaranData.unshift(dataEntry);
+    }
+  } else {
+    pengeluaranData.unshift(dataEntry);
+  }
+
+  let msg = `✓ DATA KESLING BERHASIL DISIMPAN!\n\nNo Lab: ${dataEntry.noLab}\nPelanggan: ${dataEntry.customer}\n`;
+  if (!isSudahLab) {
+    msg += `\nStatus: Belum Selesai`;
+  }
+  alert(msg);
+
+  showPage('inventoryMenu');
+}
+
+/**
+ * Filter and render kesling history
+ */
+function renderHistoryKesling() {
+  const container = document.getElementById("keslingHistoryList");
+  const searchTerm = document.getElementById("keslingHistorySearch").value.toLowerCase();
+
+  const filteredData = pengeluaranData.filter((item) => {
+    // Only include kesling
+    if (item.type !== "kesling") return false;
+    return (
+      item.customer.toLowerCase().includes(searchTerm) ||
+      item.noLab.toLowerCase().includes(searchTerm) ||
+      item.parameterCategory.toLowerCase().includes(searchTerm)
+    );
+  });
+
+  if (filteredData.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-text">Tidak ada data riwayat kesling</div></div>';
+    return;
+  }
+
+  container.innerHTML = "";
+  filteredData.forEach((item) => container.appendChild(createKeslingHistoryCard(item)));
+}
+
+/**
+ * Create card for Kesling history
+ */
+function createKeslingHistoryCard(item) {
+  const card = document.createElement("div");
+  card.className = "history-card kesling-card";
+  card.onclick = () => showDetail(item.id);
+
+  const dateStr = new Date(item.timestamp).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  });
+
+  card.innerHTML = `
+    <div class="card-header">
+      <div class="card-title-section">
+        <div class="card-type-badge badge-kesling">KESLING</div>
+        <div class="card-datetime">${dateStr}</div>
+      </div>
+      <div class="status-badge ${item.statusLab === "Sudah" ? "status-done" : "status-pending"}">${item.statusLab.toUpperCase()}</div>
+    </div>
+    <div class="card-divider"></div>
+    <div class="card-info-row"><span class="card-label">Pelanggan</span><span class="card-value">${item.customer}</span></div>
+    <div class="card-info-row"><span class="card-label">Kategori</span><span class="card-value">${item.parameterCategory}</span></div>
+    <div class="card-info-row"><span class="card-label">No Lab</span><span class="card-value"><strong>${item.noLab}</strong></span></div>
+    <div class="card-footer" style="display: flex; gap: 10px;">
+      <button class="view-detail-btn" style="flex: 1;">Lihat Detail</button>
+      ${item.statusLab === "Belum" ? `<button class="view-detail-btn" style="flex: 1; background-color: #f39c12; border-color: #f39c12; color: white;" onclick="event.stopPropagation(); editKeslingEntry(${item.id})">Ubah Status Lab</button>` : ""}
+    </div>
+  `;
+  return card;
+}
+
+/**
+ * Edit existing Kesling entry (Redirect to Step 2)
+ */
+function editKeslingEntry(id) {
+  const item = pengeluaranData.find(d => d.id === id);
+  if (!item) return;
+
+  // Set page title
+  document.getElementById("pageTitle").textContent = "Tambah Pengujian Kesling";
+  showPage('pengujianKesling');
+
+  // Fill Step 1 (Customer)
+  const customer = masterKeslingCustomers.find(c => c.nama === item.customer);
+  if (customer) {
+    const select = document.getElementById("keslingCustomerSelect");
+    select.innerHTML = `<option value="${customer.id}">${customer.id}</option>`;
+    select.value = customer.id;
+    document.getElementById("keslingCustomerSearch").value = customer.nama;
+    renderKeslingCustomerCards();
+  }
+
+  // Fill Step 2
+  document.getElementById("keslingParameterCategorySelect").value = item.parameterCategory;
+  document.getElementById("keslingBahanUji").value = item.bahanUji;
+  document.getElementById("keslingNoLab").value = item.noLab;
+  document.getElementById("keslingTglPenerimaan").value = item.tanggalAktual;
+
+  // Status Radios
+  document.querySelectorAll('input[name="keslingStatusLab"]').forEach(r => {
+    if (r.value === item.statusLab) r.checked = true;
+  });
+
+  // Load results into Step 3 container
+  const container = document.getElementById("keslingResultMobileContainer");
+  container.innerHTML = "";
+  if (item.results && item.results.length > 0) {
+    item.results.forEach(res => {
+      const paramData = {
+        nama: res.parameter,
+        bakuMutu: res.bakuMutu,
+        satuan: res.satuan,
+        hasil: res.hasil,
+        metode: res.metode
+      };
+      addKeslingParameterRow(paramData);
+    });
+  }
+
+  toggleKeslingNextButton();
+
+  // Go to Step 2
+  goToKeslingStep2();
+
+  window.editingKeslingId = id;
+}
+
+
+/**
+ * Toggle Step 2 button text based on status
+ */
+function toggleKeslingNextButton() {
+  const isSudah = document.querySelector('input[name="keslingStatusLab"]:checked').value === "Sudah";
+  const btn = document.getElementById("keslingStep2NextBtn");
+  btn.textContent = isSudah ? "Lanjutkan" : "Simpan & Selesai";
+}
+
+/**
+ * Handle Step 2 next/save action
+ */
+function handleKeslingStep2Next() {
+  const isSudah = document.querySelector('input[name="keslingStatusLab"]:checked').value === "Sudah";
+  if (isSudah) {
+    goToKeslingStep3();
+  } else {
+    // Validate required fields before saving
+    const noLab = document.getElementById("keslingNoLab").value;
+    const tglRec = document.getElementById("keslingTglPenerimaan").value;
+    const customerId = document.getElementById("keslingCustomerSelect").value;
+    const paramCategory = document.getElementById("keslingParameterCategorySelect").value;
+    const bahanUji = document.getElementById("keslingBahanUji").value;
+
+    if (!noLab || !tglRec || !customerId || !paramCategory || !bahanUji) {
+      alert("Silakan lengkapi data Pelanggan, No Lab, Tgl Penerimaan, Kategori Parameter, dan Bahan Uji!");
+      return;
+    }
+
+    handleKeslingSubmit();
+  }
+}
+
+// ========================================
 
 // ========================================
 // CACHE BUSTER & VERSION CHECK
