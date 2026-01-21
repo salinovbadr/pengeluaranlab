@@ -6385,12 +6385,13 @@ function handleKeslingSubmit() {
       alert("Silakan lengkapi Tanggal Pengujian (Mulai & Selesai)!");
       return;
     }
+
+    if (!lokasi || !lokasiTgl) {
+      alert("Silakan lengkapi Lokasi dan Tanggal Pengambilan!");
+      return;
+    }
   }
 
-  if (!lokasi || !lokasiTgl) {
-    alert("Silakan lengkapi Lokasi dan Tanggal Pengambilan!");
-    return;
-  }
 
   const results = [];
   let allResultsFilled = true;
@@ -6412,14 +6413,17 @@ function handleKeslingSubmit() {
     }
   });
 
-  if (results.length === 0) {
-    alert("Silakan tambahkan setidaknya satu parameter pengujian!");
-    return;
-  }
+  // Only validate results if Status Lab is "Sudah"
+  if (isSudahLab) {
+    if (results.length === 0) {
+      alert("Silakan tambahkan setidaknya satu parameter pengujian!");
+      return;
+    }
 
-  if (!allResultsFilled) {
-    alert("Silakan lengkapi semua Hasil Pengujian!");
-    return;
+    if (!allResultsFilled) {
+      alert("Silakan lengkapi semua Hasil Pengujian!");
+      return;
+    }
   }
 
   if (!confirm("Apakah Anda yakin ingin menyimpan data pengujian kesling ini?")) return;
