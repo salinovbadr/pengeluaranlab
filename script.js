@@ -11,16 +11,86 @@
 
 // Master Data for Pengujian Kesling
 const masterKeslingCustomers = [
-  { id: 'C001', nama: 'CV. Alviandra Kreasindo (TP PPG)', alamat: 'Jl. Iskandarsyah Raya No. 105, Kebayoran Baru, Jakarta Selatan', tipe: 'TPPPG' },
-  { id: 'C002', nama: 'Medina Catering (TP PPG)', alamat: 'Gedung Menara 165 Lantai 24, Jakarta Selatan', tipe: 'TPPPG' },
-  { id: 'C003', nama: 'SPPG Wilayah Jakarta Selatan Unit 1', alamat: 'Jl. Radio I No. 8, Kebayoran Baru, Jakarta Selatan', tipe: 'SPPG' },
-  { id: 'C004', nama: 'SPPG Jakarta Selatan Cilandak', alamat: 'Jl. Komplek BNI 46 No. 57, Cilandak Barat, Jakarta Selatan', tipe: 'SPPG' },
-  { id: 'C005', nama: 'PAM Jaya Wilayah Jakarta Selatan', alamat: 'Jl. Penjernihan II, Pejompongan, Jakarta Pusat 10210', tipe: 'PAM RT' },
-  { id: 'C006', nama: 'PAM PALYJA Cabang Darmawangsa', alamat: 'Jl. Darmawangsa Raya No. 4, Jakarta Selatan 12160', tipe: 'PAM RT' },
-  { id: 'C007', nama: 'RS Fatmawati (Udara)', alamat: 'Jl. RS Fatmawati, Cilandak, Jakarta Selatan', tipe: 'Udara' },
-  { id: 'C008', nama: 'Gedung Menara 165 (Udara)', alamat: 'Jl. TB Simatupang, Jakarta Selatan', tipe: 'Udara' },
-  { id: 'C009', nama: 'Suku Dinas Kesehatan Jakarta Selatan (Vektor)', alamat: 'Jl. Radio I No. 8, Kebayoran Baru, Jakarta Selatan', tipe: 'Vektor' },
-  { id: 'C010', nama: 'Puskesmas Kecamatan Kebayoran Baru (Vektor)', alamat: 'Jl. Iskandarsyah Raya No. 105, Kebayoran Baru, Jakarta Selatan', tipe: 'Vektor' },
+  { id: 'C001', nama: 'JANJI JIWA-SERUA', alamat: 'Jl. Ciater Raya No.8, Serua, Kec. Ciputat, Kota Tangerang Selatan, Banten 15414' },
+  { id: 'C002', nama: 'CAFÉ VMOND-SERUA', alamat: 'Jl. Maruga Raya, Serua, Kec. Ciputat, Kota Tangerang Selatan, Banten' },
+  { id: 'C003', nama: 'OMAH CABE-SERUA', alamat: 'Jl bukit sarua,no 18 RT 03/RW 03 tangerang selatan banten, Jawa Barat' },
+  { id: 'C004', nama: 'ARCHERIES-SERUA', alamat: 'Jl. Raya Bukit Sarua No.33, Serua, Kec. Ciputat, Kota Tangerang Selatan, Banten 15414' },
+  { id: 'C005', nama: 'HOKBEN -SERUA', alamat: 'Jl. Benda Raya No.13, RT.1/RW.4, Serua, Kec. Ciputat, Kota Tangerang Selatan, Banten 15414' },
+  { id: 'C006', nama: 'PHD -SERUA', alamat: 'Jl. Serua Raya Jl. Benda Raya No.Rt 4/4, Serua, Kec. Ciputat, Kota Tangerang Selatan, Banten 15414A' },
+  { id: 'C007', nama: 'DAM BIRU -SERUA', alamat: 'Jl. Merdeka, Kompleks Sarua Permai Blok A10 No 4, Serua, Kec. Ciputat, Kota Tangerang Selatan, Banten 15414' },
+  { id: 'C008', nama: 'DAM SUMBER MURNI PEGUNUNGAN-SERUA', alamat: 'KP. DUKUH RT 8 RW 1, KELURAHAN SERUA' },
+  { id: 'C009', nama: 'DAM TIRTA JAYA-SERUA', alamat: 'Jl. Palapa Raya RT 02 RW 18 Kel. Serua-Ciputat' },
+  { id: 'C010', nama: 'DAM KURNIA-SERUA', alamat: 'JL. Ciater No.1 , KELURAHAN SERUA' },
+  { id: 'C011', nama: 'DAM BIRU PEMKOT-SERUA', alamat: 'JL. RAYA PAMULANG II NO.27, KELURAHAN SERUA' },
+  { id: 'C012', nama: 'MAROON FRESH WATER-SERUA', alamat: 'VDT BLOK A 1/3, KELURAHAN SERUA' },
+  { id: 'C013', nama: 'MASJID AL ITISHOM-SERUA', alamat: 'MARUGA RAYA, KELURAHAN SERUA' },
+  { id: 'C014', nama: 'TAHU NA POTET', alamat: 'Tanah Sewaan RT 2 RW 8 Kel. Bakti Jaya' },
+  { id: 'C015', nama: 'SOLARIA PUSPITEK', alamat: 'JL. Puspitek' },
+  { id: 'C016', nama: 'LOTTE D&D', alamat: 'Jl. Puspitek Babakan' },
+  { id: 'C017', nama: 'MARUGAME UDON', alamat: 'Mall Paradise Walk' },
+  { id: 'C018', nama: 'MCD SERPONG JAYA', alamat: 'Perum. Serpong Jaya' },
+  { id: 'C019', nama: 'IMPERIAL KITCHEN', alamat: 'Mall Paradise Walk' },
+  { id: 'C020', nama: 'BAKMITOPIA', alamat: 'Mall Paradise Walk' },
+  { id: 'C021', nama: 'KFC', alamat: 'JL. Puspitek, Babakan Kec. Setu' },
+  { id: 'C022', nama: 'GOKANA', alamat: 'Mall Paradise Walk' },
+  { id: 'C023', nama: 'SOLARIA', alamat: 'Mall Paradise Walk' },
+  { id: 'C024', nama: 'NICE GARDEN-CILENGGANG', alamat: 'Jl. Raya Serpong, Cilenggang' },
+  { id: 'C025', nama: 'MIE GACOAN-BUARAN', alamat: 'Jl.ciater raya, Buaran, Kec. Serpong' },
+  { id: 'C026', nama: 'BREMGRA RESTO-CILENGGANG', alamat: 'Jl. Raya Cilenggang No.123' },
+  { id: 'C027', nama: 'HOKBEN-BUARAN', alamat: 'Jl. Puspitek, Buaran, Kec. Serpong' },
+  { id: 'C028', nama: 'KFC SPBU VIKTOR-BUARAN', alamat: 'Jl. Buaran raya No.73' },
+  { id: 'C029', nama: 'DAPUR MBG-BUARAN', alamat: 'Buaran RW 05' },
+  { id: 'C030', nama: 'DAM JAYA WATER-CILENGGANG', alamat: 'RT 01/01' },
+  { id: 'C031', nama: 'DAM DEPOT RONI-CILENGGANG', alamat: 'RT 04/02' },
+  { id: 'C032', nama: 'DAM FRESHTY WATER-CILENGGANG', alamat: 'RT 12/04' },
+  { id: 'C033', nama: 'DAM SEGAR-BUARAN', alamat: 'RT 02/05' },
+  { id: 'C034', nama: 'DAM IVIRO-BUARAN', alamat: 'RT 01/05' },
+  { id: 'C035', nama: 'DAM USAHA MANDIRI-BUARAN', alamat: 'RT 03/05' },
+  { id: 'C036', nama: 'DAM NURDIN-BUARAN', alamat: 'Gang Masjid RT 02/03' },
+  { id: 'C037', nama: 'DAM ENDAI-BUARAN', alamat: 'Kodiklat RT 02/06' },
+  { id: 'C038', nama: 'DAM TOYA BENING-BUARAN', alamat: 'Buaran RT 03/02' },
+  { id: 'C039', nama: 'DAM PUTERA-BUARAN', alamat: 'Buaran RT 02/01' },
+  { id: 'C040', nama: 'DAM ASIH-BUARAN', alamat: 'Buaran RT 03/07' },
+  { id: 'C041', nama: 'DAM TIRTA KENCANA-BUARAN', alamat: 'Buaran RT 01/06' },
+  { id: 'C042', nama: 'DAM AQUAWAY WATER TREATMENT-BUARAN', alamat: 'Buaran Rt 03/04' },
+  { id: 'C043', nama: 'DAM BANYU UNGU-BUARAN', alamat: 'Kp. Gardu RT 04/01' },
+  { id: 'C044', nama: 'DAM AZZAM-BUARAN', alamat: 'Buaran RT 01/03' },
+  { id: 'C045', nama: 'Sambal Bakar Indonesia', alamat: 'Jl. WR. Supratman No. 39 RT 06/ RW 02 Rengas' },
+  { id: 'C046', nama: 'Stetoskop Coffee House', alamat: 'Jl. Kenari RW 008 Rengas, Ciputat Timur' },
+  { id: 'C047', nama: 'Ayam Bakar Pakde', alamat: 'Jl. WR Supratman RW 010, Rengas, Ciputat Timur' },
+  { id: 'C048', nama: 'd’Besto', alamat: 'Jl. WR Supratman RW 002, Rengas, Ciputat Timur' },
+  { id: 'C049', nama: 'Soto Betawi H. Usman', alamat: 'Jl. WR Supratman RW 002, Rengas, Ciputat Timur' },
+  { id: 'C050', nama: 'RM. Padang Putera Minang', alamat: 'Jl. WR Supratman, RT 004/RW 010 Rengas, Ciputat Timur' },
+  { id: 'C051', nama: 'Mie Ayam Bangka', alamat: 'Jl. Burung Gereja RW 007, Rengas, Ciputat Timur' },
+  { id: 'C052', nama: 'Omnikopi', alamat: 'Jl. Bintaro Tengah RW 007 Rengas, Ciputat Timur' },
+  { id: 'C053', nama: 'RM. Padang Famili Jaya', alamat: 'Jl. WR Supratman RT 04/ RW 10, Rengas, Ciputat Timur' },
+  { id: 'C054', nama: 'Pondok Baso Pak Joko', alamat: 'Jl. Bintaro Selatan RW 007, Rengas, Ciputat Timur' },
+  { id: 'C055', nama: 'BO2', alamat: 'Jl. Cempaka Bawah No. 22 RT 005/ RW 003 Rengas, Ciputat Timur' },
+  { id: 'C056', nama: 'ZAHRA', alamat: 'Jl. Kramat Rengas RW 010 Rengas, Ciputat Timur' },
+  { id: 'C057', nama: 'ALAMI', alamat: 'Jl. H. Kacit RT 02/09, Rengas, Ciputat Timur' },
+  { id: 'C058', nama: 'ANUGERAH WATER', alamat: 'Jl. Wijaya Kusuma RT 04/04, Rengas, Ciputat Timur' },
+  { id: 'C059', nama: 'ADITTIA', alamat: 'Jl. Gelatik Atas RT 10/09, Rengas, Ciputat Timur' },
+  { id: 'C060', nama: 'SARI MURNI', alamat: 'Jl. Cempaka Bawah RT 05/03, Rengas, Ciputat Timur' },
+  { id: 'C061', nama: 'BIRU', alamat: 'Jl. Kenari RT 04/08 Rengas, Ciputat Timur' },
+  { id: 'C062', nama: 'SEHATI WATER', alamat: 'Jl. H. Toran RT 03/01, Rengas, Ciputat Timur' },
+  { id: 'C063', nama: 'ASTON BINTARO HOTEL & CONFERENCE CENTER', alamat: 'Jl. Cendrawasih Raya No. 25 Kelurahan Sawah, Ciputat Kota Tangerang Selatan' },
+  { id: 'C064', nama: 'THE HARVEST-PARIGI', alamat: 'Jl. Titihan No.Kav 1B, Kel. Parigi' },
+  { id: 'C065', nama: 'BURGER KING EMERALD BINTARO-PARIGI', alamat: 'Jl. Boulevard Bintaro Jaya, Kel. Parigi' },
+  { id: 'C066', nama: 'HOKBEN EMERALD BINTARO-PARIGI', alamat: 'Jl. Boulevard Bintaro Jaya No. 4 Segmen 6 Blok S6/B2, Kel. Parigi' },
+  { id: 'C067', nama: 'POPEYE EMERALD BINTARO-PARIGI', alamat: 'Jl.Boulevard Bintaro Jaya Segmen 6 Blok S6/B2-04, Kel. Parigi' },
+  { id: 'C068', nama: 'CHIGO X FLIP MARCHAND HYPE STATION-PARIGI', alamat: 'Marchand Hype Station, Jl. Emerald Boulevard Ruko No. 08, Kel. Parigi' },
+  { id: 'C069', nama: 'PIZZA HUT DELIVERY EMERALD BINTARO-PARIGI', alamat: 'Jl. Emerald Boulevard RT 001 RW 007, Kel. Parigi' },
+  { id: 'C070', nama: 'WING STOP EMERALD BINTARO-PARIGI', alamat: 'Kav. Komersial Bintaro Jaya.1, Jl. Boulevard Bintaro Jaya No. 5 Blok CE/B, Kel. Parigi' },
+  { id: 'C071', nama: 'SUSHI MENTAI EMERALD BINARO-PARIGI', alamat: 'Kav. Komersial Bintaro Jaya.1, Jl. Boulevard Bintaro Jaya Blok CE/B, Kel. Parigi' },
+  { id: 'C072', nama: 'KFC EMERALD BINTARO-PARIGI', alamat: 'Kav. Komersial Bintaro Jaya.1, Jl. Boulevard Bintaro Jaya No. 3 Blok CE/B, Kel. Parigi' },
+  { id: 'C073', nama: 'AYAM TENES MALANG-PARIGI', alamat: 'Jl. Boulevard Bintaro Jaya No.34, Kel. Parigi' },
+  { id: 'C074', nama: 'N.O.B COFFEE & EATERY-PARIGI', alamat: 'Jl. Boulevard Bintaro Jaya Blok CE / AA No. 3, Kel. Parigi' },
+  { id: 'C075', nama: 'JUSTUS STEAK EMERALD BINTARO-PARIGI', alamat: 'Jl. CBD Emerald Bintaro Blok CE/AA No.2, Kel. Parigi' },
+  { id: 'C076', nama: 'PESISIR SEAFOOD BINTARO-PARIGI', alamat: 'Jl. Boulevard Bintaro Jaya, Kel. Parigi' },
+  { id: 'C077', nama: 'GION THE SUSHI BAR-PARIGI', alamat: 'Blok CE / AA No, Jl. Boulevard Bintaro Jaya No.1, Kel. Parigi' },
+  { id: 'C078', nama: 'SUBWAY EMERALD BINTARO-PARIGI', alamat: 'Jl. Boulevard Bintaro Jaya No.1, Kel. Parigi' },
+  { id: 'C079', nama: 'MCD EMERALD BINTARO-PARIGI', alamat: 'Blok CE/A, CBD Emerald, Jl. HR Rasuna Said Bintaro Jaya No.86, Kel. Parigi' },
+  { id: 'C080', nama: 'PIZZA HUT RISTORANTE-PARIGI', alamat: 'Jl. Boulevard Bintaro Jaya, Kel. Parigi' },
 ];
 
 const masterKeslingParameters = {
@@ -6126,6 +6196,12 @@ function selectKeslingCustomer(customerId) {
 
   const customer = masterKeslingCustomers.find((c) => c.id === customerId);
   if (customer) {
+    // Auto-fill name in Step 3 location field
+    const lokasiInput = document.getElementById("keslingLokasi");
+    if (lokasiInput) {
+      lokasiInput.value = customer.nama;
+    }
+
     // Auto-proceed to Step 2
     setTimeout(() => {
       goToKeslingStep2();
@@ -6163,6 +6239,9 @@ function goToKeslingStep2() {
   document.getElementById("keslingStep2").style.display = "block";
   document.getElementById("keslingStep3").style.display = "none";
   window.scrollTo(0, 0);
+
+  // Update button text based on Status Lab
+  toggleKeslingNextButton();
 }
 
 /**
