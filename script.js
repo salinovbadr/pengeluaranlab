@@ -3106,7 +3106,16 @@ let currentAddCategory = "";
 let jumlahSampel = 0;
 let jumlahTes = 0;
 let sampleDataArray = [];
-let pengeluaranData = [];
+// History Data (Loaded from Local Storage)
+const STORAGE_KEY_PENGELUARAN = "bmhp_pengeluaran_history";
+let pengeluaranData = JSON.parse(localStorage.getItem(STORAGE_KEY_PENGELUARAN) || "[]");
+
+/**
+ * Save history data to localStorage
+ */
+function savePengeluaranData() {
+  localStorage.setItem(STORAGE_KEY_PENGELUARAN, JSON.stringify(pengeluaranData));
+}
 
 // Data Penerima untuk Distribusi Akhir
 const penerimaDistribusiData = [
@@ -5530,6 +5539,7 @@ function confirmSubmit() {
   }
 
   pengeluaranData.unshift(dataEntry);
+  savePengeluaranData();
   updateStockAfterPengeluaran(dataEntry.materials);
 
   let summary = `✓ DATA BERHASIL DISIMPAN!\n\nTanggal: ${tanggalPengeluaran}\nTipe: ${selectedType.toUpperCase()}\n\n`;
@@ -6123,6 +6133,7 @@ function distribusikanMaterial(materialName, batchNo) {
     );
   });
   entriesToUpdate.forEach((entry) => (entry.sudahDistribusi = true));
+  savePengeluaranData();
   alert(
     `✓ Material "${materialName}" (${batchNo}) berhasil didistribusikan ke ${selectedPenerimaDistribusi.nama}!\n\nTotal: ${entriesToUpdate.length} transaksi ditandai sebagai sudah distribusi.`,
   );
@@ -6540,6 +6551,8 @@ function handleKeslingSubmit() {
     pengeluaranData.unshift(dataEntry);
   }
 
+  savePengeluaranData();
+
   let msg = `✓ DATA KESLING BERHASIL DISIMPAN!\n\nNo Lab: ${dataEntry.noLab}\nPelanggan: ${dataEntry.customer}\n`;
   if (!isSudahLab) {
     msg += `\nStatus: Belum Selesai`;
@@ -6712,6 +6725,7 @@ function handleKeslingStep2Next() {
     console.log("🔄 New version detected! Clearing old data...");
     // Clear old BMHP data
     localStorage.removeItem("bmhpPerencanaan");
+    localStorage.removeItem("bmhp_pengeluaran_history");
     // Update version
     localStorage.setItem("bmhp_app_version", CURRENT_VERSION);
     console.log("✅ Cache cleared. Version:", CURRENT_VERSION);
