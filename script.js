@@ -2135,9 +2135,10 @@ const bmhpMasterDataV2 = {
     jenisPemeriksaan: "Feses (Tinja)",
     parameters: ["Darah samar"],
     metode: ["Lateral Flow"],
-    sasaran: [],
+    sasaran: ["Laki-laki dan Perempuan usia ≥ 45 tahun"],
     materials: {
-      common: [
+      common: [],
+      bySasaran:{"Laki-laki dan Perempuan usia ≥ 45 tahun":[
         {
           nama: "Fecal OBT",
           templateSMILE: ["Occult blood test Cassette"],
@@ -2157,7 +2158,6 @@ const bmhpMasterDataV2 = {
           consumptionPerTest: 1,
         },
       ],
-      bySasaran: {},
     },
   },
   Kehamilan: {
